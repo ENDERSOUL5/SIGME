@@ -1,0 +1,585 @@
+/*
+  Trazabilidad issue 2.4.2.1 (#28):
+  Estilos de la interfaz de usuario y la maquetación responsive del tablero de
+  estadísticas del estudiante. Implementa SOLO la issue #28 (paquete 2.4.2) y
+  prepara el consumo de APIs de horas e historial (2.4.2.2 / #29) y de métricas
+  e indicadores gráficos (2.4.2.3 / #30).
+
+  Convenciones:
+  - Variables de color y tipografía alineadas con styles.css y el resto de css/.
+  - Tipografía base "Segoe UI".
+  - Enfoque mobile-first con puntos de ruptura para tablet (900px) y móvil (600px).
+  - Clases con prefijo .student-dashboard para evitar colisiones.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): utilidad de accesibilidad para texto solo leído por lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): contenedor general del tablero del estudiante */
+.student-dashboard-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): encabezado con marca SIGME y retorno al inicio */
+.student-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.student-dashboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.student-dashboard-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.student-dashboard-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-dashboard-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.student-dashboard-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.student-dashboard-header__nav a {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.student-dashboard-header__nav a:hover,
+.student-dashboard-header__nav a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): introducción del tablero personal */
+.student-dashboard-overview {
+  margin-bottom: 1.25rem;
+}
+
+.student-dashboard-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+}
+
+.student-dashboard-overview__lead {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): tarjetas de estadísticas personales */
+.student-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.student-stat-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.student-stat-card--highlight {
+  border-color: rgba(31, 95, 191, 0.35);
+  background: linear-gradient(180deg, #ffffff 0%, #f2f6fd 100%);
+}
+
+.student-stat-card__label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.student-stat-card__value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.student-stat-card__value--primary {
+  color: var(--color-primary);
+}
+
+.student-stat-card__hint {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): disposición principal en dos columnas */
+.student-dashboard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 1.25rem;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): tarjetas/paneles del tablero */
+.student-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.student-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.student-panel__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.student-panel__note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): datos personales bloqueados (nombre y facultad) */
+.student-locked-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+}
+
+.student-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.student-field__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.student-field__value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background-color: #f8fafd;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.student-field__lock {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: #eef2fa;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): formulario de datos de contacto editables */
+.student-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.student-contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.student-contact-field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.student-contact-field__input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  padding: 0.65rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.student-contact-field__input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.student-contact-field__input:disabled {
+  background-color: #eef2fa;
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+.student-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.student-contact-status {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-ok);
+  min-height: 1.2rem;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): botones del tablero */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): historial de turnos y horas operadas */
+.student-history {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.student-history caption {
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  padding-bottom: 0.75rem;
+}
+
+.student-history thead th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.6rem 0.65rem;
+}
+
+.student-history tbody td {
+  border-bottom: 1px solid #eef2fa;
+  padding: 0.7rem 0.65rem;
+  vertical-align: middle;
+}
+
+.student-history tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.student-history tbody tr:hover {
+  background-color: #f8fafd;
+}
+
+.student-history__turn {
+  font-weight: 600;
+}
+
+.student-history__hours {
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): píldoras de estado del turno */
+.student-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.22rem 0.65rem;
+  white-space: nowrap;
+}
+
+.student-pill--completed {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.student-pill--active {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.student-pill--pending {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): resumen del historial */
+.student-history-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.88rem;
+  color: var(--color-muted);
+}
+
+.student-history-footer__total {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): adaptación para tablet */
+@media (max-width: 900px) {
+  .student-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard-header {
+    flex-wrap: wrap;
+  }
+
+  .issue-tag {
+    order: 3;
+  }
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): adaptación para móvil */
+@media (max-width: 600px) {
+  .student-dashboard-shell {
+    width: min(100% - 1.25rem, 1200px);
+    padding: 1rem 0 2rem;
+  }
+
+  .student-dashboard-header {
+    align-items: flex-start;
+  }
+
+  .student-dashboard-header__nav {
+    width: 100%;
+  }
+
+  .student-dashboard-header__nav a {
+    display: inline-block;
+    padding: 0.35rem 0;
+  }
+
+  .student-dashboard-overview__title {
+    font-size: 1.25rem;
+  }
+
+  .student-stat-card__value {
+    font-size: 1.7rem;
+  }
+
+  .student-panel {
+    padding: 1rem;
+  }
+
+  /* Trazabilidad issue 2.4.2.1 (#28): historial en formato de tarjetas apiladas en móvil */
+  .student-history thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .student-history,
+  .student-history tbody,
+  .student-history tr,
+  .student-history td {
+    display: block;
+    width: 100%;
+  }
+
+  .student-history tbody tr {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: #fbfcff;
+  }
+
+  .student-history tbody tr:hover {
+    background-color: #fbfcff;
+  }
+
+  .student-history tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px dashed #eef2fa;
+    padding: 0.5rem 0;
+  }
+
+  .student-history tbody tr td:last-child {
+    border-bottom: 0;
+  }
+
+  .student-history tbody td::before {
+    content: attr(data-label);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .student-history-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Trazabilidad issue 2.4.2.1 (#28): respeto por la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}

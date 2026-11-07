@@ -1,0 +1,799 @@
+/*
+  Trazabilidad issue 3.1.1.6 (#17):
+  Estilos del panel de pruebas de rendimiento de la consulta de filtrado masivo y de
+  validación de la respuesta responsive ante combinaciones múltiples de filtros.
+  Implementa SOLO la issue #17 (predecesora 3.1.1.5 / #16).
+
+  Convenciones:
+  - Variables y base tipográfica alineadas con styles.css (--color-*, --radius, --shadow).
+  - Nomenclatura BEM con prefijo `perf-` para evitar colisiones con otras hojas.
+  - Áreas táctiles de al menos 44 px y foco visible para accesibilidad (3.3).
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): contenedor general del banco de pruebas */
+.perf-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): encabezado con marca SIGME y regreso */
+.perf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.perf-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.perf-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.perf-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.perf-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.perf-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): etiqueta de identificación de la issue */
+.perf-issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): botones del banco de pruebas */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn--primary {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): resumen de la ejecución */
+.perf-overview {
+  margin-bottom: 1.25rem;
+}
+
+.perf-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.perf-overview__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 82ch;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): tarjetas de métricas de rendimiento */
+.perf-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.perf-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.15rem;
+}
+
+.perf-metric__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.perf-metric__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.perf-metric__value--pending {
+  color: var(--color-muted);
+}
+
+.perf-metric__value--ok {
+  color: var(--color-ok);
+}
+
+.perf-metric__value--warn {
+  color: var(--color-warn);
+}
+
+.perf-metric__value--fail {
+  color: var(--color-danger);
+}
+
+.perf-metric__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): panel de ejecución de pruebas */
+.perf-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.perf-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.perf-panel__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.perf-panel__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): controles de la prueba */
+.perf-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.perf-controls__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 190px;
+}
+
+.perf-controls__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.perf-controls__select {
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.65rem;
+}
+
+.perf-controls__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.perf-controls__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): semáforo de cumplimiento del umbral de 500 ms */
+.perf-semaforo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+
+.perf-semaforo__lights {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.perf-semaforo__light {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(27, 36, 54, 0.18);
+  background-color: #d8deea;
+}
+
+.perf-semaforo.is-ok .perf-semaforo__light--ok {
+  background-color: var(--color-ok);
+  box-shadow: 0 0 0 3px rgba(31, 138, 82, 0.18);
+}
+
+.perf-semaforo.is-warn .perf-semaforo__light--warn {
+  background-color: var(--color-warn);
+  box-shadow: 0 0 0 3px rgba(180, 118, 26, 0.18);
+}
+
+.perf-semaforo.is-fail .perf-semaforo__light--fail {
+  background-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(178, 59, 59, 0.18);
+}
+
+.perf-semaforo__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.perf-semaforo__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.perf-semaforo__text {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): indicadores de estado de las pruebas */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.status-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.status-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.status-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.status-pill--fail {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+.status-pill--pending {
+  background-color: #eef2fa;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): tabla de combinaciones de filtros */
+.perf-table-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.perf-table-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.perf-table-card__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.perf-table-card__count {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.perf-table-wrap {
+  overflow-x: auto;
+}
+
+.perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.perf-table th,
+.perf-table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.perf-table th {
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.perf-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.perf-table tbody tr.is-highlight {
+  background-color: #f8fafd;
+}
+
+.perf-table__time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.perf-table__time--ok {
+  color: var(--color-ok);
+}
+
+.perf-table__time--warn {
+  color: var(--color-warn);
+}
+
+.perf-table__time--fail {
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): simulador de breakpoints */
+.perf-responsive {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.perf-responsive__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.perf-responsive__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.perf-responsive__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.perf-viewport-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  white-space: nowrap;
+}
+
+.perf-device-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.device-chip {
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+
+.device-chip:hover {
+  border-color: var(--color-primary);
+}
+
+.device-chip.is-active {
+  border-color: var(--color-primary);
+  background-color: rgba(31, 95, 191, 0.1);
+  color: var(--color-primary);
+}
+
+.device-chip:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+.perf-responsive__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): visor de dispositivo */
+.perf-preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  background-color: #eef2fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.perf-preview__frame {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background-color: var(--color-surface);
+  box-shadow: 0 12px 28px rgba(27, 36, 54, 0.16);
+  overflow: hidden;
+  transition: width 0.35s ease;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): el contenido del visor evalúa container queries */
+.perf-preview__content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.mini-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mini-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-info);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+}
+
+.mini-filter__key {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.mini-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mini-summary__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.mini-summary__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.mini-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mini-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.mini-row__radicado {
+  font-weight: 600;
+}
+
+.mini-row__time {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-note {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): reflujo del visor en anchos móviles */
+@container (max-width: 560px) {
+  .mini-row {
+    grid-template-columns: 1fr auto;
+    grid-auto-rows: min-content;
+  }
+
+  .mini-row__time {
+    grid-column: 1 / -1;
+  }
+
+  .mini-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): verificaciones responsive */
+.perf-checks {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.perf-checks__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.98rem;
+}
+
+.perf-checks__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.perf-checks__item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.55rem;
+  font-size: 0.84rem;
+}
+
+.perf-checks__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.perf-checks__item span:first-child {
+  min-width: 0;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): nota de alcance */
+.perf-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.perf-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 3.1.1.6 (#17): comportamiento responsive del banco de pruebas */
+@media (max-width: 980px) {
+  .perf-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .perf-responsive__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .perf-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .perf-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .perf-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .perf-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .perf-controls__actions {
+    flex-direction: column;
+  }
+
+  .perf-controls__actions .btn {
+    width: 100%;
+  }
+
+  .perf-panel__header,
+  .perf-table-card__header,
+  .perf-responsive__header {
+    flex-direction: column;
+  }
+
+  .perf-semaforo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

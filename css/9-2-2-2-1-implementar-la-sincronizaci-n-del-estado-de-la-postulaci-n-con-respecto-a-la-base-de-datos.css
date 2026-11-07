@@ -1,0 +1,511 @@
+/*
+  Trazabilidad issue 2.2.2.1 (#9):
+  Estilos del prototipo de sincronización del estado de la postulación con respecto
+  a la base de datos. Implementa SOLO la issue #9 (predecesora 2.2.1.3 / #7).
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): contenedor general de la pantalla de sincronización de estados */
+.state-sync-shell {
+  width: min(1100px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): encabezado del panel de sincronización */
+.state-sync-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.state-sync-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.state-sync-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.state-sync-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.state-sync-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.state-sync-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): resumen del estado de sincronización con la base de datos */
+.state-sync-overview {
+  margin-bottom: 1.25rem;
+}
+
+.state-sync-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+}
+
+.state-sync-overview__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 72ch;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): tarjetas de métricas de la sincronización */
+.state-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.state-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.15rem;
+}
+
+.state-metric__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.state-metric__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.state-metric__value--ok {
+  color: var(--color-ok);
+}
+
+.state-metric__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): control de sincronización de estados */
+.state-sync-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.state-sync-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.state-sync-panel__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): indicador del estado del proceso de sincronización */
+.state-sync-panel__badge {
+  border-radius: 999px;
+  background-color: #eef2fa;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+}
+
+.state-sync-panel__badge--active {
+  background-color: rgba(31, 95, 191, 0.12);
+  color: var(--color-primary);
+}
+
+.state-sync-panel__badge--done {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): formulario de parámetros de sincronización */
+.state-sync-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.state-sync-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.state-sync-form__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.state-sync-form__control {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.65rem;
+}
+
+.state-sync-form__control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.state-sync-form__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): botones del panel de sincronización */
+.btn {
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn--primary {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): barra de progreso de la sincronización */
+.state-sync-progress {
+  margin-top: 1.25rem;
+}
+
+.state-sync-progress__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  margin-bottom: 0.4rem;
+}
+
+.state-sync-progress__track {
+  height: 10px;
+  border-radius: 999px;
+  background-color: #eef2fa;
+  overflow: hidden;
+}
+
+.state-sync-progress__bar {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  transition: width 0.35s ease;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): tabla comparativa estado UI vs estado en BD */
+.state-sync-table {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.state-sync-table__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.state-sync-table__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.state-sync-table__count {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.state-sync-table__wrap {
+  overflow-x: auto;
+}
+
+.state-sync-table__grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.state-sync-table__grid th,
+.state-sync-table__grid td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.state-sync-table__grid th {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.state-sync-table__grid tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): indicadores del estado de la postulación */
+.state-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+}
+
+.state-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.state-pill--info {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.state-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.state-pill--danger {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): indicadores de sincronización por registro */
+.sync-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+}
+
+.sync-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.sync-pill--pending {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.sync-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): registro de eventos de sincronización */
+.state-sync-log {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.state-sync-log__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.state-sync-log__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.state-sync-log__count {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.state-sync-log__table-wrap {
+  overflow-x: auto;
+}
+
+.state-sync-log__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.state-sync-log__table th,
+.state-sync-log__table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.state-sync-log__table th {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.state-sync-log__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): nota de alcance y dependencias de la issue */
+.state-sync-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.state-sync-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 2.2.2.1 (#9): comportamiento responsive del panel */
+@media (max-width: 900px) {
+  .state-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .state-sync-form {
+    grid-template-columns: 1fr;
+  }
+
+  .state-sync-form__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .state-sync-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .state-sync-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .state-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .state-sync-form__actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

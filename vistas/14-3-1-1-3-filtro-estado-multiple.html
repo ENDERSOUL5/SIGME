@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Filtro por Estado de la Postulación</title>
+  <!-- Trazabilidad issue 3.1.1.3 (#14): hoja de estilos del filtro de selección múltiple por estado -->
+  <link rel="stylesheet" href="../css/14-3-1-1-3-filtro-estado-multiple.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 3.1.1.3 (#14): contenedor general de la pantalla del filtro -->
+  <div class="state-filter-shell">
+
+    <!-- Trazabilidad issue 3.1.1.3 (#14): encabezado con marca SIGME y retorno al inicio -->
+    <header class="state-filter-header">
+      <div class="state-filter-brand">
+        <span class="state-filter-brand__mark" aria-hidden="true">S</span>
+        <div class="state-filter-brand__text">
+          <span class="state-filter-brand__name">SIGME</span>
+          <span class="state-filter-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <span class="issue-tag">Issue 3.1.1.3 · #14</span>
+      <nav class="state-filter-header__nav" aria-label="Navegación de la pantalla">
+        <a href="../index.html">Volver al inicio</a>
+      </nav>
+    </header>
+
+    <!-- Trazabilidad issue 3.1.1.3 (#14): introducción del filtro por estado -->
+    <section class="state-filter-overview" aria-labelledby="filterOverviewTitle">
+      <h1 class="state-filter-overview__title" id="filterOverviewTitle">Filtro por Estado de la Postulación</h1>
+      <p class="state-filter-overview__lead">
+        Selecciona uno o varios estados para acotar los proyectos postulados. La selección
+        es combinable y puede usarse junto con los filtros por facultad y por fecha de
+        postulación para una revisión más precisa.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.3 (#14): disposición filtro + resultados -->
+    <div class="state-filter-layout">
+
+      <!-- Trazabilidad issue 3.1.1.3 (#14): panel lateral de selección múltiple -->
+      <aside class="state-filter-panel" aria-labelledby="stateFilterPanelTitle">
+        <div class="state-filter-panel__header">
+          <h2 class="state-filter-panel__title" id="stateFilterPanelTitle">Estados</h2>
+          <!-- Trazabilidad issue 3.1.1.3 (#14): contador de estados seleccionados -->
+          <span class="state-filter-counter state-filter-counter--empty" id="selectedCounter" role="status" aria-live="polite">0 seleccionados</span>
+        </div>
+        <p class="state-filter-panel__hint">Marca las casillas que deseas incluir. Sin selección se muestran todos los estados.</p>
+
+        <!-- Trazabilidad issue 3.1.1.3 (#14): checkboxes/chips de estados disponibles -->
+        <fieldset class="state-filter-options">
+          <legend class="sr-only">Selecciona los estados de la postulación</legend>
+
+          <label class="state-filter-option state-filter-option--registered">
+            <input class="state-filter-option__checkbox" type="checkbox" name="estado" value="registrado">
+            <span class="state-filter-option__dot" aria-hidden="true"></span>
+            <span class="state-filter-option__label">Registrado</span>
+          </label>
+
+          <label class="state-filter-option state-filter-option--review">
+            <input class="state-filter-option__checkbox" type="checkbox" name="estado" value="revision">
+            <span class="state-filter-option__dot" aria-hidden="true"></span>
+            <span class="state-filter-option__label">En Revisión</span>
+          </label>
+
+          <label class="state-filter-option state-filter-option--approved">
+            <input class="state-filter-option__checkbox" type="checkbox" name="estado" value="aprobado">
+            <span class="state-filter-option__dot" aria-hidden="true"></span>
+            <span class="state-filter-option__label">Aprobado</span>
+          </label>
+
+          <label class="state-filter-option state-filter-option--rejected">
+            <input class="state-filter-option__checkbox" type="checkbox" name="estado" value="rechazado">
+            <span class="state-filter-option__dot" aria-hidden="true"></span>
+            <span class="state-filter-option__label">Rechazado</span>
+          </label>
+        </fieldset>
+
+        <!-- Trazabilidad issue 3.1.1.3 (#14): botones aplicar/limpiar del filtro -->
+        <div class="state-filter-actions">
+          <button type="button" class="btn btn--ghost" id="clearBtn" disabled>Limpiar</button>
+          <button type="button" class="btn btn--primary" id="applyBtn" disabled>Aplicar filtros</button>
+        </div>
+
+        <!-- Trazabilidad issue 3.1.1.3 (#14): resumen visual de filtros activos -->
+        <div class="state-filter-active" id="activeFilterChips" aria-live="polite">
+          <span class="state-filter-active__empty">Ningún estado seleccionado</span>
+        </div>
+      </aside>
+
+      <!-- Trazabilidad issue 3.1.1.3 (#14): tabla de resultados de ejemplo -->
+      <main class="state-results" aria-labelledby="stateResultsTitle">
+        <div class="state-results__header">
+          <h2 class="state-results__title" id="stateResultsTitle">Postulaciones</h2>
+          <span class="state-results__count" id="resultsCount">8 resultados</span>
+        </div>
+        <p class="state-results__meta" id="resultsMeta">Mostrando todos los estados.</p>
+
+        <div class="state-results__table-wrap">
+          <table class="state-results__table">
+            <caption class="sr-only">Listado de proyectos postulados filtrable por estado</caption>
+            <thead>
+              <tr>
+                <th scope="col">Radicado</th>
+                <th scope="col">Proyecto / Estudiante</th>
+                <th scope="col">Facultad</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <!-- Trazabilidad issue 3.1.1.3 (#14): filas de ejemplo con los cuatro estados -->
+              <tr data-state="registrado">
+                <td>SIG-2026-0101</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Movilidad académica en Canadá</span>
+                  <span class="state-results__student">María Fernanda López</span>
+                </td>
+                <td>Ingeniería</td>
+                <td>20/09/2026</td>
+                <td><span class="state-pill state-pill--registered">Registrado</span></td>
+              </tr>
+              <tr data-state="revision">
+                <td>SIG-2026-0102</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Intercambio en la Universidad de Sevilla</span>
+                  <span class="state-results__student">Carlos Andrés Ramírez</span>
+                </td>
+                <td>Ciencias Sociales</td>
+                <td>22/09/2026</td>
+                <td><span class="state-pill state-pill--review">En Revisión</span></td>
+              </tr>
+              <tr data-state="aprobado">
+                <td>SIG-2026-0103</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Doble titulación en Alemania</span>
+                  <span class="state-results__student">Laura Sofía Martínez</span>
+                </td>
+                <td>Ingeniería</td>
+                <td>18/09/2026</td>
+                <td><span class="state-pill state-pill--approved">Aprobado</span></td>
+              </tr>
+              <tr data-state="rechazado">
+                <td>SIG-2026-0104</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Prácticas internacionales en Brasil</span>
+                  <span class="state-results__student">Andrés Felipe Gómez</span>
+                </td>
+                <td>Economía</td>
+                <td>15/09/2026</td>
+                <td><span class="state-pill state-pill--rejected">Rechazado</span></td>
+              </tr>
+              <tr data-state="registrado">
+                <td>SIG-2026-0105</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Curso de idiomas en Francia</span>
+                  <span class="state-results__student">Valentina Torres</span>
+                </td>
+                <td>Humanidades</td>
+                <td>24/09/2026</td>
+                <td><span class="state-pill state-pill--registered">Registrado</span></td>
+              </tr>
+              <tr data-state="revision">
+                <td>SIG-2026-0106</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Proyecto de investigación en Japón</span>
+                  <span class="state-results__student">Santiago Herrera</span>
+                </td>
+                <td>Ingeniería</td>
+                <td>23/09/2026</td>
+                <td><span class="state-pill state-pill--review">En Revisión</span></td>
+              </tr>
+              <tr data-state="aprobado">
+                <td>SIG-2026-0107</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Semestre académico en Chile</span>
+                  <span class="state-results__student">Daniela Rojas</span>
+                </td>
+                <td>Ciencias Sociales</td>
+                <td>12/09/2026</td>
+                <td><span class="state-pill state-pill--approved">Aprobado</span></td>
+              </tr>
+              <tr data-state="rechazado">
+                <td>SIG-2026-0108</td>
+                <td class="state-results__cell-main">
+                  <span class="state-results__program">Voluntariado internacional en Perú</span>
+                  <span class="state-results__student">Julián Castaño</span>
+                </td>
+                <td>Humanidades</td>
+                <td>10/09/2026</td>
+                <td><span class="state-pill state-pill--rejected">Rechazado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Trazabilidad issue 3.1.1.3 (#14): estado vacío cuando el filtro no tiene coincidencias -->
+        <div class="state-results__empty" id="resultsEmpty" hidden>
+          <p>No hay postulaciones para los estados seleccionados. Ajusta la selección o pulsa «Limpiar» para ver todos los resultados.</p>
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Trazabilidad issue 3.1.1.3 (#14): nota de alcance y dependencias -->
+    <footer class="state-filter-footer">
+      <p>
+        Prototipo del filtro de selección múltiple por estado de la postulación. La
+        selección es combinable con los filtros por facultad y por rango de fechas
+        (2.2.1 / 3.1.1.4) y alimenta la API de búsqueda avanzada (3.1.1.5).
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 3.1.1.3 (#14): JS vanilla para filtrar filas y actualizar el contador -->
+  <script>
+    (function () {
+      var checkboxes = Array.prototype.slice.call(
+        document.querySelectorAll('.state-filter-option__checkbox')
+      );
+      var options = Array.prototype.slice.call(
+        document.querySelectorAll('.state-filter-option')
+      );
+      var counter = document.getElementById('selectedCounter');
+      var applyBtn = document.getElementById('applyBtn');
+      var clearBtn = document.getElementById('clearBtn');
+      var chipsWrap = document.getElementById('activeFilterChips');
+      var rows = Array.prototype.slice.call(
+        document.querySelectorAll('#resultsBody tr')
+      );
+      var resultsCount = document.getElementById('resultsCount');
+      var resultsMeta = document.getElementById('resultsMeta');
+      var resultsEmpty = document.getElementById('resultsEmpty');
+
+      var LABELS = {
+        registrado: 'Registrado',
+        revision: 'En Revisión',
+        aprobado: 'Aprobado',
+        rechazado: 'Rechazado'
+      };
+
+      var applied = [];
+      var total = rows.length;
+
+      function selectedStates() {
+        return checkboxes
+          .filter(function (cb) { return cb.checked; })
+          .map(function (cb) { return cb.value; });
+      }
+
+      function updateSelectionUI() {
+        var selected = selectedStates();
+
+        options.forEach(function (option) {
+          var cb = option.querySelector('.state-filter-option__checkbox');
+          option.classList.toggle('is-checked', cb.checked);
+        });
+
+        counter.textContent = selected.length + ' seleccionado' + (selected.length === 1 ? '' : 's');
+        counter.classList.toggle('state-filter-counter--empty', selected.length === 0);
+
+        applyBtn.disabled = selected.length === 0;
+        clearBtn.disabled = selected.length === 0 && applied.length === 0;
+
+        renderChips(selected);
+      }
+
+      function renderChips(selected) {
+        chipsWrap.innerHTML = '';
+
+        if (selected.length === 0) {
+          var empty = document.createElement('span');
+          empty.className = 'state-filter-active__empty';
+          empty.textContent = 'Ningún estado seleccionado';
+          chipsWrap.appendChild(empty);
+          return;
+        }
+
+        selected.forEach(function (value) {
+          var chip = document.createElement('span');
+          chip.className = 'state-filter-active__chip';
+          chip.textContent = LABELS[value];
+          chipsWrap.appendChild(chip);
+        });
+      }
+
+      function applyFilter() {
+        applied = selectedStates();
+
+        var visible = 0;
+
+        rows.forEach(function (row) {
+          var match = applied.length === 0 || applied.indexOf(row.getAttribute('data-state')) !== -1;
+          row.hidden = !match;
+          if (match) { visible += 1; }
+        });
+
+        resultsCount.textContent = visible + ' resultado' + (visible === 1 ? '' : 's');
+        resultsMeta.textContent = applied.length === 0
+          ? 'Mostrando todos los estados.'
+          : 'Mostrando: ' + applied.map(function (v) { return LABELS[v]; }).join(', ') + '.';
+
+        resultsEmpty.hidden = visible !== 0;
+      }
+
+      function clearFilter() {
+        checkboxes.forEach(function (cb) { cb.checked = false; });
+        applied = [];
+        updateSelectionUI();
+        applyFilter();
+        clearBtn.disabled = true;
+      }
+
+      checkboxes.forEach(function (cb) {
+        cb.addEventListener('change', updateSelectionUI);
+      });
+
+      applyBtn.addEventListener('click', applyFilter);
+      clearBtn.addEventListener('click', clearFilter);
+
+      updateSelectionUI();
+      applyFilter();
+
+      if (total === 0) {
+        resultsCount.textContent = '0 resultados';
+      }
+    })();
+  </script>
+</body>
+</html>

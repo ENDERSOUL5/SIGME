@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Tablero de Estadísticas del Estudiante</title>
+  <!-- Trazabilidad issue 2.4.2.1 (#28): hoja de estilos del tablero de estadísticas del estudiante -->
+  <link rel="stylesheet" href="../css/28-2-4-2-1-tablero-estadisticas-estudiante.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.4.2.1 (#28): contenedor general del tablero personal del estudiante -->
+  <div class="student-dashboard-shell">
+
+    <!-- Trazabilidad issue 2.4.2.1 (#28): encabezado con marca SIGME y retorno al inicio -->
+    <header class="student-dashboard-header">
+      <div class="student-dashboard-brand">
+        <span class="student-dashboard-brand__mark" aria-hidden="true">S</span>
+        <div class="student-dashboard-brand__text">
+          <span class="student-dashboard-brand__name">SIGME</span>
+          <span class="student-dashboard-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <span class="issue-tag">Issue 2.4.2.1 · #28</span>
+      <nav class="student-dashboard-header__nav" aria-label="Navegación del tablero">
+        <a href="../index.html">Volver al inicio</a>
+      </nav>
+    </header>
+
+    <!-- Trazabilidad issue 2.4.2.1 (#28): introducción del tablero de estadísticas -->
+    <section class="student-dashboard-overview" aria-labelledby="dashboardOverviewTitle">
+      <h1 class="student-dashboard-overview__title" id="dashboardOverviewTitle">Tablero de estadísticas del estudiante</h1>
+      <p class="student-dashboard-overview__lead">
+        Consulta tus meses activos, las horas de operación acumuladas y el historial de
+        tus turnos. Tus datos personales están protegidos; únicamente puedes actualizar
+        la información de contacto.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.1 (#28): tarjetas de estadísticas personales (2.1.4) -->
+    <section class="student-stats" aria-labelledby="dashboardStatsTitle">
+      <h2 class="sr-only" id="dashboardStatsTitle">Resumen de estadísticas personales</h2>
+
+      <article class="student-stat-card student-stat-card--highlight">
+        <span class="student-stat-card__label">Meses activos</span>
+        <span class="student-stat-card__value student-stat-card__value--primary">8</span>
+        <span class="student-stat-card__hint">Desde tu vinculación en marzo de 2026</span>
+      </article>
+
+      <article class="student-stat-card">
+        <span class="student-stat-card__label">Horas de operación acumuladas</span>
+        <span class="student-stat-card__value">126 h</span>
+        <span class="student-stat-card__hint">Total registrado en tus turnos</span>
+      </article>
+
+      <article class="student-stat-card">
+        <span class="student-stat-card__label">Turnos completados</span>
+        <span class="student-stat-card__value">24</span>
+        <span class="student-stat-card__hint">Turnos cerrados y validados</span>
+      </article>
+
+      <article class="student-stat-card">
+        <span class="student-stat-card__label">Promedio por mes</span>
+        <span class="student-stat-card__value">15.8 h</span>
+        <span class="student-stat-card__hint">Promedio de horas operadas al mes</span>
+      </article>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.1 (#28): disposición datos personales + historial -->
+    <div class="student-dashboard-layout">
+
+      <!-- Trazabilidad issue 2.4.2.1 (#28): datos personales bloqueados y contacto editable (2.1.4) -->
+      <section class="student-panel" aria-labelledby="studentProfileTitle">
+        <div class="student-panel__header">
+          <h2 class="student-panel__title" id="studentProfileTitle">Datos del estudiante</h2>
+          <p class="student-panel__note">Los datos personales no son editables.</p>
+        </div>
+
+        <!-- Trazabilidad issue 2.4.2.1 (#28): nombre y facultad bloqueados -->
+        <div class="student-locked-fields">
+          <div class="student-field">
+            <span class="student-field__label">Nombre completo</span>
+            <span class="student-field__value">
+              María Fernanda López
+              <span class="student-field__lock">Bloqueado</span>
+            </span>
+          </div>
+          <div class="student-field">
+            <span class="student-field__label">Facultad</span>
+            <span class="student-field__value">
+              Ingeniería
+              <span class="student-field__lock">Bloqueado</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Trazabilidad issue 2.4.2.1 (#28): edición habilitada solo para datos de contacto dinámicos -->
+        <form class="student-contact-form" id="contactForm" aria-labelledby="contactFormTitle" novalidate>
+          <h3 class="student-panel__title" id="contactFormTitle">Datos de contacto</h3>
+
+          <div class="student-contact-field">
+            <label class="student-contact-field__label" for="contactEmail">Correo electrónico</label>
+            <input class="student-contact-field__input" type="email" id="contactEmail" name="correo"
+                   value="maria.lopez@universidad.edu.co" autocomplete="email" disabled required>
+          </div>
+
+          <div class="student-contact-field">
+            <label class="student-contact-field__label" for="contactPhone">Teléfono</label>
+            <input class="student-contact-field__input" type="tel" id="contactPhone" name="telefono"
+                   value="+57 300 123 4567" autocomplete="tel" disabled required>
+          </div>
+
+          <div class="student-contact-actions">
+            <button class="btn btn--primary" type="button" id="editContactBtn">Editar contacto</button>
+            <button class="btn btn--ghost" type="submit" id="saveContactBtn" disabled>Guardar cambios</button>
+            <button class="btn btn--ghost" type="button" id="cancelContactBtn" disabled>Cancelar</button>
+          </div>
+
+          <p class="student-contact-status" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- Trazabilidad issue 2.4.2.1 (#28): historial de turnos y horas operadas -->
+      <section class="student-panel" aria-labelledby="studentHistoryTitle">
+        <div class="student-panel__header">
+          <h2 class="student-panel__title" id="studentHistoryTitle">Historial de turnos</h2>
+          <p class="student-panel__note">Últimos turnos registrados</p>
+        </div>
+
+        <table class="student-history">
+          <caption>Horas operadas por turno, con fecha, dependencia y estado.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Turno</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Dependencia</th>
+              <th scope="col">Horas</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Trazabilidad issue 2.4.2.1 (#28): filas de ejemplo del historial de turnos -->
+            <tr>
+              <td class="student-history__turn" data-label="Turno">T-2026-024</td>
+              <td data-label="Fecha">31/10/2026</td>
+              <td data-label="Dependencia">Biblioteca central</td>
+              <td class="student-history__hours" data-label="Horas">6 h</td>
+              <td data-label="Estado"><span class="student-pill student-pill--completed">Completado</span></td>
+            </tr>
+            <tr>
+              <td class="student-history__turn" data-label="Turno">T-2026-023</td>
+              <td data-label="Fecha">28/10/2026</td>
+              <td data-label="Dependencia">Laboratorio de sistemas</td>
+              <td class="student-history__hours" data-label="Horas">5 h</td>
+              <td data-label="Estado"><span class="student-pill student-pill--completed">Completado</span></td>
+            </tr>
+            <tr>
+              <td class="student-history__turn" data-label="Turno">T-2026-022</td>
+              <td data-label="Fecha">24/10/2026</td>
+              <td data-label="Dependencia">Oficina de registro</td>
+              <td class="student-history__hours" data-label="Horas">4 h</td>
+              <td data-label="Estado"><span class="student-pill student-pill--active">En curso</span></td>
+            </tr>
+            <tr>
+              <td class="student-history__turn" data-label="Turno">T-2026-021</td>
+              <td data-label="Fecha">19/10/2026</td>
+              <td data-label="Dependencia">Biblioteca central</td>
+              <td class="student-history__hours" data-label="Horas">6 h</td>
+              <td data-label="Estado"><span class="student-pill student-pill--completed">Completado</span></td>
+            </tr>
+            <tr>
+              <td class="student-history__turn" data-label="Turno">T-2026-020</td>
+              <td data-label="Fecha">15/10/2026</td>
+              <td data-label="Dependencia">Bienestar universitario</td>
+              <td class="student-history__hours" data-label="Horas">3 h</td>
+              <td data-label="Estado"><span class="student-pill student-pill--pending">Pendiente</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="student-history-footer">
+          <span>Total de horas en los últimos turnos</span>
+          <span class="student-history-footer__total">24 h</span>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.4.2.1 (#28): edición de datos de contacto con JavaScript vanilla (solo prototipo) -->
+  <script>
+    (function () {
+      var form = document.getElementById('contactForm');
+      var email = document.getElementById('contactEmail');
+      var phone = document.getElementById('contactPhone');
+      var editBtn = document.getElementById('editContactBtn');
+      var saveBtn = document.getElementById('saveContactBtn');
+      var cancelBtn = document.getElementById('cancelContactBtn');
+      var status = document.getElementById('contactStatus');
+      var initialValues = { email: email.value, phone: phone.value };
+
+      function setEditing(editing) {
+        email.disabled = !editing;
+        phone.disabled = !editing;
+        saveBtn.disabled = !editing;
+        cancelBtn.disabled = !editing;
+        editBtn.disabled = editing;
+        if (editing) {
+          email.focus();
+        }
+      }
+
+      editBtn.addEventListener('click', function () {
+        status.textContent = '';
+        setEditing(true);
+      });
+
+      cancelBtn.addEventListener('click', function () {
+        email.value = initialValues.email;
+        phone.value = initialValues.phone;
+        status.textContent = '';
+        setEditing(false);
+        editBtn.focus();
+      });
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!email.checkValidity()) {
+          status.textContent = 'Ingresa un correo electrónico válido.';
+          email.focus();
+          return;
+        }
+        if (phone.value.trim() === '') {
+          status.textContent = 'El teléfono no puede quedar vacío.';
+          phone.focus();
+          return;
+        }
+        initialValues.email = email.value;
+        initialValues.phone = phone.value;
+        setEditing(false);
+        status.textContent = 'Datos de contacto actualizados correctamente.';
+        editBtn.focus();
+      });
+    })();
+  </script>
+
+</body>
+</html>

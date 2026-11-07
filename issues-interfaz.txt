@@ -1,0 +1,76 @@
+LISTA DE ISSUES DE INTERFAZ (UI) - PROYECTO SIGME
+Fuente: backlog.pdf + .issues/open/
+Criterio: issues cuyo entregable es una pantalla, componente, control, plantilla o validacion visual que ve el usuario.
+Leyenda: [x] implementada / [ ] no implementada
+Actualizado: cada issue tiene su vista HTML en vistas/ y su comentario de trazabilidad en .issues/open/<issue>.comment.md
+Indice navegable de vistas: vistas/index.html
+
+1. [x] #5 - [2.2.1.1] Disenar los campos e interfaz del formulario para la peticion de documentos del MVP
+       Estado: implementada en vistas/5-2-2-1-1-formulario-peticion-documentos.html + css/5-...css.
+       Interfaz: formulario de carga de detalles y documentos del MVP.
+
+2. [x] #6 - [2.2.1.2] Integrar el servicio de carga de archivos (PDF/imagenes) con validacion de peso y formato
+       Estado: implementada en vistas/6-2-2-1-2-carga-archivos-validacion.html + css/6-...css.
+       Interfaz: control de carga de archivos y mensajes de validacion visibles al usuario.
+
+3. [x] #8 - [2.2.1.4] Probar el flujo completo de envio, manejo de errores y confirmacion de recepcion
+       Estado: implementada en vistas/8-2-2-1-4-flujo-envio-errores-confirmacion.html + css/8-...css.
+       Interfaz: mensajes de error, confirmacion de recepcion y retroalimentacion del envio.
+
+4. [x] #10 - [2.2.2.2] Disenar la interfaz grafica del seguimiento de postulacion con indicador de linea de tiempo/pasos
+       Estado: implementada en vistas/10-2-2-2-2-seguimiento-postulacion.html + css/10-...css.
+       Interfaz: pantalla de seguimiento con stepper/linea de tiempo de estados.
+
+5. [x] #11 - [2.2.2.3] Implementar el componente de visualizacion de observaciones y retroalimentacion en caso de rechazo o ajustes
+       Estado: implementada en vistas/11-2-2-2-3-observaciones-retroalimentacion.html + css/11-...css.
+       Interfaz: panel de observaciones, justificacion de rechazo y ajustes.
+
+6. [x] #12 - [2.2.2.4] Ejecutar pruebas de actualizacion en tiempo real y respuesta responsive en dispositivos moviles
+       Estado: implementada en vistas/12-2-2-2-4-tiempo-real-responsive.html + css/12-...css.
+       Interfaz: validacion visual de actualizacion en tiempo real y responsive.
+
+7. [x] #13 - [3.1.1.1] Disenar el componente de UI con la disposicion grafica de la barra de busqueda y el panel lateral/superior de filtros
+       Estado: implementada en index.html + styles.css.
+       Interfaz: barra de busqueda, panel de filtros y area de resultados.
+
+8. [x] #14 - [3.1.1.3] Desarrollar el filtro de seleccion multiple por Estado de la Postulacion
+       Estado: implementada en vistas/14-3-1-1-3-filtro-estado-multiple.html + css/14-...css.
+       Interfaz: selector multiple de estados (Registrado, En Revision, Aprobado, Rechazado).
+
+9. [x] #15 - [3.1.1.4] Configurar el filtro de rango de Fechas de Postulacion y ordenamiento cronologico
+       Estado: implementada en vistas/15-3-1-1-4-filtro-fechas-orden.html + css/15-...css.
+       Interfaz: selector de rango de fechas y control de orden cronologico.
+
+10. [x] #17 - [3.1.1.6] Ejecutar pruebas de rendimiento en la consulta de filtrado masivo y validar respuesta responsiva de la interfaz
+        Estado: implementada en vistas/17-3-1-1-6-pruebas-rendimiento-responsive.html + css/17-...css.
+        Interfaz: validacion de respuesta responsive ante combinaciones de filtros.
+
+11. [x] #19 - [3.2.3.2] Disenar y maquetar el formato de las plantillas HTML del correo que se envia al estudiante
+        Estado: implementada en vistas/19-3-2-3-2-plantilla-correo.html + css/19-...css.
+        Interfaz: plantilla HTML de correo visible por el estudiante.
+
+12. [x] #28 - [2.4.2.1] Disenar la interfaz de usuario y la maquetacion responsive del tablero de estadisticas del estudiante
+        Estado: implementada en vistas/28-2-4-2-1-tablero-estadisticas-estudiante.html + css/28-...css.
+        Interfaz: tablero personal de estadisticas y horas operadas.
+
+13. [x] #30 - [2.4.2.3] Implementar la seccion de metricas e indicadores graficos para el consumo de horas
+        Estado: implementada en vistas/30-2-4-2-3-metricas-consumo-horas.html + css/30-...css.
+        Interfaz: indicadores graficos de consumo de horas frente al minimo exigido.
+
+14. [x] #31 - [2.4.2.4] Ejecutar pruebas de integracion con datos reales de apertura/cierre de turnos y alertas
+        Estado: implementada en vistas/31-2-4-2-4-pruebas-integracion-alertas.html + css/31-...css.
+        Interfaz: validacion visual de alertas del tablero de horas.
+
+15. [x] #32 - [5.3.1.1] Disenar la plantilla visual HTML/CSS del reporte PDF alineada con la identidad grafica
+        Estado: implementada en vistas/32-5-3-1-1-plantilla-reporte-pdf.html + css/32-...css.
+        Interfaz: plantilla visual del reporte PDF exportable.
+
+16. [x] #35 - [5.3.1.4] Desarrollar el endpoint del API y la accion del boton "Exportar a PDF" para la descarga automatica
+        Estado: vista y accion simulada en vistas/35-5-3-1-4-exportar-pdf.html + css/35-...css.
+        Interfaz: boton "Exportar reporte" y descarga del archivo.
+
+17. [x] #36 - [5.3.1.5] Ejecutar pruebas de maquetacion, paginacion correcta, rendimiento de conversion y legibilidad
+        Estado: implementada en vistas/36-5-3-1-5-pruebas-maquetacion-pdf.html + css/36-...css.
+        Interfaz: validacion visual de maquetacion, paginacion y legibilidad del PDF.
+
+TOTAL: 17 issues de interfaz | Implementadas: 17 | Pendientes: 0.

@@ -1,0 +1,949 @@
+/*
+  Trazabilidad issue 5.3.1.5 (#36):
+  Estilos del panel de pruebas de maquetación, paginación correcta, rendimiento
+  de conversión a PDF y legibilidad del reporte. Implementa SOLO la issue #36
+  (predecesora 5.3.1.4). Sigue las convenciones de css/ y styles.css: variables
+  :root con la paleta existente, tipografía Segoe UI, box-sizing global,
+  nomenclatura BEM con prefijo `pdfqa-` y hojas autocontenidas. No modifica
+  styles.css ni las hojas de otras issues.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-ok-bg: #eaf7f0;
+  --color-warn: #b4761a;
+  --color-warn-bg: #fdf4e5;
+  --color-danger: #b23b3b;
+  --color-danger-bg: #fdeeee;
+  --color-info: #2b6cb0;
+  --color-info-bg: #eaf2fb;
+  --color-accent: #c8a24a;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+  --report-font: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--report-font);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): contenedor general del banco de pruebas */
+.pdfqa-shell {
+  width: min(1240px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): encabezado con marca SIGME y regreso */
+.pdfqa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pdfqa-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.pdfqa-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdfqa-brand__name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.pdfqa-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-issue-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background-color: var(--color-info-bg);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): botones del banco de pruebas */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn--primary {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): resumen de la ejecución */
+.pdfqa-overview {
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.pdfqa-overview__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 84ch;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): tarjetas de métricas de conversión */
+.pdfqa-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.pdfqa-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.15rem;
+}
+
+.pdfqa-metric__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.pdfqa-metric__value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pdfqa-metric__value--pending {
+  color: var(--color-muted);
+}
+
+.pdfqa-metric__value--ok {
+  color: var(--color-ok);
+}
+
+.pdfqa-metric__value--warn {
+  color: var(--color-warn);
+}
+
+.pdfqa-metric__value--fail {
+  color: var(--color-danger);
+}
+
+.pdfqa-metric__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): panel de ejecución de pruebas */
+.pdfqa-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.pdfqa-panel__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.pdfqa-panel__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): controles de la prueba */
+.pdfqa-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdfqa-controls__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 190px;
+}
+
+.pdfqa-controls__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.pdfqa-controls__select {
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.65rem;
+}
+
+.pdfqa-controls__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.pdfqa-controls__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): barra de progreso y semáforo global */
+.pdfqa-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+
+.pdfqa-status__lights {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.pdfqa-status__light {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(27, 36, 54, 0.18);
+  background-color: #d8deea;
+}
+
+.pdfqa-status.is-ok .pdfqa-status__light--ok {
+  background-color: var(--color-ok);
+  box-shadow: 0 0 0 3px rgba(31, 138, 82, 0.18);
+}
+
+.pdfqa-status.is-warn .pdfqa-status__light--warn {
+  background-color: var(--color-warn);
+  box-shadow: 0 0 0 3px rgba(180, 118, 26, 0.18);
+}
+
+.pdfqa-status.is-fail .pdfqa-status__light--fail {
+  background-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(178, 59, 59, 0.18);
+}
+
+.pdfqa-status__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.pdfqa-status__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pdfqa-status__text {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): barra de progreso de la conversión */
+.pdfqa-progress {
+  margin-top: 0.85rem;
+}
+
+.pdfqa-progress__track {
+  height: 8px;
+  border-radius: 999px;
+  background-color: #e6ebf5;
+  overflow: hidden;
+}
+
+.pdfqa-progress__bar {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  transition: width 0.25s ease;
+}
+
+.pdfqa-progress__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): indicadores de estado de las pruebas */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.status-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.status-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.status-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.status-pill--fail {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+.status-pill--pending {
+  background-color: #eef2fa;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): rejilla de checklists por dimensión */
+.pdfqa-checklists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-checklist {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.15rem 1.25rem;
+}
+
+.pdfqa-checklist__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdfqa-checklist__title {
+  margin: 0 0 0.15rem;
+  font-size: 1rem;
+}
+
+.pdfqa-checklist__ref {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-checklist__score {
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.pdfqa-checklist__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.pdfqa-check {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed #edf0f7;
+}
+
+.pdfqa-check:last-child {
+  border-bottom: none;
+}
+
+.pdfqa-check__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  min-width: 0;
+  font-size: 0.88rem;
+}
+
+.pdfqa-check__box {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: #f8fafd;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: transparent;
+}
+
+.pdfqa-check.is-ok .pdfqa-check__box {
+  border-color: var(--color-ok);
+  background-color: var(--color-ok-bg);
+  color: var(--color-ok);
+}
+
+.pdfqa-check.is-warn .pdfqa-check__box {
+  border-color: var(--color-warn);
+  background-color: var(--color-warn-bg);
+  color: var(--color-warn);
+}
+
+.pdfqa-check.is-fail .pdfqa-check__box {
+  border-color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.pdfqa-check__detail {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): métricas de rendimiento de conversión */
+.pdfqa-conversion {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-conversion__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.pdfqa-conversion__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.pdfqa-conversion__hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-table-wrap {
+  overflow-x: auto;
+}
+
+.pdfqa-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.pdfqa-table caption {
+  text-align: left;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  padding-bottom: 0.5rem;
+}
+
+.pdfqa-table th,
+.pdfqa-table td {
+  padding: 0.6rem 0.7rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.pdfqa-table thead th {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: #f8fafd;
+  white-space: nowrap;
+}
+
+.pdfqa-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pdfqa-table__num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pdfqa-table__num--pending {
+  color: var(--color-muted);
+}
+
+.pdfqa-table__num--ok {
+  color: var(--color-ok);
+  font-weight: 600;
+}
+
+.pdfqa-table__num--warn {
+  color: var(--color-warn);
+  font-weight: 600;
+}
+
+.pdfqa-table__num--fail {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): previsualización de páginas del PDF */
+.pdfqa-previews {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdfqa-previews__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.pdfqa-previews__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.pdfqa-previews__hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-pages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.pdfqa-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.pdfqa-page__frame {
+  position: relative;
+  aspect-ratio: 210 / 297;
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(27, 36, 54, 0.1);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.pdfqa-page__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  pointer-events: none;
+  transition: border-color 0.2s ease;
+}
+
+.pdfqa-page.is-ok .pdfqa-page__frame::after {
+  border-color: rgba(31, 138, 82, 0.45);
+}
+
+.pdfqa-page.is-warn .pdfqa-page__frame::after {
+  border-color: rgba(180, 118, 26, 0.45);
+}
+
+.pdfqa-page__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e6ebf5;
+}
+
+.pdfqa-page__brand-name {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.pdfqa-page__brand-mark {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 0.6rem;
+}
+
+.pdfqa-page__folio {
+  font-size: 0.6rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-page__title {
+  height: 7px;
+  width: 68%;
+  border-radius: 3px;
+  background-color: #c6d4ea;
+}
+
+.pdfqa-page__subtitle {
+  height: 5px;
+  width: 42%;
+  border-radius: 3px;
+  background-color: #e1e8f4;
+}
+
+.pdfqa-page__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.pdfqa-page__kpis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+}
+
+.pdfqa-page__kpi {
+  height: 26px;
+  border-radius: 4px;
+  background-color: #f1f5fb;
+  border: 1px solid #e3eaf5;
+}
+
+.pdfqa-page__line {
+  height: 5px;
+  border-radius: 3px;
+  background-color: #e8edf6;
+}
+
+.pdfqa-page__line--short {
+  width: 72%;
+}
+
+.pdfqa-page__line--medium {
+  width: 88%;
+}
+
+.pdfqa-page__chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 58px;
+  padding: 0.35rem;
+  border: 1px solid #e3eaf5;
+  border-radius: 4px;
+  background-color: #f8fafd;
+}
+
+.pdfqa-page__bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  background-color: #a9c1e3;
+}
+
+.pdfqa-page__bar--accent {
+  background-color: var(--color-accent);
+}
+
+.pdfqa-page__table {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pdfqa-page__tr {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.7fr;
+  gap: 4px;
+}
+
+.pdfqa-page__td {
+  height: 5px;
+  border-radius: 2px;
+  background-color: #e8edf6;
+}
+
+.pdfqa-page__tr--head .pdfqa-page__td {
+  background-color: #cfdbee;
+}
+
+.pdfqa-page__footer {
+  margin-top: auto;
+  padding-top: 0.35rem;
+  border-top: 1px solid #e6ebf5;
+  font-size: 0.55rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.pdfqa-page__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.pdfqa-page__label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): pie con nota de alcance */
+.pdfqa-footer {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.pdfqa-footer p {
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 5.3.1.5 (#36): adaptación responsive */
+@media (max-width: 980px) {
+  .pdfqa-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pdfqa-checklists {
+    grid-template-columns: 1fr;
+  }
+
+  .pdfqa-pages {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .pdfqa-shell {
+    width: min(100% - 1.25rem, 100%);
+    padding-top: 1rem;
+  }
+
+  .pdfqa-header {
+    align-items: flex-start;
+  }
+
+  .pdfqa-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .pdfqa-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pdfqa-controls__field {
+    min-width: 0;
+  }
+
+  .pdfqa-controls__actions {
+    flex-direction: column;
+  }
+
+  .pdfqa-controls__actions .btn {
+    width: 100%;
+  }
+
+  .pdfqa-status {
+    align-items: flex-start;
+  }
+
+  .pdfqa-pages {
+    grid-template-columns: 1fr;
+  }
+
+  .pdfqa-check {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .pdfqa-overview__title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdfqa-progress__bar,
+  .pdfqa-page__frame::after {
+    transition: none;
+  }
+}

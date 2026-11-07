@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Petición de documentos del MVP</title>
+  <!-- Trazabilidad issue 2.2.1.1 (#5): hoja de estilos del formulario de petición de documentos del MVP -->
+  <link rel="stylesheet" href="../css/5-2-2-1-1-dise-ar-los-campos-e-interfaz-del-formulario-para-la-petici-n-de-documentos-del-mvp.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.1.1 (#5): contenedor general del formulario -->
+  <div class="form-shell">
+
+    <!-- Trazabilidad issue 2.2.1.1 (#5): encabezado con marca SIGME y navegación de regreso -->
+    <header class="form-header">
+      <div class="form-brand">
+        <span class="form-brand__mark" aria-hidden="true">S</span>
+        <div class="form-brand__text">
+          <span class="form-brand__name">SIGME</span>
+          <span class="form-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <a class="form-badge" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.2.1.1 (#5): introducción y contexto de la petición -->
+    <section class="form-intro" aria-labelledby="introTitle">
+      <h1 class="form-intro__title" id="introTitle">Petición de documentos del MVP</h1>
+      <p class="form-intro__lead">
+        Completa los datos del estudiante, describe tu Producto Mínimo Viable y adjunta la
+        documentación requerida. Podrás actualizar los documentos mientras tu postulación se
+        encuentre en estado <strong>En revisión</strong>.
+      </p>
+      <ul class="form-meta">
+        <li><strong>Actividad:</strong> 2.2.1.1</li>
+        <li><strong>Paquete:</strong> 2.2.1 Formulario Digital para Carga de Documentos del MVP</li>
+        <li><strong>Responsable:</strong> Desarrollador Líder Frontend</li>
+        <li><strong>Duración:</strong> 3 días</li>
+      </ul>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.1 (#5): formulario principal de la petición -->
+    <form class="doc-form" id="docForm" action="#" method="post" enctype="multipart/form-data" novalidate>
+
+      <!-- Trazabilidad issue 2.2.1.1 (#5): sección de datos del estudiante -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">1. Datos del estudiante</legend>
+        <p class="form-section__hint">Información registrada en el sistema institucional. Verifica que coincida con tu documento de identidad.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="nombres">Nombres <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="nombres" name="nombres" type="text" autocomplete="given-name" required aria-required="true">
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="apellidos">Apellidos <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="apellidos" name="apellidos" type="text" autocomplete="family-name" required aria-required="true">
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="tipoDocumento">Tipo de documento <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="tipoDocumento" name="tipoDocumento" required aria-required="true">
+              <option value="">Selecciona una opción</option>
+              <option value="CC">Cédula de ciudadanía</option>
+              <option value="TI">Tarjeta de identidad</option>
+              <option value="CE">Cédula de extranjería</option>
+              <option value="PA">Pasaporte</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="numeroDocumento">Número de documento <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="numeroDocumento" name="numeroDocumento" type="text" inputmode="numeric" pattern="[0-9]{6,12}" required aria-required="true" aria-describedby="numeroDocumentoHelp">
+            <span class="field__help" id="numeroDocumentoHelp">Entre 6 y 12 dígitos, sin puntos ni espacios.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="correo">Correo institucional <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="correo" name="correo" type="email" autocomplete="email" placeholder="nombre@universidad.edu.co" required aria-required="true" aria-describedby="correoHelp">
+            <span class="field__help" id="correoHelp">Usa tu correo institucional para recibir notificaciones del proceso.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="telefono">Teléfono de contacto <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="telefono" name="telefono" type="tel" inputmode="tel" pattern="[0-9+ ]{7,15}" autocomplete="tel" required aria-required="true">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Trazabilidad issue 2.2.1.1 (#5): sección de información académica y del programa -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">2. Programa académico</legend>
+        <p class="form-section__hint">Datos de tu matrícula vigente al momento de la postulación.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="programa">Programa académico <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="programa" name="programa" required aria-required="true">
+              <option value="">Selecciona tu programa</option>
+              <option value="ingenieria-sistemas">Ingeniería de Sistemas</option>
+              <option value="ingenieria-industrial">Ingeniería Industrial</option>
+              <option value="ingenieria-civil">Ingeniería Civil</option>
+              <option value="administracion">Administración de Empresas</option>
+              <option value="contaduria">Contaduría Pública</option>
+              <option value="derecho">Derecho</option>
+              <option value="psicologia">Psicología</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="facultad">Facultad <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="facultad" name="facultad" required aria-required="true">
+              <option value="">Selecciona la facultad</option>
+              <option value="ingenieria">Facultad de Ingeniería</option>
+              <option value="ciencias-economicas">Facultad de Ciencias Económicas</option>
+              <option value="ciencias-sociales">Facultad de Ciencias Sociales</option>
+              <option value="ciencias-juridicas">Facultad de Ciencias Jurídicas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="semestre">Semestre cursado <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="semestre" name="semestre" required aria-required="true">
+              <option value="">Selecciona el semestre</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="promedio">Promedio acumulado <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="promedio" name="promedio" type="number" min="0" max="5" step="0.01" inputmode="decimal" required aria-required="true" aria-describedby="promedioHelp">
+            <span class="field__help" id="promedioHelp">Escala de 0.0 a 5.0.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="sede">Sede <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="sede" name="sede" required aria-required="true">
+              <option value="">Selecciona la sede</option>
+              <option value="principal">Sede principal</option>
+              <option value="norte">Sede norte</option>
+              <option value="sur">Sede sur</option>
+              <option value="virtual">Modalidad virtual</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="estadoPostulacion">Estado de la postulación</label>
+            <input class="field__input" id="estadoPostulacion" name="estadoPostulacion" type="text" value="En revisión" readonly aria-describedby="estadoPostulacionHelp">
+            <span class="field__help" id="estadoPostulacionHelp">Solo con estado &quot;En revisión&quot; puedes actualizar documentos.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Trazabilidad issue 2.2.1.1 (#5): sección de detalles del MVP -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">3. Detalles del Producto Mínimo Viable (MVP)</legend>
+        <p class="form-section__hint">Describe de forma clara tu propuesta; esta información será evaluada por el comité académico.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="nombreMvp">Nombre del MVP <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="nombreMvp" name="nombreMvp" type="text" maxlength="120" required aria-required="true">
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="areaTematica">Área temática <span class="req" aria-hidden="true">*</span></label>
+            <select class="field__input" id="areaTematica" name="areaTematica" required aria-required="true">
+              <option value="">Selecciona el área</option>
+              <option value="tecnologia">Tecnología y transformación digital</option>
+              <option value="sostenibilidad">Sostenibilidad y medio ambiente</option>
+              <option value="salud">Salud y bienestar</option>
+              <option value="educacion">Educación e innovación social</option>
+              <option value="emprendimiento">Emprendimiento y negocios</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="fechaInicio">Fecha estimada de inicio <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="fechaInicio" name="fechaInicio" type="date" required aria-required="true">
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="duracion">Duración estimada (semanas) <span class="req" aria-hidden="true">*</span></label>
+            <input class="field__input" id="duracion" name="duracion" type="number" min="1" max="52" inputmode="numeric" required aria-required="true">
+          </div>
+
+          <div class="field field--full">
+            <label class="field__label" for="descripcionMvp">Descripción del MVP <span class="req" aria-hidden="true">*</span></label>
+            <textarea class="field__input field__textarea" id="descripcionMvp" name="descripcionMvp" rows="5" maxlength="1200" required aria-required="true" aria-describedby="descripcionHelp"></textarea>
+            <span class="field__help" id="descripcionHelp">Incluye el problema que resuelve, la solución propuesta y el público objetivo (máximo 1200 caracteres).</span>
+          </div>
+
+          <div class="field field--full">
+            <label class="field__label" for="justificacion">Justificación de la postulación <span class="req" aria-hidden="true">*</span></label>
+            <textarea class="field__input field__textarea" id="justificacion" name="justificacion" rows="4" maxlength="800" required aria-required="true" aria-describedby="justificacionHelp"></textarea>
+            <span class="field__help" id="justificacionHelp">Explica por qué deseas participar y cómo el MVP aporta a tu formación (máximo 800 caracteres).</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Trazabilidad issue 2.2.1.1 (#5): sección de documentos requeridos del MVP -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">4. Documentos del MVP</legend>
+        <p class="form-section__hint">Marca los documentos que entregas. Todos son obligatorios para completar la petición.</p>
+
+        <ul class="check-list">
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="propuesta-mvp">
+              <span class="check-item__text">
+                Propuesta del MVP
+                <span class="check-item__desc">Documento PDF con objetivos, alcance y entregables.</span>
+              </span>
+            </label>
+          </li>
+
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="carta-motivacion">
+              <span class="check-item__text">
+                Carta de motivación
+                <span class="check-item__desc">Máximo una página, firmada por el estudiante.</span>
+              </span>
+            </label>
+          </li>
+
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="certificado-notas">
+              <span class="check-item__text">
+                Certificado de notas
+                <span class="check-item__desc">Emitido por la oficina de registro académico.</span>
+              </span>
+            </label>
+          </li>
+
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="carta-aval">
+              <span class="check-item__text">
+                Carta de aval del programa
+                <span class="check-item__desc">Firmada por el director o coordinador académico.</span>
+              </span>
+            </label>
+          </li>
+
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="documento-identidad">
+              <span class="check-item__text">
+                Copia del documento de identidad
+                <span class="check-item__desc">Ambas caras en un solo archivo PDF o imagen.</span>
+              </span>
+            </label>
+          </li>
+
+          <li class="check-item">
+            <label class="check-item__label">
+              <input class="check-item__input" type="checkbox" name="documentos" value="presupuesto">
+              <span class="check-item__text">
+                Presupuesto estimado
+                <span class="check-item__desc">Detalle de costos y fuentes de financiación del MVP.</span>
+              </span>
+            </label>
+          </li>
+        </ul>
+
+        <!-- Trazabilidad issue 2.2.1.1 (#5): zona de carga de adjuntos del MVP -->
+        <div class="upload">
+          <label class="upload__label" for="adjuntos">
+            <span class="upload__icon" aria-hidden="true">+</span>
+            <span class="upload__title">Adjuntar documentos del MVP</span>
+            <span class="upload__hint">Formatos PDF, JPG o PNG. Tamaño máximo 10 MB por archivo.</span>
+          </label>
+          <input class="upload__input" id="adjuntos" name="adjuntos" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple aria-describedby="uploadHelp">
+        </div>
+        <span class="field__help" id="uploadHelp">Puedes seleccionar varios archivos a la vez.</span>
+
+        <ul class="file-list" id="fileList" aria-live="polite" aria-label="Archivos adjuntos seleccionados"></ul>
+      </fieldset>
+
+      <!-- Trazabilidad issue 2.2.1.1 (#5): aceptación de términos y envío -->
+      <fieldset class="form-section form-section--plain">
+        <legend class="form-section__legend">5. Confirmación</legend>
+
+        <label class="terms" for="aceptarTerminos">
+          <input class="terms__input" id="aceptarTerminos" name="aceptarTerminos" type="checkbox" required aria-required="true">
+          <span class="terms__text">
+            Declaro que la información suministrada es verídica y autorizo a SIGME a verificar
+            los datos académicos y los documentos adjuntos para el proceso de postulación.
+          </span>
+        </label>
+
+        <p class="field__help" id="formStatus" role="alert" aria-live="assertive"></p>
+
+        <div class="form-actions">
+          <button class="btn btn--secondary" type="reset">Limpiar formulario</button>
+          <button class="btn btn--primary" type="submit">Enviar petición de documentos</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- Trazabilidad issue 2.2.1.1 (#5): pie de página del prototipo -->
+    <footer class="form-footer">
+      <p>SIGME &middot; Prototipo académico &middot; Formulario de petición de documentos del MVP (issue 2.2.1.1)</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var form = document.getElementById('docForm');
+      var fileInput = document.getElementById('adjuntos');
+      var fileList = document.getElementById('fileList');
+      var status = document.getElementById('formStatus');
+
+      // Trazabilidad issue 2.2.1.1 (#5): listado visual de archivos adjuntos seleccionados.
+      function formatSize(bytes) {
+        if (bytes < 1024) {
+          return bytes + ' B';
+        }
+        if (bytes < 1024 * 1024) {
+          return (bytes / 1024).toFixed(1) + ' KB';
+        }
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+
+      fileInput.addEventListener('change', function () {
+        fileList.innerHTML = '';
+        Array.prototype.forEach.call(fileInput.files, function (file) {
+          var item = document.createElement('li');
+          item.className = 'file-item';
+
+          var name = document.createElement('span');
+          name.className = 'file-item__name';
+          name.textContent = file.name;
+
+          var size = document.createElement('span');
+          size.className = 'file-item__size';
+          size.textContent = formatSize(file.size);
+
+          var state = document.createElement('span');
+          state.className = 'file-item__status';
+          state.textContent = 'Listo';
+
+          item.appendChild(name);
+          item.appendChild(size);
+          item.appendChild(state);
+          fileList.appendChild(item);
+        });
+      });
+
+      // Trazabilidad issue 2.2.1.1 (#5): validación visual y confirmación de recepción.
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        status.textContent = '';
+
+        var checkedDocs = form.querySelectorAll('input[name="documentos"]:checked');
+        var terms = document.getElementById('aceptarTerminos');
+
+        if (!form.checkValidity()) {
+          status.textContent = 'Revisa los campos marcados: hay información obligatoria pendiente o con formato incorrecto.';
+          form.reportValidity();
+          return;
+        }
+
+        if (checkedDocs.length === 0) {
+          status.textContent = 'Selecciona al menos un documento del MVP para continuar.';
+          return;
+        }
+
+        if (fileInput.files.length === 0) {
+          status.textContent = 'Adjunta al menos un archivo con los documentos del MVP.';
+          fileInput.focus();
+          return;
+        }
+
+        if (!terms.checked) {
+          status.textContent = 'Debes aceptar la declaración de veracidad para enviar la petición.';
+          terms.focus();
+          return;
+        }
+
+        status.textContent = 'Petición recibida correctamente. El estado de tu postulación es "En revisión".';
+      });
+    })();
+  </script>
+</body>
+</html>

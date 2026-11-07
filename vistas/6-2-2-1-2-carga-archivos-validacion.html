@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Carga de archivos PDF e imágenes</title>
+  <!-- Trazabilidad issue 2.2.1.2 (#6): hoja de estilos del servicio de carga de archivos -->
+  <link rel="stylesheet" href="../css/6-2-2-1-2-integrar-el-servicio-de-carga-de-archivos-pdf-im-genes-con-validaci-n-de-peso-y-formato.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.1.2 (#6): contenedor general del servicio de carga -->
+  <div class="upload-shell">
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): encabezado con marca SIGME y enlace de retorno -->
+    <header class="upload-header">
+      <div class="upload-brand">
+        <span class="upload-brand__mark" aria-hidden="true">S</span>
+        <div class="upload-brand__text">
+          <span class="upload-brand__name">SIGME</span>
+          <span class="upload-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <a class="upload-header__issue" href="../index.html">&#8592; Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): resumen del servicio y reglas de validación -->
+    <section class="upload-summary" aria-labelledby="uploadSummaryTitle">
+      <div class="upload-summary__headline">
+        <h1 class="upload-summary__title" id="uploadSummaryTitle">Carga de documentos del MVP</h1>
+        <p class="upload-summary__description">
+          Adjunta la documentación técnica y los soportes del proyecto en formato PDF o imagen.
+          Cada archivo se valida antes de aceptarse para garantizar el formato y el peso permitidos.
+        </p>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.1.2 (#6): tarjetas de reglas de peso y formato -->
+      <div class="upload-rules">
+        <div class="rule-card rule-card--format">
+          <span class="rule-card__label">Formatos permitidos</span>
+          <span class="rule-card__value">PDF · JPG · PNG</span>
+          <span class="rule-card__hint">Archivos PDF, JPEG y PNG.</span>
+        </div>
+        <div class="rule-card rule-card--weight">
+          <span class="rule-card__label">Peso máximo por archivo</span>
+          <span class="rule-card__value">5 MB</span>
+          <span class="rule-card__hint">Los archivos más pesados se rechazan.</span>
+        </div>
+        <div class="rule-card rule-card--count">
+          <span class="rule-card__label">Cantidad máxima</span>
+          <span class="rule-card__value">5 archivos</span>
+          <span class="rule-card__hint">Por cada envío de documentación.</span>
+        </div>
+        <div class="rule-card rule-card--service">
+          <span class="rule-card__label">Validación</span>
+          <span class="rule-card__value">Automática</span>
+          <span class="rule-card__hint">Formato y peso antes de aceptar.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): zona de selección y arrastre de archivos -->
+    <section class="dropzone-panel" aria-labelledby="dropzoneTitle">
+      <div class="section-heading">
+        <h2 class="section-heading__title" id="dropzoneTitle">Seleccionar archivos</h2>
+        <p class="section-heading__subtitle">Puedes arrastrar los archivos o abrir el explorador de tu equipo.</p>
+      </div>
+
+      <label class="dropzone" for="fileInput">
+        <span class="dropzone__icon" aria-hidden="true">&#8679;</span>
+        <span class="dropzone__title">Arrastra tus archivos aquí o haz clic para seleccionar</span>
+        <span class="dropzone__hint">Documentación técnica y adjuntos del proyecto</span>
+        <span class="dropzone__formats">PDF, JPG o PNG · máx. 5 MB por archivo</span>
+        <input
+          class="dropzone__input"
+          id="fileInput"
+          name="archivos"
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+          multiple
+          aria-describedby="dropzoneHelp"
+        >
+      </label>
+      <p class="dropzone__help" id="dropzoneHelp">
+        Se admiten hasta 5 archivos por envío. Los archivos inválidos se marcan con su motivo de rechazo.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): tabla con el resultado de la validación de archivos -->
+    <section class="files-panel" aria-labelledby="filesTitle">
+      <div class="section-heading">
+        <h2 class="section-heading__title" id="filesTitle">Archivos validados</h2>
+        <p class="section-heading__subtitle">Revisa el formato, el peso y el estado de cada archivo antes de continuar.</p>
+      </div>
+
+      <div class="files-table-wrapper">
+        <table class="files-table" aria-label="Archivos seleccionados y resultado de la validación">
+          <thead>
+            <tr>
+              <th scope="col">Archivo</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Peso</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody id="filesTableBody">
+            <tr id="emptyRow">
+              <td colspan="4">Aún no has seleccionado archivos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.1.2 (#6): resumen de aceptados y rechazados -->
+      <div class="files-summary" id="filesSummary" aria-live="polite">
+        <span class="files-summary__item" id="totalCount">0 archivos</span>
+        <span class="files-summary__item files-summary__item--ok" id="acceptedCount">0 aceptados</span>
+        <span class="files-summary__item files-summary__item--danger" id="rejectedCount">0 rechazados</span>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): progreso simulado de la carga de archivos aceptados -->
+    <section class="progress-panel" aria-labelledby="progressTitle">
+      <div class="section-heading">
+        <h2 class="section-heading__title" id="progressTitle">Progreso de la carga</h2>
+        <p class="section-heading__subtitle">Simulación del servicio de carga para los archivos aceptados.</p>
+      </div>
+      <ul class="progress-list" id="progressList">
+        <li class="progress-item">
+          <div class="progress-item__head">
+            <span class="progress-item__name">Sin archivos en cola</span>
+            <span class="progress-item__state">En espera</span>
+          </div>
+          <div class="progress-item__bar">
+            <span class="progress-item__fill" style="width: 0%"></span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): mensajes de validación visibles para el usuario -->
+    <section class="messages-panel" aria-labelledby="messagesTitle">
+      <div class="section-heading">
+        <h2 class="section-heading__title" id="messagesTitle">Mensajes de validación</h2>
+        <p class="section-heading__subtitle">Errores claros y accionables para corregir los archivos rechazados.</p>
+      </div>
+      <ul class="message-list" id="messageList" aria-live="polite">
+        <li class="message">
+          <span class="message__badge">INFO</span>
+          <div class="message__body">
+            <span class="message__title">Servicio listo</span>
+            <span class="message__text">Selecciona archivos PDF, JPG o PNG de hasta 5 MB para iniciar la validación.</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.1.2 (#6): pie del módulo -->
+    <footer class="upload-footer">
+      <span class="upload-footer__issue">Issue 2.2.1.2 (#6) · Servicio de carga con validación</span>
+      <span>SIGME · Prototipo de interfaz</span>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.2.1.2 (#6): JS vanilla para validar formato, peso y mostrar mensajes -->
+  <script>
+    (function () {
+      var MAX_BYTES = 5 * 1024 * 1024;
+      var MAX_FILES = 5;
+      var ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
+      var ALLOWED_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png'];
+
+      var input = document.getElementById('fileInput');
+      var dropzone = document.querySelector('.dropzone');
+      var tableBody = document.getElementById('filesTableBody');
+      var emptyRow = document.getElementById('emptyRow');
+      var messageList = document.getElementById('messageList');
+      var progressList = document.getElementById('progressList');
+
+      var totalCount = document.getElementById('totalCount');
+      var acceptedCount = document.getElementById('acceptedCount');
+      var rejectedCount = document.getElementById('rejectedCount');
+
+      var files = [];
+      var messages = [];
+
+      function formatSize(bytes) {
+        if (bytes < 1024) {
+          return bytes + ' B';
+        }
+        if (bytes < 1024 * 1024) {
+          return (bytes / 1024).toFixed(1) + ' KB';
+        }
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+      }
+
+      function extensionOf(name) {
+        var parts = name.split('.');
+        return parts.length > 1 ? parts.pop().toLowerCase() : '';
+      }
+
+      function validateFile(file) {
+        var extension = extensionOf(file.name);
+        var typeAllowed = ALLOWED_TYPES.indexOf(file.type) !== -1 ||
+          (file.type === '' && ALLOWED_EXTENSIONS.indexOf(extension) !== -1);
+
+        if (ALLOWED_EXTENSIONS.indexOf(extension) === -1 || !typeAllowed) {
+          return {
+            ok: false,
+            reason: 'Formato no permitido. Solo se aceptan PDF, JPG, JPEG o PNG.'
+          };
+        }
+        if (file.size > MAX_BYTES) {
+          return {
+            ok: false,
+            reason: 'El archivo pesa ' + formatSize(file.size) + ' y supera el máximo de 5 MB.'
+          };
+        }
+        if (file.size === 0) {
+          return {
+            ok: false,
+            reason: 'El archivo está vacío. Selecciona un documento válido.'
+          };
+        }
+        return { ok: true, reason: '' };
+      }
+
+      function addMessage(kind, title, text) {
+        messages.unshift({ kind: kind, title: title, text: text, badge: kind === 'ok' ? 'OK' : (kind === 'danger' ? 'ERROR' : 'INFO') });
+      }
+
+      function renderMessages() {
+        messageList.innerHTML = '';
+        if (messages.length === 0) {
+          addMessage('info', 'Servicio listo', 'Selecciona archivos PDF, JPG o PNG de hasta 5 MB para iniciar la validación.');
+        }
+        messages.slice(0, 8).forEach(function (item) {
+          var li = document.createElement('li');
+          li.className = 'message' + (item.kind === 'ok' ? ' message--ok' : (item.kind === 'danger' ? ' message--danger' : ''));
+
+          var badge = document.createElement('span');
+          badge.className = 'message__badge';
+          badge.textContent = item.badge;
+
+          var body = document.createElement('div');
+          body.className = 'message__body';
+
+          var title = document.createElement('span');
+          title.className = 'message__title';
+          title.textContent = item.title;
+
+          var text = document.createElement('span');
+          text.className = 'message__text';
+          text.textContent = item.text;
+
+          body.appendChild(title);
+          body.appendChild(text);
+          li.appendChild(badge);
+          li.appendChild(body);
+          messageList.appendChild(li);
+        });
+      }
+
+      function iconFor(file) {
+        var extension = extensionOf(file.name);
+        if (extension === 'pdf') {
+          return { label: 'PDF', className: 'file-icon file-icon--pdf' };
+        }
+        if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+          return { label: 'IMG', className: 'file-icon file-icon--img' };
+        }
+        return { label: 'BAD', className: 'file-icon file-icon--bad' };
+      }
+
+      function renderTable() {
+        tableBody.innerHTML = '';
+        if (files.length === 0) {
+          var empty = document.createElement('tr');
+          empty.id = 'emptyRow';
+          var cell = document.createElement('td');
+          cell.colSpan = 4;
+          cell.textContent = 'Aún no has seleccionado archivos.';
+          empty.appendChild(cell);
+          tableBody.appendChild(empty);
+          return;
+        }
+
+        files.forEach(function (item) {
+          var row = document.createElement('tr');
+
+          var nameCell = document.createElement('td');
+          var nameWrap = document.createElement('div');
+          nameWrap.className = 'files-table__name';
+          var icon = iconFor(item.file);
+          var iconSpan = document.createElement('span');
+          iconSpan.className = icon.className;
+          iconSpan.textContent = icon.label;
+          var nameText = document.createElement('span');
+          nameText.textContent = item.file.name;
+          nameWrap.appendChild(iconSpan);
+          nameWrap.appendChild(nameText);
+          nameCell.appendChild(nameWrap);
+
+          var typeCell = document.createElement('td');
+          typeCell.textContent = extensionOf(item.file.name).toUpperCase() || 'Desconocido';
+
+          var sizeCell = document.createElement('td');
+          sizeCell.textContent = formatSize(item.file.size);
+
+          var statusCell = document.createElement('td');
+          var status = document.createElement('span');
+          status.className = 'status ' + (item.ok ? 'status--ok' : 'status--danger');
+          status.textContent = item.ok ? 'Aceptado' : 'Rechazado';
+          if (!item.ok) {
+            status.title = item.reason;
+          }
+          statusCell.appendChild(status);
+
+          row.appendChild(nameCell);
+          row.appendChild(typeCell);
+          row.appendChild(sizeCell);
+          row.appendChild(statusCell);
+          tableBody.appendChild(row);
+        });
+      }
+
+      function renderProgress() {
+        progressList.innerHTML = '';
+        var accepted = files.filter(function (item) { return item.ok; });
+
+        if (accepted.length === 0) {
+          var waiting = document.createElement('li');
+          waiting.className = 'progress-item';
+          waiting.innerHTML =
+            '<div class="progress-item__head">' +
+              '<span class="progress-item__name">Sin archivos en cola</span>' +
+              '<span class="progress-item__state">En espera</span>' +
+            '</div>' +
+            '<div class="progress-item__bar"><span class="progress-item__fill" style="width: 0%"></span></div>';
+          progressList.appendChild(waiting);
+          return;
+        }
+
+        accepted.forEach(function (item, index) {
+          var li = document.createElement('li');
+          li.className = 'progress-item';
+
+          var head = document.createElement('div');
+          head.className = 'progress-item__head';
+
+          var name = document.createElement('span');
+          name.className = 'progress-item__name';
+          name.textContent = item.file.name;
+
+          var state = document.createElement('span');
+          state.className = 'progress-item__state progress-item__state--done';
+          state.textContent = 'Validado y listo para cargar';
+
+          var bar = document.createElement('div');
+          bar.className = 'progress-item__bar';
+          var fill = document.createElement('span');
+          fill.className = 'progress-item__fill progress-item__fill--done';
+          fill.style.width = (100 - index * 5) + '%';
+          bar.appendChild(fill);
+
+          head.appendChild(name);
+          head.appendChild(state);
+          li.appendChild(head);
+          li.appendChild(bar);
+          progressList.appendChild(li);
+        });
+      }
+
+      function renderSummary() {
+        var accepted = files.filter(function (item) { return item.ok; }).length;
+        var rejected = files.length - accepted;
+        totalCount.textContent = files.length + (files.length === 1 ? ' archivo' : ' archivos');
+        acceptedCount.textContent = accepted + (accepted === 1 ? ' aceptado' : ' aceptados');
+        rejectedCount.textContent = rejected + (rejected === 1 ? ' rechazado' : ' rechazados');
+      }
+
+      function renderAll() {
+        renderTable();
+        renderSummary();
+        renderProgress();
+        renderMessages();
+      }
+
+      function handleFiles(fileList) {
+        var incoming = Array.prototype.slice.call(fileList || []);
+        if (incoming.length === 0) {
+          return;
+        }
+
+        incoming.forEach(function (file) {
+          if (files.length >= MAX_FILES) {
+            addMessage('danger', 'Límite de archivos alcanzado', 'Solo se permiten ' + MAX_FILES + ' archivos por envío. "' + file.name + '" no fue agregado.');
+            return;
+          }
+
+          var result = validateFile(file);
+          files.push({ file: file, ok: result.ok, reason: result.reason });
+
+          if (result.ok) {
+            addMessage('ok', 'Archivo aceptado', '"' + file.name + '" cumple el formato y el peso permitidos.');
+          } else {
+            addMessage('danger', 'Archivo rechazado', '"' + file.name + '": ' + result.reason);
+          }
+        });
+
+        renderAll();
+      }
+
+      input.addEventListener('change', function () {
+        handleFiles(input.files);
+        input.value = '';
+      });
+
+      dropzone.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        dropzone.classList.add('is-dragover');
+      });
+
+      dropzone.addEventListener('dragleave', function () {
+        dropzone.classList.remove('is-dragover');
+      });
+
+      dropzone.addEventListener('drop', function (event) {
+        event.preventDefault();
+        dropzone.classList.remove('is-dragover');
+        handleFiles(event.dataTransfer.files);
+      });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

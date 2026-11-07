@@ -1,0 +1,639 @@
+/* Trazabilidad issue 2.2.1.4 (#8): estilos del panel de pruebas del flujo completo de envío y confirmación de recepción */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f9d63;
+  --color-ok-soft: #e6f7ee;
+  --color-warn: #c07a12;
+  --color-warn-soft: #fdf3e2;
+  --color-danger: #c23b3b;
+  --color-danger-soft: #fdeaea;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): base tipográfica del panel */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): contenedor general del panel de pruebas */
+.submission-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): encabezado del panel */
+.submission-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.submission-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.submission-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.submission-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.submission-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.submission-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.submission-header__issue {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #e8f0fc;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): resumen de la ejecución del flujo */
+.submission-summary {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.submission-summary__headline {
+  margin-bottom: 1.25rem;
+}
+
+.submission-summary__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.submission-summary__description {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 65ch;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): tarjetas de métricas */
+.submission-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8fafd;
+}
+
+.metric-card--success {
+  border-left-color: var(--color-ok);
+  background-color: var(--color-ok-soft);
+}
+
+.metric-card--warning {
+  border-left-color: var(--color-warn);
+  background-color: var(--color-warn-soft);
+}
+
+.metric-card--danger {
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+.metric-card__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.metric-card__value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metric-card__hint {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): encabezados de sección */
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.section-heading__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.section-heading__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): panel del flujo completo de envío */
+.flow-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.flow-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+}
+
+.flow-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8fafd;
+}
+
+.flow-step--done {
+  border-top-color: var(--color-ok);
+}
+
+.flow-step--warn {
+  border-top-color: var(--color-warn);
+  background-color: var(--color-warn-soft);
+}
+
+.flow-step__index {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.flow-step--done .flow-step__index {
+  background-color: var(--color-ok);
+}
+
+.flow-step--warn .flow-step__index {
+  background-color: var(--color-warn);
+}
+
+.flow-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.flow-step__title {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.flow-step__desc {
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  line-height: 1.35;
+}
+
+.flow-step__status {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.flow-step__status--ok {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.flow-step__status--warn {
+  background-color: var(--color-warn-soft);
+  color: var(--color-warn);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): panel de escenarios de prueba */
+.scenario-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.scenario-table-wrapper {
+  overflow-x: auto;
+}
+
+.scenario-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.scenario-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.scenario-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.scenario-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.scenario-table tbody tr:hover {
+  background-color: #f8fafd;
+}
+
+.scenario-table code {
+  font-size: 0.78rem;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): etiquetas de estado de los escenarios */
+.status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.status--ok {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.status--warn {
+  background-color: var(--color-warn-soft);
+  color: var(--color-warn);
+}
+
+.status--danger {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): panel de manejo de errores */
+.error-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.error-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.error-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8fafd;
+}
+
+.error-card--validation {
+  border-left-color: var(--color-warn);
+  background-color: var(--color-warn-soft);
+}
+
+.error-card--network {
+  border-left-color: var(--color-primary);
+  background-color: #eef4fd;
+}
+
+.error-card--server {
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+.error-card__code {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 6px;
+  padding: 0.18rem 0.45rem;
+  background-color: rgba(27, 36, 54, 0.08);
+  color: var(--color-text);
+}
+
+.error-card__title {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.error-card__message {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.error-card__action {
+  margin-top: 0.25rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): panel de confirmación de recepción */
+.receipt-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.receipt-card {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  background-color: #f8fafd;
+}
+
+.receipt-card__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.receipt-card__check {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background-color: var(--color-ok);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.receipt-card__heading {
+  flex: 1;
+}
+
+.receipt-card__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+
+.receipt-card__subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.receipt-card__badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.receipt-card__details {
+  margin: 0 0 1.25rem;
+}
+
+.receipt-card__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.receipt-card__row:last-child {
+  border-bottom: 0;
+}
+
+.receipt-card__row dt {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.receipt-card__row dd {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.receipt-card__row code {
+  font-size: 0.8rem;
+}
+
+.receipt-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): botones de acción del comprobante */
+.btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.btn--ghost:hover {
+  background-color: #eef4fd;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): pie del panel */
+.submission-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  padding: 0.5rem 0.25rem;
+}
+
+.submission-footer__issue {
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.1.4 (#8): comportamiento responsive del panel */
+@media (max-width: 900px) {
+  .submission-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .flow-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .error-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .submission-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .submission-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .submission-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .error-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submission-summary,
+  .flow-panel,
+  .scenario-panel,
+  .error-panel,
+  .receipt-panel {
+    padding: 1rem;
+  }
+
+  .receipt-card__header {
+    flex-wrap: wrap;
+  }
+
+  .receipt-card__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+  }
+
+  .receipt-card__row dd {
+    text-align: left;
+  }
+
+  .submission-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

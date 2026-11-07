@@ -1,0 +1,789 @@
+/*
+  Trazabilidad issue 5.3.1.1 (#32):
+  Estilos de la plantilla visual HTML/CSS del reporte PDF, alineada con la
+  identidad gráfica institucional SIGME. Implementa SOLO la issue #32; habilita
+  a 5.3.1.2 (#33, renderizado PDF en servidor) y a 5.3.1.4 (endpoint y botón
+  de exportación). Sigue las convenciones de css/ y styles.css: variables
+  :root con la paleta existente, tipografía Segoe UI, box-sizing global y
+  prefijos de clase propios del reporte. No modifica styles.css ni las hojas
+  de otras issues.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-ok-bg: #eaf7f0;
+  --color-warn: #b4761a;
+  --color-warn-bg: #fdf4e5;
+  --color-danger: #b23b3b;
+  --color-danger-bg: #fdeeee;
+  --color-info: #2b6cb0;
+  --color-info-bg: #eaf2fb;
+  --color-accent: #c8a24a;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+  --report-width: 210mm;
+  --report-min-height: 297mm;
+  --report-padding: 16mm 15mm;
+  --report-font: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--report-font);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): barra superior de la página (no se imprime) */
+.report-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 10px rgba(27, 36, 54, 0.06);
+}
+
+.report-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.report-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.report-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.report-brand__subtitle {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.report-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.report-topbar__link {
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.report-topbar__link:hover,
+.report-topbar__link:focus-visible {
+  text-decoration: underline;
+}
+
+.report-topbar__button {
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.report-topbar__button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.report-topbar__button:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): escenario con las hojas A4 del reporte */
+.report-stage {
+  width: min(calc(var(--report-width) + 4rem), 100% - 2rem);
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.report-stage__hint {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): hoja imprimible tamaño A4 */
+.report-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--report-width);
+  min-height: var(--report-min-height);
+  margin: 0 auto 2rem;
+  padding: var(--report-padding);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+}
+
+.report-page:last-child {
+  margin-bottom: 0;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): encabezado institucional del reporte */
+.report-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 3px solid var(--color-primary);
+}
+
+.report-head__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.report-head__mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.report-head__name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.report-head__unit {
+  margin: 0.1rem 0 0;
+  font-size: 0.74rem;
+  color: var(--color-muted);
+}
+
+.report-head__meta {
+  text-align: right;
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+
+.report-head__meta strong {
+  display: block;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): título y periodo del reporte */
+.report-title-block {
+  margin: 1.1rem 0 1.25rem;
+}
+
+.report-title-block__eyebrow {
+  margin: 0 0 0.25rem;
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.report-title-block__title {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.report-title-block__period {
+  margin: 0.45rem 0 0;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+
+.report-title-block__period strong {
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): rejilla de métricas consolidadas del dashboard */
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.4rem;
+}
+
+.metric-card {
+  padding: 0.85rem 0.9rem;
+  background-color: #f8fafd;
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 8px;
+}
+
+.metric-card--ok {
+  border-top-color: var(--color-ok);
+}
+
+.metric-card--warn {
+  border-top-color: var(--color-warn);
+}
+
+.metric-card--danger {
+  border-top-color: var(--color-danger);
+}
+
+.metric-card__label {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.metric-card__value {
+  margin: 0.3rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.metric-card__hint {
+  margin: 0.2rem 0 0;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): secciones del reporte con salto de página */
+.report-section {
+  margin-bottom: 1.5rem;
+}
+
+.report-section--break {
+  break-before: page;
+  page-break-before: always;
+}
+
+.report-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.report-section__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.report-section__note {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): tablas de métricas y detalle */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.report-table caption {
+  caption-side: top;
+  padding-bottom: 0.4rem;
+  text-align: left;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+.report-table th,
+.report-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.report-table thead th {
+  background-color: #eef3fb;
+  border-bottom: 2px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.report-table tbody tr:nth-child(even) {
+  background-color: #fafbfe;
+}
+
+.report-table td.is-numeric,
+.report-table th.is-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-table tfoot td {
+  border-top: 2px solid var(--color-primary);
+  border-bottom: 0;
+  font-weight: 700;
+  background-color: #f4f7fd;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): píldoras de estado dentro de las tablas */
+.report-pill {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.report-pill--ok {
+  background-color: var(--color-ok-bg);
+  color: var(--color-ok);
+}
+
+.report-pill--warn {
+  background-color: var(--color-warn-bg);
+  color: var(--color-warn);
+}
+
+.report-pill--danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.report-pill--info {
+  background-color: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): gráficos simples (barras y dona) */
+.report-charts {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.chart-card {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+}
+
+.chart-card__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.9rem;
+  height: 130px;
+  padding-top: 0.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.chart-bars__item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 0.3rem;
+}
+
+.chart-bars__value {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.chart-bars__bar {
+  width: 100%;
+  max-width: 42px;
+  border-radius: 4px 4px 0 0;
+  background-color: var(--color-primary);
+}
+
+.chart-bars__bar--ok {
+  background-color: var(--color-ok);
+}
+
+.chart-bars__bar--warn {
+  background-color: var(--color-warn);
+}
+
+.chart-bars__bar--danger {
+  background-color: var(--color-danger);
+}
+
+.chart-bars__labels {
+  display: flex;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.chart-bars__label {
+  flex: 1;
+  text-align: center;
+  font-size: 0.64rem;
+  color: var(--color-muted);
+}
+
+.chart-donut {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chart-donut__ring {
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color-ok) 0 62%,
+    var(--color-warn) 62% 83%,
+    var(--color-danger) 83% 100%
+  );
+}
+
+.chart-donut__hole {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.chart-donut__legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+.chart-donut__legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.chart-donut__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.chart-donut__swatch--ok {
+  background-color: var(--color-ok);
+}
+
+.chart-donut__swatch--warn {
+  background-color: var(--color-warn);
+}
+
+.chart-donut__swatch--danger {
+  background-color: var(--color-danger);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): notas y leyendas del reporte */
+.report-note {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-left: 3px solid var(--color-accent);
+  background-color: #fdfaf1;
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+
+.report-note strong {
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): pie institucional con fecha y folios */
+.report-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.66rem;
+  color: var(--color-muted);
+}
+
+.report-foot__left {
+  max-width: 60%;
+}
+
+.report-foot__left p {
+  margin: 0;
+}
+
+.report-foot__right {
+  text-align: right;
+}
+
+.report-foot__folio {
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): utilidades de accesibilidad y layout */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.report-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): responsive en pantalla */
+@media (max-width: 900px) {
+  .report-stage {
+    width: min(100% - 1.5rem, var(--report-width));
+    padding: 1.25rem 0 2rem;
+  }
+
+  .report-page {
+    min-height: auto;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .report-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-charts,
+  .report-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .report-head {
+    flex-direction: column;
+  }
+
+  .report-head__meta {
+    text-align: left;
+  }
+
+  .report-topbar {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .report-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .report-topbar__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .report-table {
+    font-size: 0.72rem;
+  }
+
+  .report-table th,
+  .report-table td {
+    padding: 0.4rem 0.35rem;
+  }
+
+  .report-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .report-foot__right {
+    text-align: left;
+  }
+}
+
+/* Trazabilidad issue 5.3.1.1 (#32): reglas de impresión A4 (render PDF) */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    background-color: #fff;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  .report-topbar,
+  .report-stage__hint,
+  .no-print {
+    display: none !important;
+  }
+
+  .report-stage {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  .report-page {
+    width: 210mm;
+    max-width: none;
+    min-height: 297mm;
+    margin: 0;
+    padding: var(--report-padding);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .report-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .report-section--break {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .report-table tr,
+  .chart-card,
+  .metric-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-table thead {
+    display: table-header-group;
+  }
+
+  .report-table tfoot {
+    display: table-footer-group;
+  }
+
+  .report-head,
+  .report-title-block {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  a[href]::after {
+    content: "";
+  }
+
+  .report-foot {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

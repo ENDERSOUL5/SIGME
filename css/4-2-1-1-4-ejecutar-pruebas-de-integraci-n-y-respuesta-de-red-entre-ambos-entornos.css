@@ -1,0 +1,508 @@
+/* Trazabilidad issue 2.1.1.4 (#4): estilos del panel de pruebas de integración y respuesta de red */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f9d63;
+  --color-ok-soft: #e6f7ee;
+  --color-warn: #c07a12;
+  --color-warn-soft: #fdf3e2;
+  --color-danger: #c23b3b;
+  --color-danger-soft: #fdeaea;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): base tipográfica del panel */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): contenedor general del panel de integración */
+.integration-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): encabezado del panel */
+.integration-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.integration-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.integration-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.integration-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.integration-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.integration-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.integration-header__issue {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #e8f0fc;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): resumen de la ejecución */
+.integration-summary {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.integration-summary__headline {
+  margin-bottom: 1.25rem;
+}
+
+.integration-summary__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.integration-summary__description {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): tarjetas de métricas */
+.integration-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8fafd;
+}
+
+.metric-card--success {
+  border-left-color: var(--color-ok);
+  background-color: var(--color-ok-soft);
+}
+
+.metric-card--warning {
+  border-left-color: var(--color-warn);
+  background-color: var(--color-warn-soft);
+}
+
+.metric-card--danger {
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+.metric-card__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.metric-card__value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metric-card__hint {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): encabezados de sección */
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.section-heading__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.section-heading__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): panel de comparación de entornos */
+.environment-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.environment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.environment-card {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1.15rem;
+  background-color: #f8fafd;
+}
+
+.environment-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.environment-card__badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.environment-card__badge--local {
+  background-color: #e8f0fc;
+  color: var(--color-primary);
+}
+
+.environment-card__badge--remote {
+  background-color: #efe9fb;
+  color: #6b3fb5;
+}
+
+.environment-card__status {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.environment-card__status--ok {
+  color: var(--color-ok);
+}
+
+.environment-card__details {
+  margin: 0 0 1rem;
+}
+
+.environment-card__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.environment-card__row:last-child {
+  border-bottom: 0;
+}
+
+.environment-card__row dt {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.environment-card__row dd {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-all;
+}
+
+.environment-card__row code {
+  font-size: 0.78rem;
+}
+
+.environment-card__bar {
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--color-border);
+  overflow: hidden;
+}
+
+.environment-card__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.environment-card__bar-fill--local {
+  background-color: var(--color-ok);
+}
+
+.environment-card__bar-fill--remote {
+  background-color: var(--color-primary);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): panel de resultados por caso de prueba */
+.test-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.test-table-wrapper {
+  overflow-x: auto;
+}
+
+.test-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.test-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.test-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.test-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.test-table tbody tr:hover {
+  background-color: #f8fafd;
+}
+
+.test-table code {
+  font-size: 0.78rem;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): etiquetas de método HTTP */
+.method {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  padding: 0.2rem 0.45rem;
+}
+
+.method--get {
+  background-color: #e8f0fc;
+  color: var(--color-primary);
+}
+
+.method--post {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.method--put {
+  background-color: var(--color-warn-soft);
+  color: var(--color-warn);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): etiquetas de estado de las pruebas */
+.status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.status--ok {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.status--warn {
+  background-color: var(--color-warn-soft);
+  color: var(--color-warn);
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): panel de registro de respuesta de red */
+.network-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.network-log {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 10px;
+  background-color: #12192a;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.network-log__item {
+  display: grid;
+  grid-template-columns: 76px 52px 1fr auto 76px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  color: #d7deee;
+}
+
+.network-log__item:last-child {
+  border-bottom: 0;
+}
+
+.network-log__time {
+  color: #8b96ad;
+}
+
+.network-log__path {
+  color: #eef2fb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-log__code--ok {
+  color: #6ee7a8;
+}
+
+.network-log__latency {
+  text-align: right;
+  color: #8b96ad;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): pie del panel */
+.integration-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  padding: 0.5rem 0.25rem;
+}
+
+.integration-footer__issue {
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.1.1.4 (#4): comportamiento responsive del panel */
+@media (max-width: 900px) {
+  .integration-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .environment-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .integration-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .integration-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .integration-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .integration-summary,
+  .environment-panel,
+  .test-panel,
+  .network-panel {
+    padding: 1rem;
+  }
+
+  .network-log__item {
+    grid-template-columns: 1fr auto;
+    row-gap: 0.2rem;
+  }
+
+  .network-log__time,
+  .network-log__latency {
+    text-align: left;
+  }
+
+  .integration-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

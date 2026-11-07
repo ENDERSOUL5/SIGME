@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Observaciones y retroalimentación</title>
+  <!-- Trazabilidad issue 2.2.2.3 (#11): hoja de estilos del componente de observaciones y retroalimentación -->
+  <link rel="stylesheet" href="../css/11-2-2-2-3-implementar-el-componente-de-visualizaci-n-de-observaciones-y-retroalimentaci-n-en-caso-de-rechazo-o-ajustes.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.2.3 (#11): contenedor general del componente -->
+  <div class="feedback-shell">
+
+    <!-- Trazabilidad issue 2.2.2.3 (#11): encabezado con marca SIGME y regreso al inicio -->
+    <header class="feedback-header">
+      <div class="feedback-brand">
+        <span class="feedback-brand__mark" aria-hidden="true">S</span>
+        <div class="feedback-brand__text">
+          <span class="feedback-brand__name">SIGME</span>
+          <span class="feedback-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <a class="btn btn--ghost btn--small" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.2.2.3 (#11): resumen del componente y métricas de observaciones -->
+    <section class="feedback-overview" aria-labelledby="feedbackTitle">
+      <span class="issue-tag">Issue 2.2.2.3 &middot; #11</span>
+      <h1 class="feedback-overview__title" id="feedbackTitle">Observaciones y retroalimentación</h1>
+      <p class="feedback-overview__lead">
+        Consulta las observaciones del comité, la justificación cuando tu proyecto fue rechazado
+        y los ajustes solicitados. Aquí puedes revisar el estado de cada observación, responder
+        aclaraciones y actualizar los documentos del MVP cuando el trámite lo permita.
+      </p>
+
+      <div class="feedback-metrics">
+        <div class="feedback-metric">
+          <span class="feedback-metric__label">Observaciones abiertas</span>
+          <span class="feedback-metric__value feedback-metric__value--warn">3</span>
+          <span class="feedback-metric__meta">Requieren tu atención</span>
+        </div>
+        <div class="feedback-metric">
+          <span class="feedback-metric__label">Ajustes solicitados</span>
+          <span class="feedback-metric__value feedback-metric__value--warn">2</span>
+          <span class="feedback-metric__meta">Postulaciones en ajuste</span>
+        </div>
+        <div class="feedback-metric">
+          <span class="feedback-metric__label">Rechazos justificados</span>
+          <span class="feedback-metric__value feedback-metric__value--danger">1</span>
+          <span class="feedback-metric__meta">Con justificación registrada</span>
+        </div>
+        <div class="feedback-metric">
+          <span class="feedback-metric__label">Observaciones resueltas</span>
+          <span class="feedback-metric__value feedback-metric__value--ok">4</span>
+          <span class="feedback-metric__meta">Atendidas por el estudiante</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.3 (#11): disposición listado de postulaciones / detalle -->
+    <div class="feedback-layout">
+
+      <!-- Trazabilidad issue 2.2.2.3 (#11): listado lateral de postulaciones con filtros por decisión -->
+      <aside class="feedback-list" aria-labelledby="feedbackListTitle">
+        <div class="feedback-list__header">
+          <h2 class="feedback-list__title" id="feedbackListTitle">Postulaciones</h2>
+          <span class="feedback-list__count" id="feedbackCount">3 resultados</span>
+        </div>
+
+        <div class="feedback-filters" role="group" aria-label="Filtrar por tipo de decisión">
+          <button type="button" class="feedback-filter is-active" data-filter="todas" aria-pressed="true">Todas</button>
+          <button type="button" class="feedback-filter" data-filter="rechazada" aria-pressed="false">Rechazadas</button>
+          <button type="button" class="feedback-filter" data-filter="ajustes" aria-pressed="false">Ajustes</button>
+        </div>
+
+        <div class="feedback-list__items">
+          <!-- Trazabilidad issue 2.2.2.3 (#11): postulación rechazada con justificación -->
+          <button type="button" class="postulation-card is-active" data-target="panel-rechazo" data-decision="rechazada" aria-pressed="true">
+            <span class="postulation-card__top">
+              <span class="postulation-card__radicate">SIGME-2026-0142</span>
+              <span class="decision-pill decision-pill--danger">Rechazado</span>
+            </span>
+            <span class="postulation-card__name">Laura Camila Restrepo</span>
+            <span class="postulation-card__program">Ingeniería de Sistemas</span>
+            <span class="postulation-card__meta">
+              <span>Decisión: 30 sep 2026</span>
+              <span>Movilidad internacional</span>
+            </span>
+          </button>
+
+          <!-- Trazabilidad issue 2.2.2.3 (#11): postulación que requiere ajustes -->
+          <button type="button" class="postulation-card" data-target="panel-ajustes-1" data-decision="ajustes" aria-pressed="false">
+            <span class="postulation-card__top">
+              <span class="postulation-card__radicate">SIGME-2026-0187</span>
+              <span class="decision-pill decision-pill--warn">Ajustes</span>
+            </span>
+            <span class="postulation-card__name">Andrés Felipe Gómez</span>
+            <span class="postulation-card__program">Administración de Empresas</span>
+            <span class="postulation-card__meta">
+              <span>Decisión: 02 oct 2026</span>
+              <span>Movilidad nacional</span>
+            </span>
+          </button>
+
+          <!-- Trazabilidad issue 2.2.2.3 (#11): segunda postulación con ajustes menores -->
+          <button type="button" class="postulation-card" data-target="panel-ajustes-2" data-decision="ajustes" aria-pressed="false">
+            <span class="postulation-card__top">
+              <span class="postulation-card__radicate">SIGME-2026-0203</span>
+              <span class="decision-pill decision-pill--warn">Ajustes</span>
+            </span>
+            <span class="postulation-card__name">Valentina Torres Ríos</span>
+            <span class="postulation-card__program">Diseño Industrial</span>
+            <span class="postulation-card__meta">
+              <span>Decisión: 04 oct 2026</span>
+              <span>Movilidad internacional</span>
+            </span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Trazabilidad issue 2.2.2.3 (#11): panel de detalle de la postulación seleccionada -->
+      <main class="feedback-detail">
+
+        <!-- Trazabilidad issue 2.2.2.3 (#11): detalle de proyecto rechazado -->
+        <section class="feedback-panel is-active" id="panel-rechazo" aria-labelledby="panelRechazoTitle" aria-hidden="false">
+          <div class="feedback-panel__header">
+            <div>
+              <span class="feedback-panel__eyebrow">Decisión del comité</span>
+              <h2 class="feedback-panel__title" id="panelRechazoTitle">Proyecto de movilidad rechazado</h2>
+              <p class="feedback-panel__subtitle">Radicado SIGME-2026-0142 &middot; Convocatoria 2026-2</p>
+            </div>
+            <span class="decision-pill decision-pill--danger">Rechazado</span>
+          </div>
+
+          <!-- Trazabilidad issue 2.2.2.3 (#11): comunicación clara del resultado de la decisión -->
+          <div class="feedback-banner feedback-banner--danger" role="alert">
+            <strong class="feedback-banner__title">Tu postulación fue rechazada</strong>
+            <p class="feedback-banner__text">
+              El comité evaluó tu solicitud y determinó que no cumple con los requisitos de la
+              convocatoria. Revisa la justificación y las observaciones antes de volver a postularte.
+            </p>
+          </div>
+
+          <dl class="feedback-meta">
+            <div class="feedback-meta__item">
+              <dt>Fecha de decisión</dt>
+              <dd>30 sep 2026</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Revisor</dt>
+              <dd>Comité de Movilidad</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Estado</dt>
+              <dd>Rechazado</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Notificación</dt>
+              <dd>Enviada por correo</dd>
+            </div>
+          </dl>
+
+          <h3 class="feedback-section-title">Justificación del rechazo</h3>
+          <p>
+            La postulación no acredita el nivel mínimo de idioma exigido por la universidad de destino
+            y el promedio acumulado se encuentra por debajo del corte de la convocatoria. El comité
+            deja constancia de que el rechazo se sustenta en los criterios publicados en la resolución
+            de la convocatoria y en la documentación cargada por el aspirante.
+          </p>
+
+          <h3 class="feedback-section-title">Observaciones del comité</h3>
+          <ul class="observation-list">
+            <!-- Trazabilidad issue 2.2.2.3 (#11): observación crítica con acción sugerida -->
+            <li class="observation" data-severity="critica">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--critical">Crítica</span>
+                <span class="observation__category">Requisito de idioma</span>
+                <span class="observation__status observation__status--open">Pendiente</span>
+              </div>
+              <p class="observation__text">
+                No se adjuntó el certificado de nivel B2 de inglés exigido por la universidad de destino.
+                El documento cargado corresponde a un curso introductorio y no a una certificación oficial.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Presenta un certificado oficial vigente de nivel B2 o superior antes de una nueva postulación.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Registrada el 28 sep 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Marcar como atendida</button>
+              </div>
+            </li>
+
+            <!-- Trazabilidad issue 2.2.2.3 (#11): observación mayor -->
+            <li class="observation" data-severity="mayor">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--major">Mayor</span>
+                <span class="observation__category">Promedio académico</span>
+                <span class="observation__status observation__status--open">Pendiente</span>
+              </div>
+              <p class="observation__text">
+                El promedio acumulado reportado (3,4) es inferior al mínimo de 3,8 requerido para la
+                convocatoria de movilidad internacional.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Consulta con tu coordinación académica las opciones de mejora y las convocatorias con
+                  requisitos de promedio compatibles.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Registrada el 28 sep 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Marcar como atendida</button>
+              </div>
+            </li>
+
+            <!-- Trazabilidad issue 2.2.2.3 (#11): observación menor ya atendida -->
+            <li class="observation is-resolved" data-severity="menor">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--minor">Menor</span>
+                <span class="observation__category">Documentación</span>
+                <span class="observation__status observation__status--done">Atendida</span>
+              </div>
+              <p class="observation__text">
+                La carta de motivación no incluía la firma del estudiante.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Cargar la carta de motivación firmada en formato PDF.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Atendida el 29 sep 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Reabrir observación</button>
+              </div>
+            </li>
+          </ul>
+
+          <h3 class="feedback-section-title">Retroalimentación del comité</h3>
+          <div class="feedback-thread">
+            <article class="feedback-message">
+              <span class="feedback-message__avatar" aria-hidden="true">CM</span>
+              <div class="feedback-message__body">
+                <div class="feedback-message__meta">
+                  <strong>Comité de Movilidad</strong>
+                  <time datetime="2026-09-30">30 sep 2026</time>
+                </div>
+                <p class="feedback-message__text">
+                  Agradecemos tu interés en la convocatoria. El rechazo se fundamenta en los criterios
+                  de idioma y promedio académico. Puedes volver a postularte en la próxima convocatoria
+                  una vez cumplas los requisitos.
+                </p>
+              </div>
+            </article>
+
+            <article class="feedback-message feedback-message--own">
+              <span class="feedback-message__avatar" aria-hidden="true">LR</span>
+              <div class="feedback-message__body">
+                <div class="feedback-message__meta">
+                  <strong>Tú (Laura Camila Restrepo)</strong>
+                  <time datetime="2026-10-01">01 oct 2026</time>
+                </div>
+                <p class="feedback-message__text">
+                  Gracias por la retroalimentación. Quisiera conocer si el certificado de idioma puede
+                  presentarse después de la fecha de cierre.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Trazabilidad issue 2.2.2.3 (#11): formulario de aclaración del estudiante -->
+          <form class="feedback-reply">
+            <label class="feedback-reply__label" for="replyRechazo">Aclaración o respuesta del estudiante</label>
+            <textarea
+              class="feedback-reply__control"
+              id="replyRechazo"
+              name="respuesta"
+              rows="4"
+              placeholder="Escribe tu aclaración o consulta para el comité..."
+            ></textarea>
+            <div class="feedback-reply__actions">
+              <button type="submit" class="btn btn--primary">Enviar aclaración</button>
+              <button type="button" class="btn btn--ghost">Adjuntar documentos</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Trazabilidad issue 2.2.2.3 (#11): detalle de postulación con ajustes solicitados -->
+        <section class="feedback-panel" id="panel-ajustes-1" aria-labelledby="panelAjustes1Title" aria-hidden="true">
+          <div class="feedback-panel__header">
+            <div>
+              <span class="feedback-panel__eyebrow">Decisión del comité</span>
+              <h2 class="feedback-panel__title" id="panelAjustes1Title">Proyecto de movilidad con ajustes</h2>
+              <p class="feedback-panel__subtitle">Radicado SIGME-2026-0187 &middot; Convocatoria 2026-2</p>
+            </div>
+            <span class="decision-pill decision-pill--warn">Ajustes</span>
+          </div>
+
+          <div class="feedback-banner feedback-banner--warn" role="status">
+            <strong class="feedback-banner__title">Tu postulación requiere ajustes</strong>
+            <p class="feedback-banner__text">
+              El estado del trámite es <strong>En revisión</strong>. Puedes actualizar los documentos
+              del MVP y atender las observaciones para que el comité continúe con la evaluación.
+            </p>
+          </div>
+
+          <dl class="feedback-meta">
+            <div class="feedback-meta__item">
+              <dt>Fecha de decisión</dt>
+              <dd>02 oct 2026</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Revisor</dt>
+              <dd>Coordinación de Movilidad</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Estado</dt>
+              <dd>En revisión</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Plazo de ajuste</dt>
+              <dd>10 oct 2026</dd>
+            </div>
+          </dl>
+
+          <h3 class="feedback-section-title">Ajustes solicitados</h3>
+          <ul class="observation-list">
+            <li class="observation" data-severity="mayor">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--major">Mayor</span>
+                <span class="observation__category">Documentos del MVP</span>
+                <span class="observation__status observation__status--open">Pendiente</span>
+              </div>
+              <p class="observation__text">
+                El plan de actividades del MVP no especifica los entregables por semana ni los
+                responsables de cada fase.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Actualiza el documento del MVP incluyendo cronograma semanal, entregables y responsables.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Registrada el 02 oct 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Marcar como atendida</button>
+              </div>
+            </li>
+
+            <li class="observation is-resolved" data-severity="menor">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--minor">Menor</span>
+                <span class="observation__category">Datos de contacto</span>
+                <span class="observation__status observation__status--done">Atendida</span>
+              </div>
+              <p class="observation__text">
+                El número de contacto registrado no coincidía con el reportado por la oficina de registro.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Actualizar el número de contacto en el formulario de postulación.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Atendida el 03 oct 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Reabrir observación</button>
+              </div>
+            </li>
+          </ul>
+
+          <h3 class="feedback-section-title">Retroalimentación del comité</h3>
+          <div class="feedback-thread">
+            <article class="feedback-message">
+              <span class="feedback-message__avatar" aria-hidden="true">CM</span>
+              <div class="feedback-message__body">
+                <div class="feedback-message__meta">
+                  <strong>Coordinación de Movilidad</strong>
+                  <time datetime="2026-10-02">02 oct 2026</time>
+                </div>
+                <p class="feedback-message__text">
+                  La propuesta es viable, pero necesita mayor detalle en la planeación del MVP.
+                  Una vez actualices los documentos, el comité reanudará la revisión.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <form class="feedback-reply">
+            <label class="feedback-reply__label" for="replyAjustes1">Aclaración o respuesta del estudiante</label>
+            <textarea
+              class="feedback-reply__control"
+              id="replyAjustes1"
+              name="respuesta"
+              rows="4"
+              placeholder="Describe los ajustes realizados o escribe tu consulta..."
+            ></textarea>
+            <div class="feedback-reply__actions">
+              <button type="submit" class="btn btn--primary">Enviar aclaración</button>
+              <button type="button" class="btn btn--ghost">Actualizar documentos del MVP</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Trazabilidad issue 2.2.2.3 (#11): detalle de postulación con ajustes menores -->
+        <section class="feedback-panel" id="panel-ajustes-2" aria-labelledby="panelAjustes2Title" aria-hidden="true">
+          <div class="feedback-panel__header">
+            <div>
+              <span class="feedback-panel__eyebrow">Decisión del comité</span>
+              <h2 class="feedback-panel__title" id="panelAjustes2Title">Proyecto de movilidad con ajustes</h2>
+              <p class="feedback-panel__subtitle">Radicado SIGME-2026-0203 &middot; Convocatoria 2026-2</p>
+            </div>
+            <span class="decision-pill decision-pill--warn">Ajustes</span>
+          </div>
+
+          <div class="feedback-banner feedback-banner--warn" role="status">
+            <strong class="feedback-banner__title">Tu postulación requiere ajustes</strong>
+            <p class="feedback-banner__text">
+              Solo resta un ajuste documental. Una vez lo atiendas, tu postulación pasará nuevamente
+              a evaluación por parte del comité.
+            </p>
+          </div>
+
+          <dl class="feedback-meta">
+            <div class="feedback-meta__item">
+              <dt>Fecha de decisión</dt>
+              <dd>04 oct 2026</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Revisor</dt>
+              <dd>Comité de Movilidad</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Estado</dt>
+              <dd>En revisión</dd>
+            </div>
+            <div class="feedback-meta__item">
+              <dt>Plazo de ajuste</dt>
+              <dd>12 oct 2026</dd>
+            </div>
+          </dl>
+
+          <h3 class="feedback-section-title">Ajustes solicitados</h3>
+          <ul class="observation-list">
+            <li class="observation" data-severity="menor">
+              <div class="observation__head">
+                <span class="severity-pill severity-pill--minor">Menor</span>
+                <span class="observation__category">Portafolio</span>
+                <span class="observation__status observation__status--open">Pendiente</span>
+              </div>
+              <p class="observation__text">
+                El portafolio adjunto supera el tamaño máximo permitido y dos archivos no se pueden abrir.
+              </p>
+              <div class="observation__action">
+                <span class="observation__action-label">Acción sugerida</span>
+                <span class="observation__action-text">
+                  Comprime el portafolio y vuelve a cargarlo en formato PDF con un tamaño menor a 10 MB.
+                </span>
+              </div>
+              <div class="observation__foot">
+                <span>Registrada el 04 oct 2026</span>
+                <button type="button" class="btn btn--ghost btn--small">Marcar como atendida</button>
+              </div>
+            </li>
+          </ul>
+
+          <h3 class="feedback-section-title">Retroalimentación del comité</h3>
+          <div class="feedback-thread">
+            <article class="feedback-message">
+              <span class="feedback-message__avatar" aria-hidden="true">CM</span>
+              <div class="feedback-message__body">
+                <div class="feedback-message__meta">
+                  <strong>Comité de Movilidad</strong>
+                  <time datetime="2026-10-04">04 oct 2026</time>
+                </div>
+                <p class="feedback-message__text">
+                  El contenido del portafolio es pertinente; únicamente debes corregir el formato de
+                  carga para que podamos revisarlo.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <form class="feedback-reply">
+            <label class="feedback-reply__label" for="replyAjustes2">Aclaración o respuesta del estudiante</label>
+            <textarea
+              class="feedback-reply__control"
+              id="replyAjustes2"
+              name="respuesta"
+              rows="4"
+              placeholder="Describe los ajustes realizados o escribe tu consulta..."
+            ></textarea>
+            <div class="feedback-reply__actions">
+              <button type="submit" class="btn btn--primary">Enviar aclaración</button>
+              <button type="button" class="btn btn--ghost">Actualizar documentos del MVP</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Trazabilidad issue 2.2.2.3 (#11): nota de alcance y dependencias de la issue -->
+        <footer class="feedback-footer">
+          <p>
+            Prototipo de la issue 2.2.2.3 (#11). Continúa el trabajo de las issues predecesoras
+            2.2.2.1 (#9) y 2.2.2.2 (#10) y sirve de base para las pruebas en tiempo real y responsive
+            de la issue 2.2.2.4 (#12).
+          </p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Trazabilidad issue 2.2.2.3 (#11): JS vanilla para filtros, selección de postulaciones y acciones del estudiante -->
+  <script>
+    (function () {
+      var filters = Array.prototype.slice.call(document.querySelectorAll('.feedback-filter'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.postulation-card'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.feedback-panel'));
+      var count = document.getElementById('feedbackCount');
+
+      function setActivePanel(targetId) {
+        panels.forEach(function (panel) {
+          var active = panel.id === targetId;
+          panel.classList.toggle('is-active', active);
+          panel.setAttribute('aria-hidden', String(!active));
+        });
+      }
+
+      function setActiveCard(targetCard) {
+        cards.forEach(function (card) {
+          var active = card === targetCard;
+          card.classList.toggle('is-active', active);
+          card.setAttribute('aria-pressed', String(active));
+        });
+      }
+
+      function applyFilter(filter) {
+        var visible = 0;
+        cards.forEach(function (card) {
+          var match = filter === 'todas' || card.getAttribute('data-decision') === filter;
+          card.hidden = !match;
+          if (match) {
+            visible += 1;
+          }
+        });
+        count.textContent = visible + (visible === 1 ? ' resultado' : ' resultados');
+      }
+
+      filters.forEach(function (filter) {
+        filter.addEventListener('click', function () {
+          filters.forEach(function (other) {
+            var active = other === filter;
+            other.classList.toggle('is-active', active);
+            other.setAttribute('aria-pressed', String(active));
+          });
+          applyFilter(filter.getAttribute('data-filter'));
+        });
+      });
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          setActiveCard(card);
+          setActivePanel(card.getAttribute('data-target'));
+        });
+      });
+
+      document.querySelectorAll('.observation__foot .btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var observation = button.closest('.observation');
+          var status = observation.querySelector('.observation__status');
+          var resolved = observation.classList.toggle('is-resolved');
+
+          status.textContent = resolved ? 'Atendida' : 'Pendiente';
+          status.classList.toggle('observation__status--done', resolved);
+          status.classList.toggle('observation__status--open', !resolved);
+          button.textContent = resolved ? 'Reabrir observación' : 'Marcar como atendida';
+        });
+      });
+
+      document.querySelectorAll('.feedback-reply').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var control = form.querySelector('.feedback-reply__control');
+          var message = control.value.trim();
+
+          if (!message) {
+            control.focus();
+            return;
+          }
+
+          var thread = form.previousElementSibling;
+          if (!thread || !thread.classList.contains('feedback-thread')) {
+            thread = document.createElement('div');
+            thread.className = 'feedback-thread';
+            form.parentNode.insertBefore(thread, form);
+          }
+
+          var article = document.createElement('article');
+          article.className = 'feedback-message feedback-message--own';
+
+          var avatar = document.createElement('span');
+          avatar.className = 'feedback-message__avatar';
+          avatar.setAttribute('aria-hidden', 'true');
+          avatar.textContent = 'TÚ';
+
+          var body = document.createElement('div');
+          body.className = 'feedback-message__body';
+
+          var meta = document.createElement('div');
+          meta.className = 'feedback-message__meta';
+
+          var author = document.createElement('strong');
+          author.textContent = 'Tú (estudiante)';
+
+          var time = document.createElement('time');
+          time.dateTime = new Date().toISOString().slice(0, 10);
+          time.textContent = 'Ahora';
+
+          var text = document.createElement('p');
+          text.className = 'feedback-message__text';
+          text.textContent = message;
+
+          meta.appendChild(author);
+          meta.appendChild(time);
+          body.appendChild(meta);
+          body.appendChild(text);
+          article.appendChild(avatar);
+          article.appendChild(body);
+          thread.appendChild(article);
+
+          control.value = '';
+          article.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

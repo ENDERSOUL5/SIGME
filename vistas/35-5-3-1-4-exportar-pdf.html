@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Exportar reporte del dashboard</title>
+  <!-- Trazabilidad issue 5.3.1.4 (#35): hoja de estilos de la exportación del dashboard a PDF -->
+  <link rel="stylesheet" href="../css/35-5-3-1-4-exportar-pdf.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 5.3.1.4 (#35): barra superior con marca SIGME y navegación -->
+  <header class="app-topbar">
+    <div class="app-brand">
+      <span class="app-brand__mark" aria-hidden="true">S</span>
+      <div class="app-brand__text">
+        <span class="app-brand__name">SIGME</span>
+        <span class="app-brand__subtitle">Gestión de movilidad estudiantil</span>
+      </div>
+    </div>
+    <div class="app-topbar__actions">
+      <span class="issue-tag">Issue 5.3.1.4 · #35</span>
+      <button type="button" class="app-topbar__button" id="printViewButton">Imprimir vista</button>
+      <a class="app-topbar__link" href="../index.html">Volver al inicio</a>
+    </div>
+  </header>
+
+  <!-- Trazabilidad issue 5.3.1.4 (#35): contenedor del dashboard que se exporta -->
+  <main class="dashboard-shell">
+
+    <!-- Trazabilidad issue 5.3.1.4 (#35): encabezado del dashboard -->
+    <section class="dashboard-head" aria-labelledby="dashboardTitle">
+      <div>
+        <p class="dashboard-eyebrow">Oficina de Relaciones Internacionales</p>
+        <h1 class="dashboard-title" id="dashboardTitle">Dashboard de reportes</h1>
+        <p class="dashboard-subtitle">Consolidado de movilidad estudiantil · Periodo académico 2026-1</p>
+      </div>
+      <div class="dashboard-meta">
+        <span class="dashboard-meta__label">Última actualización</span>
+        <span class="dashboard-meta__value">07/11/2026 · 18:40</span>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.4 (#35): métricas consolidadas que alimentan el reporte exportable -->
+    <section class="dashboard-metrics" aria-label="Métricas consolidadas del periodo">
+      <article class="metric-card">
+        <p class="metric-card__label">Postulaciones</p>
+        <p class="metric-card__value">248</p>
+        <p class="metric-card__hint">Total del periodo</p>
+      </article>
+      <article class="metric-card metric-card--ok">
+        <p class="metric-card__label">Aprobadas</p>
+        <p class="metric-card__value">154</p>
+        <p class="metric-card__hint">62 % del total</p>
+      </article>
+      <article class="metric-card metric-card--warn">
+        <p class="metric-card__label">En revisión</p>
+        <p class="metric-card__value">52</p>
+        <p class="metric-card__hint">21 % del total</p>
+      </article>
+      <article class="metric-card metric-card--danger">
+        <p class="metric-card__label">Rechazadas</p>
+        <p class="metric-card__value">42</p>
+        <p class="metric-card__hint">17 % del total</p>
+      </article>
+    </section>
+
+    <!--
+      Trazabilidad issue 5.3.1.4 (#35): barra de acciones de exportación.
+      El endpoint backend de generación y descarga está SIMULADO en este
+      prototipo estático mediante JavaScript vanilla y un Blob local; no se
+      realiza ninguna petición real al servidor.
+    -->
+    <section class="export-bar" aria-labelledby="exportTitle">
+      <div class="export-bar__info">
+        <h2 class="export-bar__title" id="exportTitle">Exportar reporte</h2>
+        <p class="export-bar__description">
+          Descarga automática del consolidado con las métricas visualizadas:
+          postulaciones, aprobadas, en revisión y rechazadas del periodo 2026-1.
+        </p>
+      </div>
+
+      <div class="export-bar__controls">
+        <div class="export-field">
+          <label class="export-field__label" for="exportFormat">Formato</label>
+          <select class="export-select" id="exportFormat" name="formato">
+            <option value="pdf" selected>PDF (.pdf)</option>
+            <option value="csv">Excel / CSV (.csv)</option>
+          </select>
+        </div>
+        <button type="button" class="export-button" id="exportButton" aria-describedby="exportHint">
+          <span class="export-button__icon" aria-hidden="true">&#8681;</span>
+          Exportar reporte
+        </button>
+      </div>
+
+      <p class="export-bar__hint" id="exportHint">
+        El archivo se genera con la información del periodo mostrado. Endpoint backend simulado en este prototipo estático.
+      </p>
+
+      <!-- Trazabilidad issue 5.3.1.4 (#35): control para demostrar el estado de error -->
+      <div class="export-sim">
+        <label class="export-sim__label" for="simulateError">
+          <input class="export-sim__checkbox" type="checkbox" id="simulateError">
+          Simular fallo del endpoint (para validar el estado de error)
+        </label>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.4 (#35): panel de estados de progreso, éxito y error -->
+    <section class="export-status" aria-labelledby="exportStatusTitle">
+      <h2 class="sr-only" id="exportStatusTitle">Estado de la exportación</h2>
+      <div class="sr-only" role="status" aria-live="polite" id="exportAnnouncer"></div>
+
+      <!-- Trazabilidad issue 5.3.1.4 (#35): estado inicial antes de exportar -->
+      <div class="export-idle" id="exportIdle">
+        <p>Listo para exportar. Elige el formato y pulsa «Exportar reporte».</p>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.4 (#35): estado de progreso de la generación -->
+      <div
+        class="export-progress is-hidden"
+        id="exportProgress"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        aria-labelledby="exportProgressLabel"
+      >
+        <div class="export-progress__head">
+          <span id="exportProgressLabel">Generando reporte…</span>
+          <span class="export-progress__value" id="exportProgressValue">0 %</span>
+        </div>
+        <div class="export-progress__track">
+          <div class="export-progress__bar" id="exportProgressBar"></div>
+        </div>
+        <p class="export-progress__hint">El servidor está preparando el archivo; no cierres esta ventana.</p>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.4 (#35): estado de éxito con la tarjeta de descarga -->
+      <div class="export-success is-hidden" id="exportSuccess" role="status" aria-live="polite">
+        <div class="export-success__head">
+          <span class="export-success__icon" aria-hidden="true">&#10003;</span>
+          <h3 class="export-success__title">Reporte generado correctamente</h3>
+        </div>
+        <p class="export-success__text">
+          La descarga automática se ha iniciado. Si tu navegador la bloqueó, usa «Descargar de nuevo».
+        </p>
+
+        <!-- Trazabilidad issue 5.3.1.4 (#35): tarjeta del archivo generado -->
+        <div class="download-card">
+          <span class="download-card__icon" id="downloadIcon" aria-hidden="true">PDF</span>
+          <div class="download-card__body">
+            <p class="download-card__name" id="downloadName">reporte-sigme-2026-1.pdf</p>
+            <p class="download-card__meta" id="downloadMeta">PDF · Descarga automática simulada</p>
+          </div>
+          <a class="download-card__link" id="downloadAgain" href="#" download>Descargar de nuevo</a>
+        </div>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.4 (#35): estado de error del endpoint simulado -->
+      <div class="export-error is-hidden" id="exportError" role="alert">
+        <div class="export-error__head">
+          <span class="export-error__icon" aria-hidden="true">!</span>
+          <h3 class="export-error__title">No se pudo generar el reporte</h3>
+        </div>
+        <p class="export-error__text">
+          El endpoint de exportación no respondió correctamente (fallo simulado). Verifica la conexión e inténtalo de nuevo.
+        </p>
+        <div class="export-error__actions">
+          <button type="button" class="export-error__retry" id="retryButton">Reintentar exportación</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!--
+    Trazabilidad issue 5.3.1.4 (#35): JS vanilla de la acción «Exportar reporte».
+    Simula el endpoint backend del API: avanza una barra de progreso, permite el
+    estado de error y genera un archivo descargable con la información del
+    dashboard. Los datos y el archivo son simulados; no hay llamada de red.
+  -->
+  <script>
+    (function () {
+      var formatSelect = document.getElementById('exportFormat');
+      var exportButton = document.getElementById('exportButton');
+      var simulateError = document.getElementById('simulateError');
+      var printViewButton = document.getElementById('printViewButton');
+
+      var idleState = document.getElementById('exportIdle');
+      var progressState = document.getElementById('exportProgress');
+      var progressLabel = document.getElementById('exportProgressLabel');
+      var progressValue = document.getElementById('exportProgressValue');
+      var progressBar = document.getElementById('exportProgressBar');
+      var successState = document.getElementById('exportSuccess');
+      var errorState = document.getElementById('exportError');
+      var announcer = document.getElementById('exportAnnouncer');
+
+      var downloadIcon = document.getElementById('downloadIcon');
+      var downloadName = document.getElementById('downloadName');
+      var downloadMeta = document.getElementById('downloadMeta');
+      var downloadAgain = document.getElementById('downloadAgain');
+      var retryButton = document.getElementById('retryButton');
+
+      var timer = null;
+      var currentInfo = null;
+      var currentUrl = null;
+
+      function show(element) {
+        element.classList.remove('is-hidden');
+      }
+
+      function hide(element) {
+        element.classList.add('is-hidden');
+      }
+
+      function announce(message) {
+        announcer.textContent = message;
+      }
+
+      function setProgress(value) {
+        progressBar.style.width = value + '%';
+        progressValue.textContent = value + ' %';
+        progressState.setAttribute('aria-valuenow', String(value));
+      }
+
+      function resetStates() {
+        hide(idleState);
+        hide(progressState);
+        hide(successState);
+        hide(errorState);
+        setProgress(0);
+      }
+
+      function getFormatInfo(value) {
+        if (value === 'csv') {
+          return {
+            ext: 'csv',
+            label: 'CSV',
+            mime: 'text/csv;charset=utf-8',
+            icon: 'CSV',
+            name: 'reporte-sigme-2026-1.csv'
+          };
+        }
+        return {
+          ext: 'pdf',
+          label: 'PDF',
+          mime: 'application/pdf',
+          icon: 'PDF',
+          name: 'reporte-sigme-2026-1.pdf'
+        };
+      }
+
+      function buildContent(info) {
+        var metrics = [
+          ['Postulaciones', '248'],
+          ['Aprobadas', '154'],
+          ['En revision', '52'],
+          ['Rechazadas', '42']
+        ];
+
+        if (info.ext === 'csv') {
+          var csv = 'Indicador,Valor\n';
+          metrics.forEach(function (row) {
+            csv += row[0] + ',' + row[1] + '\n';
+          });
+          csv += 'Periodo,2026-1\nFecha de corte,07/11/2026\n';
+          return csv;
+        }
+
+        var text = 'SIGME - Reporte consolidado de movilidad estudiantil\n';
+        text += 'Prototipo estatico: archivo simulado por el frontend.\n';
+        text += 'Periodo academico: 2026-1\n';
+        text += 'Fecha de corte: 07/11/2026\n\n';
+        metrics.forEach(function (row) {
+          text += row[0] + ': ' + row[1] + '\n';
+        });
+        text += '\nOficina de Relaciones Internacionales\n';
+        return text;
+      }
+
+      function triggerDownload(info) {
+        var blob = new Blob([buildContent(info)], { type: info.mime });
+
+        if (currentUrl) {
+          URL.revokeObjectURL(currentUrl);
+        }
+        currentUrl = URL.createObjectURL(blob);
+
+        var link = document.createElement('a');
+        link.href = currentUrl;
+        link.download = info.name;
+        link.rel = 'noopener';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function setBusy(isBusy) {
+        exportButton.disabled = isBusy;
+        formatSelect.disabled = isBusy;
+        simulateError.disabled = isBusy;
+      }
+
+      function finishExport(info, shouldFail) {
+        setBusy(false);
+        hide(progressState);
+
+        if (shouldFail) {
+          show(errorState);
+          announce('No se pudo generar el reporte. Puedes reintentar la exportación.');
+          return;
+        }
+
+        show(successState);
+        downloadIcon.textContent = info.icon;
+        downloadIcon.classList.toggle('download-card__icon--csv', info.ext === 'csv');
+        downloadName.textContent = info.name;
+        downloadMeta.textContent = info.label + ' · Archivo simulado · Descarga automática iniciada';
+        triggerDownload(info);
+        announce('Reporte generado correctamente en formato ' + info.label + '. La descarga se ha iniciado.');
+      }
+
+      function startExport() {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+
+        var info = getFormatInfo(formatSelect.value);
+        var shouldFail = simulateError.checked;
+        var value = 0;
+
+        currentInfo = info;
+        resetStates();
+        show(progressState);
+        setBusy(true);
+        progressLabel.textContent = shouldFail ? 'Conectando con el endpoint…' : 'Generando reporte…';
+        setProgress(0);
+        announce('Generando el reporte en formato ' + info.label + '.');
+
+        timer = window.setInterval(function () {
+          value = Math.min(100, value + 8);
+          setProgress(value);
+
+          if (value >= 100) {
+            window.clearInterval(timer);
+            timer = null;
+            window.setTimeout(function () {
+              finishExport(info, shouldFail);
+            }, 320);
+          }
+        }, 130);
+      }
+
+      exportButton.addEventListener('click', startExport);
+      retryButton.addEventListener('click', startExport);
+
+      downloadAgain.addEventListener('click', function (event) {
+        event.preventDefault();
+        if (currentInfo) {
+          triggerDownload(currentInfo);
+          announce('Descarga del archivo ' + currentInfo.name + ' iniciada nuevamente.');
+        }
+      });
+
+      printViewButton.addEventListener('click', function () {
+        window.print();
+      });
+    })();
+  </script>
+
+</body>
+</html>

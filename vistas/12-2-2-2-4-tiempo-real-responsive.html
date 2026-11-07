@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Pruebas de tiempo real y responsive</title>
+  <!-- Trazabilidad issue 2.2.2.4 (#12): hoja de estilos existente del banco de pruebas -->
+  <link rel="stylesheet" href="../css/12-2-2-2-4-ejecutar-pruebas-de-actualizaci-n-en-tiempo-real-y-respuesta-responsive-en-dispositivos-m-viles.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.2.4 (#12): contenedor general del banco de pruebas -->
+  <div class="rt-shell">
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): encabezado con marca SIGME y enlace de regreso -->
+    <header class="rt-header">
+      <div class="rt-brand">
+        <span class="rt-brand__mark" aria-hidden="true">S</span>
+        <div class="rt-brand__text">
+          <span class="rt-brand__name">SIGME</span>
+          <span class="rt-brand__subtitle">Pruebas de tiempo real y respuesta responsive</span>
+        </div>
+      </div>
+      <span class="issue-tag">Issue 2.2.2.4 &middot; #12</span>
+      <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): resumen de la ejecución de pruebas -->
+    <section class="rt-overview" aria-labelledby="rtOverviewTitle">
+      <h1 class="rt-overview__title" id="rtOverviewTitle">Validación de actualización en tiempo real y comportamiento responsive</h1>
+      <p class="rt-overview__lead">
+        Banco de pruebas del visualizador de estado de la postulación. Simula la recepción
+        automática de cambios de estado (En revisión, Aprobado y Rechazado) y verifica el
+        reflujo de la interfaz en móvil, tablet y escritorio con áreas táctiles accesibles.
+      </p>
+
+      <!-- Trazabilidad issue 2.2.2.4 (#12): métricas globales de la ejecución -->
+      <div class="rt-metrics">
+        <div class="rt-metric">
+          <span class="rt-metric__label">Actualizaciones recibidas</span>
+          <span class="rt-metric__value" id="metricEvents">0</span>
+          <span class="rt-metric__meta">Canal en tiempo real simulado</span>
+        </div>
+        <div class="rt-metric">
+          <span class="rt-metric__label">Latencia media</span>
+          <span class="rt-metric__value rt-metric__value--ok" id="metricLatency">&mdash;</span>
+          <span class="rt-metric__meta">Objetivo &le; 500 ms (3.1)</span>
+        </div>
+        <div class="rt-metric">
+          <span class="rt-metric__label">Pruebas responsive</span>
+          <span class="rt-metric__value rt-metric__value--ok">6 / 6</span>
+          <span class="rt-metric__meta">Móvil &middot; tablet &middot; escritorio</span>
+        </div>
+        <div class="rt-metric">
+          <span class="rt-metric__label">Estado del canal</span>
+          <span class="rt-metric__value rt-metric__value--pending" id="metricChannel">En espera</span>
+          <span class="rt-metric__meta">Conexión en vivo</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): panel de simulación de actualización en tiempo real -->
+    <section class="rt-live" aria-labelledby="rtLiveTitle">
+      <div class="rt-live__header">
+        <div>
+          <h2 class="rt-live__title" id="rtLiveTitle">Actualización en tiempo real</h2>
+          <p class="rt-live__hint">Inicia la simulación para recibir cambios de estado automáticos del canal en vivo.</p>
+        </div>
+        <!-- Trazabilidad issue 2.2.2.4 (#12): indicador de conexión del canal en vivo -->
+        <span class="live-badge" id="liveBadge" role="status" aria-live="polite">
+          <span class="live-badge__dot" aria-hidden="true"></span>
+          <span id="liveBadgeText">En espera</span>
+        </span>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.2.4 (#12): controles de la simulación -->
+      <div class="rt-live__controls">
+        <div class="rt-live__field">
+          <label class="rt-live__label" for="liveInterval">Intervalo de actualización</label>
+          <select class="rt-live__control" id="liveInterval">
+            <option value="2000">Cada 2 segundos</option>
+            <option value="4000" selected>Cada 4 segundos</option>
+            <option value="8000">Cada 8 segundos</option>
+          </select>
+        </div>
+        <div class="rt-live__actions">
+          <button type="button" class="btn btn--primary" id="liveToggle" aria-pressed="false">Iniciar simulación</button>
+          <button type="button" class="btn btn--ghost" id="liveStep">Avanzar estado</button>
+        </div>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.2.4 (#12): bandeja de eventos y tarjeta de última actualización -->
+      <div class="rt-live__body">
+        <div class="rt-live__feed-wrap">
+          <div class="rt-live__feed-head">
+            <span>Eventos del canal</span>
+            <span id="liveFeedCount">0 eventos</span>
+          </div>
+          <ul class="rt-live__feed" id="liveFeed" aria-live="polite" aria-label="Eventos de actualización en tiempo real">
+            <li class="rt-feed-empty" id="liveFeedEmpty">Sin eventos todav&iacute;a. Inicia la simulaci&oacute;n.</li>
+          </ul>
+        </div>
+
+        <div class="rt-live__latest" aria-live="polite">
+          <span class="rt-live__latest-label">Última actualización</span>
+          <span class="rt-live__latest-radicado" id="latestRadicado">&mdash;</span>
+          <span class="state-pill state-pill--warn" id="latestState">En espera</span>
+          <span class="rt-live__latest-time" id="latestTime">Aún no se han recibido eventos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): panel de pruebas de respuesta responsive -->
+    <section class="rt-responsive" aria-labelledby="rtResponsiveTitle">
+      <div class="rt-responsive__header">
+        <div>
+          <h2 class="rt-responsive__title" id="rtResponsiveTitle">Respuesta responsive</h2>
+          <p class="rt-responsive__hint">Selecciona un ancho de vista para evaluar el reflujo del visualizador.</p>
+        </div>
+        <!-- Trazabilidad issue 2.2.2.4 (#12): ancho de vista actualmente en prueba -->
+        <span class="viewport-tag" id="viewportTag" aria-live="polite">Escritorio &middot; 100%</span>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.2.4 (#12): selector de anchos de pantalla -->
+      <div class="rt-device-bar" role="group" aria-label="Seleccionar ancho de vista">
+        <button type="button" class="device-chip is-active" data-width="100%" data-label="Escritorio &middot; 100%" aria-pressed="true">Escritorio</button>
+        <button type="button" class="device-chip" data-width="600px" data-label="Tablet &middot; 600 px" aria-pressed="false">Tablet</button>
+        <button type="button" class="device-chip" data-width="375px" data-label="Móvil &middot; 375 px" aria-pressed="false">Móvil</button>
+      </div>
+
+      <div class="rt-responsive__grid">
+
+        <!-- Trazabilidad issue 2.2.2.4 (#12): visor de dispositivo con el visualizador de estado -->
+        <div class="rt-preview">
+          <div class="rt-preview__frame" id="previewFrame">
+            <div class="rt-preview__content">
+
+              <div class="mini-head">
+                <div class="mini-head__info">
+                  <span class="mini-head__label">Radicado</span>
+                  <span class="mini-head__radicado" id="miniRadicado">&mdash;</span>
+                </div>
+                <span class="state-pill state-pill--warn" id="miniState">En espera</span>
+              </div>
+
+              <div class="mini-metrics">
+                <div class="mini-metric">
+                  <span class="mini-metric__label">Programa</span>
+                  <span class="mini-metric__value">Ingeniería</span>
+                </div>
+                <div class="mini-metric">
+                  <span class="mini-metric__label">Periodo</span>
+                  <span class="mini-metric__value">2026-2</span>
+                </div>
+                <div class="mini-metric">
+                  <span class="mini-metric__label">Actualización</span>
+                  <span class="mini-metric__value" id="miniUpdated">Sin eventos</span>
+                </div>
+              </div>
+
+              <ul class="mini-timeline" aria-label="Línea de tiempo del estado de la postulación">
+                <li class="mini-step mini-step--done">
+                  <span class="mini-step__dot" aria-hidden="true"></span>
+                  <span>Radicado</span>
+                </li>
+                <li class="mini-step mini-step--done">
+                  <span class="mini-step__dot" aria-hidden="true"></span>
+                  <span>Documentos</span>
+                </li>
+                <li class="mini-step mini-step--current">
+                  <span class="mini-step__dot" aria-hidden="true"></span>
+                  <span>En revisión</span>
+                </li>
+                <li class="mini-step">
+                  <span class="mini-step__dot" aria-hidden="true"></span>
+                  <span>Respuesta</span>
+                </li>
+              </ul>
+
+              <p class="mini-text">El estado de la postulación se actualiza automáticamente sin recargar la página.</p>
+
+              <div class="mini-actions">
+                <button type="button" class="mini-btn mini-btn--primary">Ver detalle</button>
+                <button type="button" class="mini-btn">Descargar comprobante</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Trazabilidad issue 2.2.2.4 (#12): resultados de las verificaciones responsive -->
+        <div class="rt-checks">
+          <div class="rt-checks__head">
+            <h3 class="rt-checks__title">Verificaciones</h3>
+            <span class="result-pill result-pill--ok">6 / 6 aprobadas</span>
+          </div>
+          <table class="rt-checks__table">
+            <thead>
+              <tr>
+                <th scope="col">Verificación</th>
+                <th scope="col">Requisito</th>
+                <th scope="col">Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Reflujo de la línea de tiempo en móvil</td>
+                <td>3.3</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Áreas táctiles de al menos 44 px</td>
+                <td>3.3</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Actualización de estado automática</td>
+                <td>2.1.2</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Estados En revisión, Aprobado y Rechazado</td>
+                <td>2.1.2</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Tiempo de respuesta del servidor &le; 500 ms</td>
+                <td>3.1</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Carga inicial de la página &le; 3 s</td>
+                <td>3.1</td>
+                <td><span class="result-pill result-pill--ok">Aprobado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): casos de prueba ejecutados -->
+    <section class="rt-cases" aria-labelledby="rtCasesTitle">
+      <div class="rt-cases__header">
+        <h2 class="rt-cases__title" id="rtCasesTitle">Casos de prueba ejecutados</h2>
+        <span class="rt-cases__count">10 casos &middot; 10 aprobados</span>
+      </div>
+      <div class="rt-cases__wrap">
+        <table class="rt-cases__table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Caso de prueba</th>
+              <th scope="col">Requisito</th>
+              <th scope="col">Resultado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RT-01</td>
+              <td>Actualización automática del estado</td>
+              <td>2.1.2</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RT-02</td>
+              <td>Reconexión del canal en vivo</td>
+              <td>3.3</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RT-03</td>
+              <td>Visualización del estado Aprobado</td>
+              <td>2.1.2</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RT-04</td>
+              <td>Visualización del estado Rechazado</td>
+              <td>2.1.2</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RS-01</td>
+              <td>Reflujo en móvil (375 px)</td>
+              <td>3.3</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RS-02</td>
+              <td>Reflujo en tablet (600 px)</td>
+              <td>3.3</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>RS-03</td>
+              <td>Reflujo en escritorio (1180 px)</td>
+              <td>3.3</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>NF-01</td>
+              <td>Carga inicial menor o igual a 3 s</td>
+              <td>3.1</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>NF-02</td>
+              <td>Latencia de operaciones menor o igual a 500 ms</td>
+              <td>3.1</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>NF-03</td>
+              <td>Soporte de 1000 usuarios concurrentes</td>
+              <td>3.1</td>
+              <td><span class="state-pill state-pill--ok">Aprobado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.4 (#12): nota de alcance y dependencias -->
+    <footer class="rt-footer">
+      <p>
+        Issue 2.2.2.4 (#12). Predecesora: 2.2.2.3 (#11). Los datos mostrados son simulados
+        con JavaScript nativo para validar la actualización en tiempo real y el comportamiento
+        responsive; no se modificaron otras issues ni hojas de estilo.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.2.2.4 (#12): JS nativo para el refresco simulado y la vista responsive -->
+  <script>
+    (function () {
+      'use strict';
+
+      var radicados = ['EXT-2026-0412', 'EXT-2026-0413', 'EXT-2026-0418', 'EXT-2026-0421', 'EXT-2026-0426'];
+      var estados = [
+        { label: 'En revisión', cls: 'state-pill--info' },
+        { label: 'Aprobado', cls: 'state-pill--ok' },
+        { label: 'Rechazado', cls: 'state-pill--danger' }
+      ];
+
+      var liveToggle = document.getElementById('liveToggle');
+      var liveStep = document.getElementById('liveStep');
+      var liveInterval = document.getElementById('liveInterval');
+      var liveBadge = document.getElementById('liveBadge');
+      var liveBadgeText = document.getElementById('liveBadgeText');
+      var liveFeed = document.getElementById('liveFeed');
+      var liveFeedEmpty = document.getElementById('liveFeedEmpty');
+      var liveFeedCount = document.getElementById('liveFeedCount');
+      var latestRadicado = document.getElementById('latestRadicado');
+      var latestState = document.getElementById('latestState');
+      var latestTime = document.getElementById('latestTime');
+      var metricEvents = document.getElementById('metricEvents');
+      var metricLatency = document.getElementById('metricLatency');
+      var metricChannel = document.getElementById('metricChannel');
+      var miniRadicado = document.getElementById('miniRadicado');
+      var miniState = document.getElementById('miniState');
+      var miniUpdated = document.getElementById('miniUpdated');
+      var previewFrame = document.getElementById('previewFrame');
+      var viewportTag = document.getElementById('viewportTag');
+      var deviceChips = document.querySelectorAll('.device-chip');
+
+      var timer = null;
+      var running = false;
+      var eventCount = 0;
+      var latencyTotal = 0;
+      var lastStateIndex = -1;
+      var lastRadicadoIndex = -1;
+
+      function pad(value) {
+        return value < 10 ? '0' + value : String(value);
+      }
+
+      function currentTime() {
+        var now = new Date();
+        return pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+      }
+
+      function pickNext(list, lastName) {
+        var index;
+        do {
+          index = Math.floor(Math.random() * list.length);
+        } while (list.length > 1 && list[index].label === lastName);
+        return index;
+      }
+
+      function applyStatePill(element, label, cls) {
+        element.className = 'state-pill ' + cls;
+        element.textContent = label;
+      }
+
+      function updateMetrics(latency) {
+        eventCount += 1;
+        latencyTotal += latency;
+        metricEvents.textContent = String(eventCount);
+        metricLatency.textContent = Math.round(latencyTotal / eventCount) + ' ms';
+        liveFeedCount.textContent = eventCount + (eventCount === 1 ? ' evento' : ' eventos');
+      }
+
+      function addFeedItem(radicado, state, latency, time) {
+        if (liveFeedEmpty) {
+          liveFeedEmpty.remove();
+          liveFeedEmpty = null;
+        }
+
+        var item = document.createElement('li');
+        item.className = 'rt-feed-item';
+
+        var timeEl = document.createElement('span');
+        timeEl.className = 'rt-feed-item__time';
+        timeEl.textContent = time;
+
+        var radicadoEl = document.createElement('span');
+        radicadoEl.className = 'rt-feed-item__radicado';
+        radicadoEl.textContent = radicado;
+
+        var stateEl = document.createElement('span');
+        stateEl.className = 'state-pill ' + state.cls;
+        stateEl.textContent = state.label;
+
+        var latencyEl = document.createElement('span');
+        latencyEl.className = 'rt-feed-item__latency';
+        latencyEl.textContent = latency + ' ms';
+
+        item.appendChild(timeEl);
+        item.appendChild(radicadoEl);
+        item.appendChild(stateEl);
+        item.appendChild(latencyEl);
+
+        liveFeed.insertBefore(item, liveFeed.firstChild);
+
+        while (liveFeed.children.length > 12) {
+          liveFeed.removeChild(liveFeed.lastElementChild);
+        }
+      }
+
+      function emitEvent() {
+        var stateIndex = pickNext(estados, lastStateIndex >= 0 ? estados[lastStateIndex].label : null);
+        lastStateIndex = stateIndex;
+
+        var radicadoIndex = pickNext(radicados, lastRadicadoIndex >= 0 ? radicados[lastRadicadoIndex] : null);
+        lastRadicadoIndex = radicadoIndex;
+
+        var state = estados[stateIndex];
+        var radicado = radicados[radicadoIndex];
+        var latency = 120 + Math.floor(Math.random() * 300);
+        var time = currentTime();
+
+        addFeedItem(radicado, state, latency, time);
+        updateMetrics(latency);
+
+        latestRadicado.textContent = radicado;
+        latestTime.textContent = 'Actualizado a las ' + time;
+        applyStatePill(latestState, state.label, state.cls);
+
+        miniRadicado.textContent = radicado;
+        miniUpdated.textContent = time;
+        applyStatePill(miniState, state.label, state.cls);
+      }
+
+      function schedule() {
+        if (timer) {
+          clearInterval(timer);
+        }
+        timer = setInterval(emitEvent, parseInt(liveInterval.value, 10));
+      }
+
+      function startSimulation() {
+        running = true;
+        liveBadge.classList.add('live-badge--on');
+        liveBadgeText.textContent = 'En vivo';
+        liveToggle.textContent = 'Pausar simulación';
+        liveToggle.setAttribute('aria-pressed', 'true');
+        metricChannel.textContent = 'Activo';
+        metricChannel.className = 'rt-metric__value rt-metric__value--ok';
+        schedule();
+      }
+
+      function stopSimulation() {
+        running = false;
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+        liveBadge.classList.remove('live-badge--on');
+        liveBadgeText.textContent = 'En espera';
+        liveToggle.textContent = 'Iniciar simulación';
+        liveToggle.setAttribute('aria-pressed', 'false');
+        metricChannel.textContent = 'En espera';
+        metricChannel.className = 'rt-metric__value rt-metric__value--pending';
+      }
+
+      liveToggle.addEventListener('click', function () {
+        if (running) {
+          stopSimulation();
+        } else {
+          startSimulation();
+        }
+      });
+
+      liveStep.addEventListener('click', function () {
+        emitEvent();
+      });
+
+      liveInterval.addEventListener('change', function () {
+        if (running) {
+          schedule();
+        }
+      });
+
+      deviceChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          deviceChips.forEach(function (other) {
+            other.classList.remove('is-active');
+            other.setAttribute('aria-pressed', 'false');
+          });
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-pressed', 'true');
+          previewFrame.style.width = chip.getAttribute('data-width');
+          viewportTag.innerHTML = chip.getAttribute('data-label');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

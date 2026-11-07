@@ -1,0 +1,640 @@
+/*
+  Trazabilidad issue 3.2.3.2 (#19):
+  Estilos del prototipo de las plantillas HTML del correo que se envía al
+  estudiante (aprobación, rechazo/ajustes y asignación de módulo).
+  Implementa SOLO la issue #19; depende de 3.2.3.1 (#18) y habilita a
+  3.2.3.3 (#20). No modifica styles.css ni las hojas de otras issues.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-ok-bg: #eaf7f0;
+  --color-warn: #b4761a;
+  --color-warn-bg: #fdf4e5;
+  --color-danger: #b23b3b;
+  --color-danger-bg: #fdeeee;
+  --color-info: #2b6cb0;
+  --color-info-bg: #eaf2fb;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): contenedor general de la vista de la plantilla */
+.mail-shell {
+  width: min(1120px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): encabezado con marca SIGME y retorno al inicio */
+.mail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.mail-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mail-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.mail-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mail-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mail-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.mail-nav a {
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mail-nav a:hover,
+.mail-nav a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): resumen de la plantilla de correo */
+.mail-overview {
+  margin-bottom: 1.25rem;
+}
+
+.mail-overview__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.mail-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+}
+
+.mail-overview__lead {
+  margin: 0;
+  max-width: 78ch;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): selector de variante de la plantilla (Aprobado/Rechazado/Asignación) */
+.mail-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.mail-toolbar__label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.mail-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background-color: #eef2f9;
+  border: 1px solid var(--color-border);
+}
+
+.mail-tab {
+  border: 0;
+  border-radius: 999px;
+  background-color: transparent;
+  color: var(--color-muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.05rem;
+  cursor: pointer;
+}
+
+.mail-tab:hover {
+  color: var(--color-primary);
+}
+
+.mail-tab.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(27, 36, 54, 0.12);
+}
+
+.mail-tab:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): escenario de vista previa tipo bandeja de correo */
+.mail-stage {
+  background-color: #e9edf5;
+  background-image: radial-gradient(rgba(27, 36, 54, 0.06) 1px, transparent 1px);
+  background-size: 18px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.mail-stage__hint {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.mail-variant {
+  display: flex;
+  justify-content: center;
+}
+
+.mail-variant[hidden] {
+  display: none;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): contenedor de la plantilla de correo (600 px) */
+.email {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): cabecera institucional SIGME del correo */
+.email__header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.5rem;
+  background-color: var(--color-primary);
+  background-image: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #fff;
+}
+
+.email__brand-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.email__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.email__brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.email__brand-subtitle {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): metadatos del correo (asunto y destinatario) */
+.email__meta {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1.5rem;
+  background-color: #f8fafd;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.email__meta p {
+  margin: 0;
+}
+
+.email__meta-label {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.email__meta-subject {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): cuerpo del correo */
+.email__body {
+  padding: 1.75rem 1.5rem;
+}
+
+.email__greeting {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.email__lead {
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+
+.email__text {
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): bloques de estado aprobado/rechazado/asignado */
+.email-status {
+  border-left: 4px solid var(--color-info);
+  border-radius: 10px;
+  background-color: var(--color-info-bg);
+  padding: 1rem 1.1rem;
+  margin: 0 0 1.25rem;
+}
+
+.email-status__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-info);
+}
+
+.email-status__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.email-status__text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.email-status--ok {
+  border-left-color: var(--color-ok);
+  background-color: var(--color-ok-bg);
+}
+
+.email-status--ok .email-status__label {
+  color: var(--color-ok);
+}
+
+.email-status--danger {
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+}
+
+.email-status--danger .email-status__label {
+  color: var(--color-danger);
+}
+
+.email-status--info {
+  border-left-color: var(--color-info);
+  background-color: var(--color-info-bg);
+}
+
+.email-status--info .email-status__label {
+  color: var(--color-info);
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): tarjeta con la asignación de módulo y datos del trámite */
+.email-card {
+  background-color: #f8fafd;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.email-card__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+
+.email-dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 0.5rem 1rem;
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.email-dl__label {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.email-dl__value {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): lista de ajustes solicitados en el rechazo */
+.email-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.email-list li + li {
+  margin-top: 0.35rem;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): botón de acción de la plantilla */
+.email-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.email-btn {
+  display: inline-block;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.8rem 1.4rem;
+}
+
+.email-btn:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.email-btn--ghost {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.email-btn--ghost:hover {
+  background-color: rgba(31, 95, 191, 0.08);
+  color: var(--color-primary-dark);
+}
+
+.email-btn:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.4);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): nota aclaratoria y datos de contacto */
+.email-note {
+  border-radius: 10px;
+  background-color: var(--color-warn-bg);
+  border: 1px solid rgba(180, 118, 26, 0.25);
+  color: #6b470f;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.email-note strong {
+  color: #553808;
+}
+
+.email-contact {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.email-contact a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): pie institucional con notas y enlaces */
+.email__footer {
+  padding: 1.25rem 1.5rem 1.5rem;
+  background-color: #f4f6fb;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.email__footer p {
+  margin: 0 0 0.5rem;
+}
+
+.email__footer p:last-child {
+  margin-bottom: 0;
+}
+
+.email__footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.65rem;
+  padding: 0;
+  list-style: none;
+}
+
+.email__footer-links a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.email__footer-links a:hover,
+.email__footer-links a:focus-visible {
+  text-decoration: underline;
+}
+
+.email__footer-legal {
+  font-size: 0.72rem;
+  color: #7a849c;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): nota de alcance y dependencias de la issue */
+.mail-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.mail-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 3.2.3.2 (#19): comportamiento responsive de la vista y de la plantilla */
+@media (max-width: 720px) {
+  .mail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mail-stage {
+    padding: 1rem;
+  }
+
+  .email {
+    border-radius: 12px;
+  }
+
+  .email__header {
+    padding: 1.25rem;
+  }
+
+  .email__meta {
+    padding: 0.8rem 1.25rem;
+  }
+
+  .email__body {
+    padding: 1.35rem 1.25rem;
+  }
+
+  .email__footer {
+    padding: 1.1rem 1.25rem 1.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mail-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .mail-toolbar {
+    padding: 0.9rem 1rem;
+  }
+
+  .mail-tabs {
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .mail-tab {
+    flex: 1 1 auto;
+    border-radius: 8px;
+  }
+
+  .email-dl {
+    grid-template-columns: 1fr;
+  }
+
+  .email-dl__value {
+    text-align: left;
+  }
+
+  .email-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .email-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}

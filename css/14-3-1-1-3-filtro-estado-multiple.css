@@ -1,0 +1,532 @@
+/*
+  Trazabilidad issue 3.1.1.3 (#14):
+  Estilos del prototipo del filtro de selección múltiple por Estado de la Postulación
+  (Registrado, En Revisión, Aprobado, Rechazado). Implementa SOLO la issue #14
+  (predecesora 3.1.1.1 / #13) y prepara la combinación con los filtros de facultad
+  y de fecha de postulación (2.2.1 / 3.1.1.4).
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): contenedor general de la pantalla del filtro por estado */
+.state-filter-shell {
+  width: min(1100px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): encabezado con marca SIGME y retorno al inicio */
+.state-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.state-filter-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.state-filter-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.state-filter-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.state-filter-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.state-filter-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.state-filter-header__nav a {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.state-filter-header__nav a:hover,
+.state-filter-header__nav a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): resumen e introducción del filtro */
+.state-filter-overview {
+  margin-bottom: 1.25rem;
+}
+
+.state-filter-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+}
+
+.state-filter-overview__lead {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 72ch;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): disposición en dos columnas (filtro + resultados) */
+.state-filter-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): panel de selección múltiple por estado */
+.state-filter-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  position: sticky;
+  top: 1rem;
+}
+
+.state-filter-panel__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.state-filter-panel__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): contador de estados seleccionados */
+.state-filter-counter {
+  border-radius: 999px;
+  background-color: rgba(31, 95, 191, 0.12);
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.state-filter-counter--empty {
+  background-color: #eef2fa;
+  color: var(--color-muted);
+}
+
+.state-filter-panel__hint {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): grupo de checkboxes/chips de estados */
+.state-filter-options {
+  border: 0;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.state-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.state-filter-option:hover {
+  border-color: #c3cde1;
+}
+
+.state-filter-option:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.state-filter-option__checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.state-filter-option__label {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.state-filter-option__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.state-filter-option--registered .state-filter-option__dot {
+  background-color: var(--color-info);
+}
+
+.state-filter-option--review .state-filter-option__dot {
+  background-color: var(--color-warn);
+}
+
+.state-filter-option--approved .state-filter-option__dot {
+  background-color: var(--color-ok);
+}
+
+.state-filter-option--rejected .state-filter-option__dot {
+  background-color: var(--color-danger);
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): estado marcado (chip activo) */
+.state-filter-option.is-checked {
+  border-color: var(--color-primary);
+  background-color: rgba(31, 95, 191, 0.08);
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): botones aplicar/limpiar del filtro */
+.state-filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.25);
+}
+
+.btn--primary {
+  flex: 1;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background-color: #eef2fa;
+}
+
+.btn--ghost:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): resumen de filtros activos */
+.state-filter-active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.state-filter-active__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  background-color: #eef2fa;
+  color: var(--color-text);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+}
+
+.state-filter-active__empty {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): área de resultados filtrados */
+.state-results {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  min-height: 320px;
+}
+
+.state-results__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.state-results__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.state-results__count {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.state-results__meta {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.state-results__table-wrap {
+  overflow-x: auto;
+}
+
+.state-results__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.state-results__table th,
+.state-results__table td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.state-results__table th {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.state-results__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.state-results__table tbody tr:hover {
+  background-color: #f8fafd;
+}
+
+.state-results__table td.state-results__cell-main {
+  white-space: normal;
+  min-width: 200px;
+}
+
+.state-results__program {
+  display: block;
+  font-weight: 600;
+}
+
+.state-results__student {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): píldoras de estado con colores distintos */
+.state-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+}
+
+.state-pill--registered {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.state-pill--review {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.state-pill--approved {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.state-pill--rejected {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): estado vacío de resultados */
+.state-results__empty {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  border: 1px dashed var(--color-border);
+  border-radius: 10px;
+  color: var(--color-muted);
+  text-align: center;
+  padding: 1rem;
+}
+
+.state-results__empty p {
+  margin: 0;
+  max-width: 42ch;
+  line-height: 1.5;
+}
+
+.state-results__empty[hidden] {
+  display: none;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): nota de alcance y dependencias de la issue */
+.state-filter-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.state-filter-footer p {
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 3.1.1.3 (#14): comportamiento responsive del filtro */
+@media (max-width: 900px) {
+  .state-filter-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .state-filter-panel {
+    position: static;
+  }
+
+  .state-filter-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .state-filter-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .state-filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .state-filter-options {
+    grid-template-columns: 1fr;
+  }
+
+  .state-filter-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .state-results__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

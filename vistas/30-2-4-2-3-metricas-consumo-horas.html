@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Métricas de consumo de horas</title>
+  <!-- Trazabilidad issue 2.4.2.3 (#30): hoja de estilos de las métricas e indicadores gráficos del consumo de horas -->
+  <link rel="stylesheet" href="../css/30-2-4-2-3-metricas-consumo-horas.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.4.2.3 (#30): contenedor general de la sección de métricas -->
+  <div class="hours-shell">
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): encabezado con marca SIGME y enlace Volver al inicio -->
+    <header class="hours-header">
+      <div class="hours-brand">
+        <span class="hours-brand__mark" aria-hidden="true">S</span>
+        <div class="hours-brand__text">
+          <span class="hours-brand__name">SIGME</span>
+          <span class="hours-brand__subtitle">Tablero personal de horas operadas</span>
+        </div>
+      </div>
+      <span class="hours-issue-tag">Issue 2.4.2.3 &middot; #30</span>
+      <a class="hours-back" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): resumen y selector del periodo simulado -->
+    <section class="hours-overview" aria-labelledby="hoursTitle">
+      <p class="hours-overview__eyebrow">Métricas de horas operadas</p>
+      <h1 class="hours-overview__title" id="hoursTitle">Consumo de horas frente al mínimo exigido</h1>
+      <p class="hours-overview__lead">
+        Consulta las horas de operación acumuladas, las horas que faltan para alcanzar
+        el mínimo exigido y la distribución mensual de tu actividad. Las horas se calculan
+        a partir del tiempo en que el switch del catálogo ha permanecido en estado
+        &laquo;Abierto&raquo;.
+      </p>
+
+      <div class="hours-toolbar">
+        <div class="hours-toolbar__field">
+          <label class="hours-toolbar__label" for="periodSelect">Periodo simulado</label>
+          <select class="hours-control" id="periodSelect">
+            <option value="2025-2">2025-2 &middot; Julio a diciembre (cerrado)</option>
+            <option value="2026-1" selected>2026-1 &middot; Enero a junio (en curso)</option>
+            <option value="2026-2">2026-2 &middot; Julio a diciembre (en curso)</option>
+            <option value="2026">Año 2026 &middot; Enero a diciembre</option>
+          </select>
+        </div>
+        <p class="hours-toolbar__hint">
+          Cambia el periodo para actualizar los indicadores. Los datos son simulados y
+          se recalculan en el navegador con JavaScript nativo.
+        </p>
+      </div>
+
+      <!-- Trazabilidad issue 2.4.2.3 (#30): resumen textual del periodo, anunciado por lector de pantalla -->
+      <p class="hours-summary" id="hoursSummary" role="status" aria-live="polite">
+        Periodo 2026-1 &middot; Enero a junio: 96 de 120 horas exigidas (80&nbsp;%).
+        Faltan 24 horas para cumplir el mínimo.
+      </p>
+
+      <!-- Trazabilidad issue 2.4.2.3 (#30): indicadores clave del periodo -->
+      <div class="hours-kpis">
+        <div class="hours-kpi">
+          <span class="hours-kpi__label">Horas cumplidas</span>
+          <span class="hours-kpi__value" id="kpiCompleted">96 h</span>
+          <span class="hours-kpi__meta" id="kpiCompletedMeta">de 120 h exigidas</span>
+        </div>
+        <div class="hours-kpi">
+          <span class="hours-kpi__label">Horas faltantes</span>
+          <span class="hours-kpi__value" id="kpiRemaining">24 h</span>
+          <span class="hours-kpi__meta" id="kpiRemainingMeta">para alcanzar el mínimo</span>
+        </div>
+        <div class="hours-kpi">
+          <span class="hours-kpi__label">Porcentaje del mínimo</span>
+          <span class="hours-kpi__value" id="kpiPercent">80 %</span>
+          <span class="hours-kpi__meta">avance del periodo</span>
+        </div>
+        <div class="hours-kpi">
+          <span class="hours-kpi__label">Meses activos</span>
+          <span class="hours-kpi__value" id="kpiMonths">6 de 6</span>
+          <span class="hours-kpi__meta">meses con horas registradas</span>
+        </div>
+        <div class="hours-kpi">
+          <span class="hours-kpi__label">Estado</span>
+          <span class="hours-kpi__value hours-kpi__value--info" id="kpiStatus">En progreso</span>
+          <span class="hours-kpi__meta">según el mínimo exigido</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): anillo de horas y barras mensuales -->
+    <div class="hours-dashboard">
+
+      <!-- Trazabilidad issue 2.4.2.3 (#30): medidor circular y comparación contra el mínimo -->
+      <section class="hours-card" aria-labelledby="ringCardTitle">
+        <div class="hours-card__header">
+          <h2 class="hours-card__title" id="ringCardTitle">Cumplimiento del mínimo</h2>
+          <span class="hours-pill hours-pill--info" id="ringPill">En progreso</span>
+        </div>
+
+        <div class="hours-compare">
+          <!-- Trazabilidad issue 2.4.2.3 (#30): anillo o medidor de horas cumplidas -->
+          <div
+            class="hours-ring hours-ring--info"
+            id="hoursRing"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="80"
+            aria-valuetext="96 de 120 horas exigidas, 80 por ciento"
+            aria-labelledby="ringValue ringCaption"
+          >
+            <div class="hours-ring__center">
+              <span class="hours-ring__value" id="ringValue">80 %</span>
+              <span class="hours-ring__caption" id="ringCaption">96 / 120 h</span>
+            </div>
+          </div>
+
+          <div class="hours-compare__info">
+            <p class="hours-compare__note" id="compareNote">
+              Has cumplido 96 de las 120 horas exigidas. Faltan 24 horas para alcanzar
+              el mínimo del periodo.
+            </p>
+            <dl class="hours-compare__facts">
+              <div class="hours-compare__fact">
+                <dt class="hours-compare__fact-label">Mínimo exigido</dt>
+                <dd class="hours-compare__fact-value" id="compareRequired">120 h</dd>
+              </div>
+              <div class="hours-compare__fact">
+                <dt class="hours-compare__fact-label">Horas cumplidas</dt>
+                <dd class="hours-compare__fact-value" id="compareCompleted">96 h</dd>
+              </div>
+              <div class="hours-compare__fact">
+                <dt class="hours-compare__fact-label">Horas faltantes</dt>
+                <dd class="hours-compare__fact-value" id="compareRemaining">24 h</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Trazabilidad issue 2.4.2.3 (#30): barra de comparación contra el mínimo exigido -->
+        <div class="hours-meter">
+          <div class="hours-meter__labels">
+            <span>0 h</span>
+            <span id="compareMaxLabel">120 h</span>
+          </div>
+          <div
+            class="hours-meter__track"
+            id="compareTrack"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="120"
+            aria-valuenow="96"
+            aria-valuetext="96 de 120 horas exigidas"
+          >
+            <span class="hours-meter__fill hours-meter__fill--info" id="compareFill"></span>
+            <span class="hours-meter__marker" id="compareMarker" aria-hidden="true"></span>
+          </div>
+          <p class="hours-meter__legend">
+            <span class="hours-meter__legend-line" aria-hidden="true"></span>
+            La línea vertical marca el mínimo exigido:
+            <strong id="compareRequiredLegend">120 h</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 2.4.2.3 (#30): gráfico de barras por mes -->
+      <section class="hours-card" aria-labelledby="chartCardTitle">
+        <div class="hours-card__header">
+          <div>
+            <h2 class="hours-card__title" id="chartCardTitle">Distribución mensual de horas</h2>
+            <p class="hours-card__hint">Horas operadas por mes y meta mensual de referencia.</p>
+          </div>
+          <span class="hours-pill hours-pill--info" id="chartPill">En progreso</span>
+        </div>
+
+        <figure class="hours-chart">
+          <figcaption class="hours-chart__caption" id="chartCaption">
+            Barras por mes del periodo 2026-1. La línea punteada indica la meta mensual de 20 h.
+          </figcaption>
+          <div class="hours-chart__scroll">
+            <div
+              class="hours-chart__plot"
+              id="chartPlot"
+              role="img"
+              aria-label="Consumo mensual del periodo 2026-1: enero 12 horas, parcial; febrero 18 horas, parcial; marzo 22 horas, cumplido; abril 15 horas, parcial; mayo 17 horas, parcial; junio 12 horas, parcial."
+            >
+              <!-- Trazabilidad issue 2.4.2.3 (#30): barras iniciales del periodo 2026-1 -->
+              <div class="hours-bar" role="listitem" aria-label="Enero: 12 horas de 20, parcial">
+                <span class="hours-bar__value">12 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--warn" style="height: 55%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">Ene</span>
+              </div>
+              <div class="hours-bar" role="listitem" aria-label="Febrero: 18 horas de 20, parcial">
+                <span class="hours-bar__value">18 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--warn" style="height: 82%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">Feb</span>
+              </div>
+              <div class="hours-bar" role="listitem" aria-label="Marzo: 22 horas de 20, cumplido">
+                <span class="hours-bar__value">22 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--ok" style="height: 100%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">Mar</span>
+              </div>
+              <div class="hours-bar" role="listitem" aria-label="Abril: 15 horas de 20, parcial">
+                <span class="hours-bar__value">15 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--warn" style="height: 68%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">Abr</span>
+              </div>
+              <div class="hours-bar" role="listitem" aria-label="Mayo: 17 horas de 20, parcial">
+                <span class="hours-bar__value">17 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--warn" style="height: 77%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">May</span>
+              </div>
+              <div class="hours-bar" role="listitem" aria-label="Junio: 12 horas de 20, parcial">
+                <span class="hours-bar__value">12 h</span>
+                <div class="hours-bar__track">
+                  <span class="hours-bar__fill hours-bar__fill--warn" style="height: 55%"></span>
+                  <span class="hours-bar__target" style="bottom: 91%"></span>
+                </div>
+                <span class="hours-bar__label">Jun</span>
+              </div>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+    </div>
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): detalle mensual accesible con estado por mes -->
+    <section class="hours-card hours-table-card" aria-labelledby="tableTitle">
+      <div class="hours-card__header">
+        <h2 class="hours-card__title" id="tableTitle">Detalle mensual</h2>
+        <span class="hours-pill hours-pill--info" id="tablePill">6 meses</span>
+      </div>
+      <div class="hours-table-wrap">
+        <table class="hours-table">
+          <thead>
+            <tr>
+              <th scope="col">Mes</th>
+              <th scope="col">Horas operadas</th>
+              <th scope="col">Meta mensual</th>
+              <th scope="col">Avance</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody id="monthlyTableBody">
+            <tr>
+              <td>Enero</td>
+              <td>12 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--warn" style="width: 60%"></span></span>
+                  <span class="hours-mini__text">60 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--warn">Parcial</span></td>
+            </tr>
+            <tr>
+              <td>Febrero</td>
+              <td>18 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--warn" style="width: 90%"></span></span>
+                  <span class="hours-mini__text">90 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--warn">Parcial</span></td>
+            </tr>
+            <tr>
+              <td>Marzo</td>
+              <td>22 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--ok" style="width: 100%"></span></span>
+                  <span class="hours-mini__text">110 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--ok">Cumplido</span></td>
+            </tr>
+            <tr>
+              <td>Abril</td>
+              <td>15 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--warn" style="width: 75%"></span></span>
+                  <span class="hours-mini__text">75 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--warn">Parcial</span></td>
+            </tr>
+            <tr>
+              <td>Mayo</td>
+              <td>17 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--warn" style="width: 85%"></span></span>
+                  <span class="hours-mini__text">85 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--warn">Parcial</span></td>
+            </tr>
+            <tr>
+              <td>Junio</td>
+              <td>12 h</td>
+              <td>20 h</td>
+              <td>
+                <span class="hours-mini">
+                  <span class="hours-mini__track"><span class="hours-mini__fill hours-mini__fill--warn" style="width: 60%"></span></span>
+                  <span class="hours-mini__text">60 %</span>
+                </span>
+              </td>
+              <td><span class="hours-pill hours-pill--warn">Parcial</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): leyenda de colores y estados -->
+    <section class="hours-legend" aria-labelledby="legendTitle">
+      <h2 class="hours-legend__title" id="legendTitle">Estados y leyenda</h2>
+      <ul class="hours-legend__list">
+        <li class="hours-legend__item">
+          <span class="hours-legend__swatch hours-legend__swatch--ok" aria-hidden="true"></span>
+          <span><strong>Cumplido:</strong> se alcanzó o superó el mínimo exigido o la meta mensual.</span>
+        </li>
+        <li class="hours-legend__item">
+          <span class="hours-legend__swatch hours-legend__swatch--info" aria-hidden="true"></span>
+          <span><strong>En progreso:</strong> el avance del periodo es igual o superior al 70&nbsp;% del mínimo.</span>
+        </li>
+        <li class="hours-legend__item">
+          <span class="hours-legend__swatch hours-legend__swatch--warn" aria-hidden="true"></span>
+          <span><strong>En riesgo / Parcial:</strong> el avance está entre el 40&nbsp;% y el 69&nbsp;%, o el mes no alcanza su meta.</span>
+        </li>
+        <li class="hours-legend__item">
+          <span class="hours-legend__swatch hours-legend__swatch--danger" aria-hidden="true"></span>
+          <span><strong>Crítico / Sin horas:</strong> el avance es menor al 40&nbsp;% o el mes no registra horas.</span>
+        </li>
+      </ul>
+      <p class="hours-legend__note">
+        Los estados se muestran siempre con texto, no solo con color. La tabla de detalle
+        mensual y los textos alternativos del gráfico permiten interpretar la información
+        con lectores de pantalla.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.3 (#30): nota de alcance y dependencias -->
+    <footer class="hours-footer">
+      <p>
+        Issue 2.4.2.3 (#30). Predecesora: 2.4.2.2 (#29). Continúa en 2.4.2.4 (#31) con
+        pruebas de integración y validación visual de alertas. Los datos mostrados son
+        simulados; el cálculo real de horas se obtiene del tiempo en que el switch del
+        catálogo permanece en estado &laquo;Abierto&raquo;.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.4.2.3 (#30): JS nativo para cambiar el periodo simulado -->
+  <script>
+    (function () {
+      'use strict';
+
+      var MONTH_NAMES = {
+        Ene: 'Enero', Feb: 'Febrero', Mar: 'Marzo', Abr: 'Abril',
+        May: 'Mayo', Jun: 'Junio', Jul: 'Julio', Ago: 'Agosto',
+        Sep: 'Septiembre', Oct: 'Octubre', Nov: 'Noviembre', Dic: 'Diciembre'
+      };
+
+      var periods = {
+        '2025-2': {
+          label: '2025-2 · Julio a diciembre',
+          required: 120,
+          completed: 126,
+          months: [
+            { name: 'Jul', hours: 18, target: 20 },
+            { name: 'Ago', hours: 20, target: 20 },
+            { name: 'Sep', hours: 24, target: 20 },
+            { name: 'Oct', hours: 22, target: 20 },
+            { name: 'Nov', hours: 21, target: 20 },
+            { name: 'Dic', hours: 21, target: 20 }
+          ]
+        },
+        '2026-1': {
+          label: '2026-1 · Enero a junio',
+          required: 120,
+          completed: 96,
+          months: [
+            { name: 'Ene', hours: 12, target: 20 },
+            { name: 'Feb', hours: 18, target: 20 },
+            { name: 'Mar', hours: 22, target: 20 },
+            { name: 'Abr', hours: 15, target: 20 },
+            { name: 'May', hours: 17, target: 20 },
+            { name: 'Jun', hours: 12, target: 20 }
+          ]
+        },
+        '2026-2': {
+          label: '2026-2 · Julio a diciembre',
+          required: 120,
+          completed: 54,
+          months: [
+            { name: 'Jul', hours: 8, target: 20 },
+            { name: 'Ago', hours: 14, target: 20 },
+            { name: 'Sep', hours: 16, target: 20 },
+            { name: 'Oct', hours: 16, target: 20 },
+            { name: 'Nov', hours: 0, target: 20 },
+            { name: 'Dic', hours: 0, target: 20 }
+          ]
+        },
+        '2026': {
+          label: 'Año 2026 · Enero a diciembre',
+          required: 240,
+          completed: 150,
+          months: [
+            { name: 'Ene', hours: 12, target: 20 },
+            { name: 'Feb', hours: 18, target: 20 },
+            { name: 'Mar', hours: 22, target: 20 },
+            { name: 'Abr', hours: 15, target: 20 },
+            { name: 'May', hours: 17, target: 20 },
+            { name: 'Jun', hours: 12, target: 20 },
+            { name: 'Jul', hours: 8, target: 20 },
+            { name: 'Ago', hours: 14, target: 20 },
+            { name: 'Sep', hours: 16, target: 20 },
+            { name: 'Oct', hours: 16, target: 20 },
+            { name: 'Nov', hours: 0, target: 20 },
+            { name: 'Dic', hours: 0, target: 20 }
+          ]
+        }
+      };
+
+      var select = document.getElementById('periodSelect');
+      var summary = document.getElementById('hoursSummary');
+      var kpiCompleted = document.getElementById('kpiCompleted');
+      var kpiCompletedMeta = document.getElementById('kpiCompletedMeta');
+      var kpiRemaining = document.getElementById('kpiRemaining');
+      var kpiRemainingMeta = document.getElementById('kpiRemainingMeta');
+      var kpiPercent = document.getElementById('kpiPercent');
+      var kpiMonths = document.getElementById('kpiMonths');
+      var kpiStatus = document.getElementById('kpiStatus');
+      var ring = document.getElementById('hoursRing');
+      var ringValue = document.getElementById('ringValue');
+      var ringCaption = document.getElementById('ringCaption');
+      var ringPill = document.getElementById('ringPill');
+      var compareNote = document.getElementById('compareNote');
+      var compareRequired = document.getElementById('compareRequired');
+      var compareCompleted = document.getElementById('compareCompleted');
+      var compareRemaining = document.getElementById('compareRemaining');
+      var compareMaxLabel = document.getElementById('compareMaxLabel');
+      var compareRequiredLegend = document.getElementById('compareRequiredLegend');
+      var compareTrack = document.getElementById('compareTrack');
+      var compareFill = document.getElementById('compareFill');
+      var compareMarker = document.getElementById('compareMarker');
+      var chartPill = document.getElementById('chartPill');
+      var chartCaption = document.getElementById('chartCaption');
+      var chartPlot = document.getElementById('chartPlot');
+      var monthlyTableBody = document.getElementById('monthlyTableBody');
+      var tablePill = document.getElementById('tablePill');
+
+      function statusFor(percent) {
+        if (percent >= 100) {
+          return { key: 'ok', label: 'Cumplido' };
+        }
+        if (percent >= 70) {
+          return { key: 'info', label: 'En progreso' };
+        }
+        if (percent >= 40) {
+          return { key: 'warn', label: 'En riesgo' };
+        }
+        return { key: 'danger', label: 'Crítico' };
+      }
+
+      function monthStatusFor(hours, target) {
+        if (hours >= target) {
+          return { key: 'ok', label: 'Cumplido' };
+        }
+        if (hours > 0) {
+          return { key: 'warn', label: 'Parcial' };
+        }
+        return { key: 'danger', label: 'Sin horas' };
+      }
+
+      function fullMonth(shortName) {
+        return MONTH_NAMES[shortName] || shortName;
+      }
+
+      function createPill(status) {
+        var pill = document.createElement('span');
+        pill.className = 'hours-pill hours-pill--' + status.key;
+        pill.textContent = status.label;
+        return pill;
+      }
+
+      function renderBars(data, maxValue) {
+        chartPlot.innerHTML = '';
+
+        data.months.forEach(function (month) {
+          var monthStatus = monthStatusFor(month.hours, month.target);
+          var targetPercent = Math.round((month.target / maxValue) * 100);
+          var fillPercent = Math.round((month.hours / maxValue) * 100);
+
+          var bar = document.createElement('div');
+          bar.className = 'hours-bar';
+          bar.setAttribute('role', 'listitem');
+          bar.setAttribute('aria-label',
+            fullMonth(month.name) + ': ' + month.hours + ' horas de ' +
+            month.target + ', ' + monthStatus.label.toLowerCase());
+
+          var value = document.createElement('span');
+          value.className = 'hours-bar__value';
+          value.textContent = month.hours + ' h';
+
+          var track = document.createElement('div');
+          track.className = 'hours-bar__track';
+
+          var fill = document.createElement('span');
+          fill.className = 'hours-bar__fill hours-bar__fill--' + monthStatus.key;
+          fill.style.height = fillPercent + '%';
+
+          var target = document.createElement('span');
+          target.className = 'hours-bar__target';
+          target.style.bottom = targetPercent + '%';
+
+          track.appendChild(fill);
+          track.appendChild(target);
+
+          var label = document.createElement('span');
+          label.className = 'hours-bar__label';
+          label.textContent = month.name;
+
+          bar.appendChild(value);
+          bar.appendChild(track);
+          bar.appendChild(label);
+          chartPlot.appendChild(bar);
+        });
+      }
+
+      function renderTable(data) {
+        monthlyTableBody.innerHTML = '';
+
+        data.months.forEach(function (month) {
+          var monthStatus = monthStatusFor(month.hours, month.target);
+          var percent = month.target > 0 ? Math.round((month.hours / month.target) * 100) : 0;
+          var barWidth = Math.min(percent, 100);
+
+          var row = document.createElement('tr');
+
+          var nameCell = document.createElement('td');
+          nameCell.textContent = fullMonth(month.name);
+
+          var hoursCell = document.createElement('td');
+          hoursCell.textContent = month.hours + ' h';
+
+          var targetCell = document.createElement('td');
+          targetCell.textContent = month.target + ' h';
+
+          var progressCell = document.createElement('td');
+          var mini = document.createElement('span');
+          mini.className = 'hours-mini';
+          var miniTrack = document.createElement('span');
+          miniTrack.className = 'hours-mini__track';
+          var miniFill = document.createElement('span');
+          miniFill.className = 'hours-mini__fill hours-mini__fill--' + monthStatus.key;
+          miniFill.style.width = barWidth + '%';
+          miniTrack.appendChild(miniFill);
+          var miniText = document.createElement('span');
+          miniText.className = 'hours-mini__text';
+          miniText.textContent = percent + ' %';
+          mini.appendChild(miniTrack);
+          mini.appendChild(miniText);
+          progressCell.appendChild(mini);
+
+          var statusCell = document.createElement('td');
+          statusCell.appendChild(createPill(monthStatus));
+
+          row.appendChild(nameCell);
+          row.appendChild(hoursCell);
+          row.appendChild(targetCell);
+          row.appendChild(progressCell);
+          row.appendChild(statusCell);
+          monthlyTableBody.appendChild(row);
+        });
+      }
+
+      function render(key) {
+        var data = periods[key];
+        if (!data) {
+          return;
+        }
+
+        var percent = (data.completed / data.required) * 100;
+        var roundedPercent = Math.round(percent);
+        var status = statusFor(percent);
+        var remaining = Math.max(data.required - data.completed, 0);
+        var exceeded = Math.max(data.completed - data.required, 0);
+        var activeMonths = data.months.filter(function (month) {
+          return month.hours > 0;
+        }).length;
+        var maxValue = 0;
+
+        data.months.forEach(function (month) {
+          maxValue = Math.max(maxValue, month.hours, month.target);
+        });
+        if (maxValue < 1) {
+          maxValue = 1;
+        }
+
+        var meterMax = Math.max(data.required, data.completed);
+        var fillPercent = Math.round((data.completed / meterMax) * 100);
+        var markerPercent = Math.round((data.required / meterMax) * 100);
+
+        if (exceeded > 0) {
+          summary.textContent = 'Periodo ' + data.label + ': ' + data.completed + ' de ' +
+            data.required + ' horas exigidas (' + roundedPercent + ' %). ' +
+            'Mínimo superado por ' + exceeded + ' horas.';
+          compareNote.textContent = 'Has cumplido ' + data.completed + ' de las ' +
+            data.required + ' horas exigidas. Superaste el mínimo por ' + exceeded + ' horas.';
+          kpiRemainingMeta.textContent = 'mínimo superado';
+        } else {
+          summary.textContent = 'Periodo ' + data.label + ': ' + data.completed + ' de ' +
+            data.required + ' horas exigidas (' + roundedPercent + ' %). Faltan ' +
+            remaining + ' horas para cumplir el mínimo.';
+          compareNote.textContent = 'Has cumplido ' + data.completed + ' de las ' +
+            data.required + ' horas exigidas. Faltan ' + remaining +
+            ' horas para alcanzar el mínimo del periodo.';
+          kpiRemainingMeta.textContent = 'para alcanzar el mínimo';
+        }
+
+        kpiCompleted.textContent = data.completed + ' h';
+        kpiCompletedMeta.textContent = 'de ' + data.required + ' h exigidas';
+        kpiRemaining.textContent = remaining + ' h';
+        kpiPercent.textContent = roundedPercent + ' %';
+        kpiMonths.textContent = activeMonths + ' de ' + data.months.length;
+        kpiStatus.textContent = status.label;
+        kpiStatus.className = 'hours-kpi__value hours-kpi__value--' + status.key;
+
+        ring.className = 'hours-ring hours-ring--' + status.key;
+        ring.style.setProperty('--pct', String(Math.min(roundedPercent, 100)));
+        ring.setAttribute('aria-valuenow', String(Math.min(roundedPercent, 100)));
+        ring.setAttribute('aria-valuetext', data.completed + ' de ' + data.required +
+          ' horas exigidas, ' + roundedPercent + ' por ciento');
+        ringValue.textContent = roundedPercent + ' %';
+        ringCaption.textContent = data.completed + ' / ' + data.required + ' h';
+
+        ringPill.className = 'hours-pill hours-pill--' + status.key;
+        ringPill.textContent = status.label;
+        chartPill.className = 'hours-pill hours-pill--' + status.key;
+        chartPill.textContent = status.label;
+
+        compareRequired.textContent = data.required + ' h';
+        compareCompleted.textContent = data.completed + ' h';
+        compareRemaining.textContent = remaining + ' h';
+        compareMaxLabel.textContent = meterMax + ' h';
+        compareRequiredLegend.textContent = data.required + ' h';
+
+        compareFill.className = 'hours-meter__fill hours-meter__fill--' + status.key;
+        compareFill.style.width = fillPercent + '%';
+        compareMarker.style.left = markerPercent + '%';
+        compareTrack.setAttribute('aria-valuemax', String(meterMax));
+        compareTrack.setAttribute('aria-valuenow', String(data.completed));
+        compareTrack.setAttribute('aria-valuetext', data.completed + ' de ' +
+          meterMax + ' horas; mínimo exigido ' + data.required + ' horas');
+
+        var targetHours = data.months.length > 0 ? data.months[0].target : 0;
+        chartCaption.textContent = 'Barras por mes del periodo ' + data.label +
+          '. La línea punteada indica la meta mensual de ' + targetHours + ' h.';
+
+        var ariaParts = data.months.map(function (month) {
+          return fullMonth(month.name) + ': ' + month.hours + ' horas de ' +
+            month.target + ', ' + monthStatusFor(month.hours, month.target).label.toLowerCase();
+        });
+        chartPlot.setAttribute('aria-label',
+          'Consumo mensual del periodo ' + data.label + '. ' + ariaParts.join('. ') + '.');
+
+        tablePill.textContent = data.months.length + ' meses';
+
+        renderBars(data, maxValue);
+        renderTable(data);
+      }
+
+      select.addEventListener('change', function () {
+        render(select.value);
+      });
+
+      render(select.value);
+    })();
+  </script>
+</body>
+</html>

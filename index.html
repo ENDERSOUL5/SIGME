@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Búsqueda de postulaciones</title>
+  <!-- Trazabilidad issue 3.1.1.1 (#13): hoja de estilos del componente de UI -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 3.1.1.1 (#13): contenedor general del componente de UI -->
+  <div class="app-shell">
+
+    <!-- Trazabilidad issue 3.1.1.1 (#13): encabezado de la pantalla de búsqueda -->
+    <header class="app-header">
+      <div class="app-brand">
+        <span class="app-brand__mark" aria-hidden="true">S</span>
+        <div class="app-brand__text">
+          <span class="app-brand__name">SIGME</span>
+          <span class="app-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="filters-toggle"
+        id="filtersToggle"
+        aria-controls="filtersPanel"
+        aria-expanded="false"
+      >
+        Filtros
+      </button>
+    </header>
+
+    <!-- Trazabilidad issue 3.1.1.1 (#13): barra de búsqueda principal -->
+    <section class="search-bar" aria-labelledby="searchBarTitle">
+      <h1 class="search-bar__title" id="searchBarTitle">Buscar postulaciones</h1>
+      <form class="search-bar__form" role="search" action="#" method="get">
+        <label class="sr-only" for="searchInput">Término de búsqueda</label>
+        <span class="search-bar__icon" aria-hidden="true">&#128269;</span>
+        <input
+          class="search-bar__input"
+          id="searchInput"
+          name="q"
+          type="search"
+          placeholder="Busca por nombre, documento o programa académico"
+          autocomplete="off"
+        >
+        <button class="search-bar__submit" type="submit">Buscar</button>
+      </form>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.1 (#13): disposición gráfica barra de búsqueda + panel de filtros -->
+    <div class="search-layout">
+
+      <!-- Trazabilidad issue 3.1.1.1 (#13): panel lateral de filtros (superior en móvil) -->
+      <aside class="filters-panel" id="filtersPanel" aria-labelledby="filtersPanelTitle">
+        <div class="filters-panel__header">
+          <h2 class="filters-panel__title" id="filtersPanelTitle">Filtros</h2>
+          <button type="button" class="filters-panel__close" id="filtersClose" aria-label="Cerrar filtros">
+            &times;
+          </button>
+        </div>
+
+        <!-- Trazabilidad issue 3.1.1.1 (#13): área reservada para los controles de filtrado (issues #14 y #15) -->
+        <div class="filters-panel__body">
+          <p class="filters-panel__placeholder">
+            Espacio reservado para los filtros de estado y de rango de fechas,
+            que se implementarán en las issues #14 y #15.
+          </p>
+        </div>
+
+        <!-- Trazabilidad issue 3.1.1.1 (#13): acciones del panel de filtros -->
+        <div class="filters-panel__actions">
+          <button type="button" class="btn btn--ghost">Limpiar</button>
+          <button type="button" class="btn btn--primary">Aplicar filtros</button>
+        </div>
+      </aside>
+
+      <!-- Trazabilidad issue 3.1.1.1 (#13): área de resultados del componente de búsqueda -->
+      <main class="results-area" aria-labelledby="resultsTitle">
+        <div class="results-area__header">
+          <h2 class="results-area__title" id="resultsTitle">Resultados</h2>
+          <span class="results-area__count">0 postulaciones</span>
+        </div>
+        <div class="results-area__empty">
+          <p>Usa la barra de búsqueda o el panel de filtros para comenzar.</p>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Trazabilidad issue 3.1.1.1 (#13): JS mínimo para mostrar/ocultar el panel de filtros en móvil -->
+  <script>
+    (function () {
+      var toggle = document.getElementById('filtersToggle');
+      var close = document.getElementById('filtersClose');
+      var panel = document.getElementById('filtersPanel');
+
+      function setOpen(open) {
+        panel.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      }
+
+      toggle.addEventListener('click', function () {
+        setOpen(!panel.classList.contains('is-open'));
+      });
+
+      close.addEventListener('click', function () {
+        setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

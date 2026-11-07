@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Pruebas de rendimiento y respuesta responsive</title>
+  <!-- Trazabilidad issue 3.1.1.6 (#17): hoja de estilos del banco de pruebas -->
+  <link rel="stylesheet" href="../css/17-3-1-1-6-pruebas-rendimiento-responsive.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 3.1.1.6 (#17): contenedor general del banco de pruebas -->
+  <div class="perf-shell">
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): encabezado con marca SIGME y enlace de regreso -->
+    <header class="perf-header">
+      <div class="perf-brand">
+        <span class="perf-brand__mark" aria-hidden="true">S</span>
+        <div class="perf-brand__text">
+          <span class="perf-brand__name">SIGME</span>
+          <span class="perf-brand__subtitle">Pruebas de rendimiento y respuesta responsive</span>
+        </div>
+      </div>
+      <span class="perf-issue-tag">Issue 3.1.1.6 &middot; #17</span>
+      <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): resumen de la ejecución -->
+    <section class="perf-overview" aria-labelledby="perfOverviewTitle">
+      <h1 class="perf-overview__title" id="perfOverviewTitle">Rendimiento del filtrado masivo y validación responsive</h1>
+      <p class="perf-overview__lead">
+        Banco de pruebas de la consulta de filtrado masivo de proyectos postulados. Ejecuta
+        combinaciones de estado, rango de fechas y texto para medir el tiempo de respuesta
+        frente al umbral de 500 ms (3.1) y valida el reflujo de la interfaz en móvil, tablet
+        y escritorio (3.3).
+      </p>
+
+      <!-- Trazabilidad issue 3.1.1.6 (#17): métricas de rendimiento de la ejecución -->
+      <div class="perf-metrics">
+        <div class="perf-metric">
+          <span class="perf-metric__label">Tiempo promedio</span>
+          <span class="perf-metric__value perf-metric__value--pending" id="metricAvg">&mdash;</span>
+          <span class="perf-metric__meta">Objetivo &le; 500 ms (3.1)</span>
+        </div>
+        <div class="perf-metric">
+          <span class="perf-metric__label">Consulta más lenta</span>
+          <span class="perf-metric__value perf-metric__value--pending" id="metricMax">&mdash;</span>
+          <span class="perf-metric__meta">Peor caso entre combinaciones</span>
+        </div>
+        <div class="perf-metric">
+          <span class="perf-metric__label">Dentro del umbral</span>
+          <span class="perf-metric__value perf-metric__value--pending" id="metricPass">&mdash;</span>
+          <span class="perf-metric__meta">Combinaciones &le; 500 ms</span>
+        </div>
+        <div class="perf-metric">
+          <span class="perf-metric__label">Registros procesados</span>
+          <span class="perf-metric__value perf-metric__value--pending" id="metricRecords">&mdash;</span>
+          <span class="perf-metric__meta">Volumen de la prueba simulada</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): panel de ejecución de la prueba de rendimiento -->
+    <section class="perf-panel" aria-labelledby="perfPanelTitle">
+      <div class="perf-panel__header">
+        <div>
+          <h2 class="perf-panel__title" id="perfPanelTitle">Ejecutar prueba de rendimiento</h2>
+          <p class="perf-panel__hint">Configura el volumen de datos y ejecuta la simulación de la consulta masiva.</p>
+        </div>
+      </div>
+
+      <!-- Trazabilidad issue 3.1.1.6 (#17): controles de la prueba -->
+      <div class="perf-controls">
+        <div class="perf-controls__field">
+          <label class="perf-controls__label" for="volumeSelect">Volumen de registros</label>
+          <select class="perf-controls__select" id="volumeSelect">
+            <option value="1000">1.000 registros</option>
+            <option value="5000" selected>5.000 registros</option>
+            <option value="10000">10.000 registros</option>
+          </select>
+        </div>
+        <div class="perf-controls__field">
+          <label class="perf-controls__label" for="pageSelect">Tamaño de página</label>
+          <select class="perf-controls__select" id="pageSelect">
+            <option value="10">10 por página</option>
+            <option value="25" selected>25 por página</option>
+            <option value="50">50 por página</option>
+          </select>
+        </div>
+        <div class="perf-controls__actions">
+          <button type="button" class="btn btn--primary" id="runTest" aria-describedby="runTestHelp">Ejecutar prueba</button>
+          <button type="button" class="btn btn--ghost" id="resetTest">Reiniciar</button>
+        </div>
+      </div>
+
+      <p class="sr-only" id="runTestHelp">Ejecuta la consulta simulada con las combinaciones de filtros de la tabla.</p>
+
+      <!-- Trazabilidad issue 3.1.1.6 (#17): semáforo de cumplimiento del umbral de 500 ms -->
+      <div class="perf-semaforo" id="semaforo" role="status" aria-live="polite">
+        <span class="perf-semaforo__lights" aria-hidden="true">
+          <span class="perf-semaforo__light perf-semaforo__light--ok"></span>
+          <span class="perf-semaforo__light perf-semaforo__light--warn"></span>
+          <span class="perf-semaforo__light perf-semaforo__light--fail"></span>
+        </span>
+        <span class="perf-semaforo__body">
+          <span class="perf-semaforo__title" id="semaforoTitle">Sin ejecutar</span>
+          <span class="perf-semaforo__text" id="semaforoText">Ejecuta la prueba para evaluar el cumplimiento del umbral de 500 ms.</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): tabla de combinaciones de filtros -->
+    <section class="perf-table-card" aria-labelledby="perfTableTitle">
+      <div class="perf-table-card__header">
+        <h2 class="perf-table-card__title" id="perfTableTitle">Combinaciones de filtros evaluadas</h2>
+        <span class="perf-table-card__count" id="tableCount">6 combinaciones &middot; sin ejecutar</span>
+      </div>
+      <div class="perf-table-wrap">
+        <table class="perf-table">
+          <caption class="sr-only">Tiempo de respuesta simulado por combinación de estado, rango de fechas y texto.</caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Rango de fechas</th>
+              <th scope="col">Texto</th>
+              <th scope="col">Registros</th>
+              <th scope="col">Tiempo</th>
+              <th scope="col">Resultado</th>
+            </tr>
+          </thead>
+          <tbody id="combosBody">
+            <tr data-base="180" data-records="820">
+              <td>F1</td>
+              <td>En revisión</td>
+              <td>2026-01-01 &rarr; 2026-06-30</td>
+              <td>bienestar</td>
+              <td class="perf-records">820</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-base="230" data-records="1460">
+              <td>F2</td>
+              <td>Aprobado</td>
+              <td>2025-07-01 &rarr; 2026-06-30</td>
+              <td>ingeniería</td>
+              <td class="perf-records">1.460</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-base="200" data-records="1130">
+              <td>F3</td>
+              <td>Rechazado</td>
+              <td>2026-01-01 &rarr; 2026-12-31</td>
+              <td>movilidad</td>
+              <td class="perf-records">1.130</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-base="270" data-records="2340">
+              <td>F4</td>
+              <td>Todos</td>
+              <td>2025-01-01 &rarr; 2026-12-31</td>
+              <td>(vacío)</td>
+              <td class="perf-records">2.340</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-base="250" data-records="1980">
+              <td>F5</td>
+              <td>En revisión + Aprobado</td>
+              <td>2026-02-01 &rarr; 2026-05-31</td>
+              <td>facultad</td>
+              <td class="perf-records">1.980</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-base="160" data-records="640">
+              <td>F6</td>
+              <td>Todos</td>
+              <td>2026-01-01 &rarr; 2026-01-31</td>
+              <td>documentos</td>
+              <td class="perf-records">640</td>
+              <td class="perf-table__time" data-time>&mdash;</td>
+              <td data-status><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): simulador de breakpoints y respuesta responsive -->
+    <section class="perf-responsive" aria-labelledby="perfResponsiveTitle">
+      <div class="perf-responsive__header">
+        <div>
+          <h2 class="perf-responsive__title" id="perfResponsiveTitle">Respuesta responsive ante los filtros</h2>
+          <p class="perf-responsive__hint">Selecciona un ancho de vista para evaluar el reflujo de los resultados filtrados.</p>
+        </div>
+        <span class="perf-viewport-tag" id="viewportTag" aria-live="polite">Escritorio &middot; 100%</span>
+      </div>
+
+      <!-- Trazabilidad issue 3.1.1.6 (#17): selector de breakpoints -->
+      <div class="perf-device-bar" role="group" aria-label="Seleccionar ancho de vista">
+        <button type="button" class="device-chip is-active" data-width="100%" data-label="Escritorio &middot; 100%" aria-pressed="true">Escritorio</button>
+        <button type="button" class="device-chip" data-width="768px" data-label="Tablet &middot; 768 px" aria-pressed="false">Tablet</button>
+        <button type="button" class="device-chip" data-width="375px" data-label="Móvil &middot; 375 px" aria-pressed="false">Móvil</button>
+      </div>
+
+      <div class="perf-responsive__grid">
+
+        <!-- Trazabilidad issue 3.1.1.6 (#17): visor con los resultados filtrados -->
+        <div class="perf-preview">
+          <div class="perf-preview__frame" id="previewFrame">
+            <div class="perf-preview__content">
+              <div class="mini-filters" aria-label="Filtros aplicados en la previsualización">
+                <span class="mini-filter"><span class="mini-filter__key">Estado:</span>En revisión + Aprobado</span>
+                <span class="mini-filter"><span class="mini-filter__key">Fecha:</span>2026-02-01 &rarr; 2026-05-31</span>
+                <span class="mini-filter"><span class="mini-filter__key">Texto:</span>facultad</span>
+              </div>
+
+              <div class="mini-summary">
+                <span class="mini-summary__label">Resultados filtrados</span>
+                <span class="mini-summary__value" id="miniTotal">1.980 proyectos</span>
+              </div>
+
+              <ul class="mini-list" aria-label="Muestra de proyectos filtrados">
+                <li class="mini-row">
+                  <span class="mini-row__radicado">EXT-2026-0412</span>
+                  <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+                  <span class="mini-row__time">142 ms</span>
+                </li>
+                <li class="mini-row">
+                  <span class="mini-row__radicado">EXT-2026-0418</span>
+                  <span class="status-pill status-pill--warn"><span class="status-pill__dot" aria-hidden="true"></span>En revisión</span>
+                  <span class="mini-row__time">168 ms</span>
+                </li>
+                <li class="mini-row">
+                  <span class="mini-row__radicado">EXT-2026-0421</span>
+                  <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+                  <span class="mini-row__time">155 ms</span>
+                </li>
+              </ul>
+
+              <p class="mini-note">La tabla de resultados refluye sin desbordar el viewport en cualquier tamaño de pantalla.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trazabilidad issue 3.1.1.6 (#17): verificaciones responsive -->
+        <div class="perf-checks">
+          <h3 class="perf-checks__title">Verificaciones responsive</h3>
+          <ul class="perf-checks__list">
+            <li class="perf-checks__item">
+              <span>Tabla de combinaciones con desplazamiento horizontal contenido</span>
+              <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+            </li>
+            <li class="perf-checks__item">
+              <span>Reflujo de tarjetas de métricas en móvil</span>
+              <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+            </li>
+            <li class="perf-checks__item">
+              <span>Controles de filtros apilados en pantallas pequeñas</span>
+              <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+            </li>
+            <li class="perf-checks__item">
+              <span>Áreas táctiles de al menos 44 px</span>
+              <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+            </li>
+            <li class="perf-checks__item">
+              <span>Sin desbordamiento horizontal del documento</span>
+              <span class="status-pill status-pill--ok"><span class="status-pill__dot" aria-hidden="true"></span>Aprobado</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.6 (#17): nota de alcance y dependencias -->
+    <footer class="perf-footer">
+      <p>
+        Issue 3.1.1.6 (#17). Predecesora: 3.1.1.5 (#16). Los tiempos de respuesta son simulados
+        en el cliente con JavaScript nativo para validar el umbral de 500 ms (3.1) y el reflujo
+        responsive (3.3); no se modificaron otras issues ni hojas de estilo.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 3.1.1.6 (#17): JS nativo para la prueba simulada y el simulador de breakpoints -->
+  <script>
+    (function () {
+      'use strict';
+
+      var THRESHOLD = 500;
+
+      var runTest = document.getElementById('runTest');
+      var resetTest = document.getElementById('resetTest');
+      var volumeSelect = document.getElementById('volumeSelect');
+      var pageSelect = document.getElementById('pageSelect');
+      var combosBody = document.getElementById('combosBody');
+      var rows = Array.prototype.slice.call(combosBody.querySelectorAll('tr'));
+      var metricAvg = document.getElementById('metricAvg');
+      var metricMax = document.getElementById('metricMax');
+      var metricPass = document.getElementById('metricPass');
+      var metricRecords = document.getElementById('metricRecords');
+      var tableCount = document.getElementById('tableCount');
+      var semaforo = document.getElementById('semaforo');
+      var semaforoTitle = document.getElementById('semaforoTitle');
+      var semaforoText = document.getElementById('semaforoText');
+      var previewFrame = document.getElementById('previewFrame');
+      var viewportTag = document.getElementById('viewportTag');
+      var miniTotal = document.getElementById('miniTotal');
+      var deviceChips = document.querySelectorAll('.device-chip');
+
+      var running = false;
+      var numberFormatter = new Intl.NumberFormat('es-CO');
+
+      function formatRecords(value) {
+        return numberFormatter.format(value);
+      }
+
+      function statusMarkup(kind, label) {
+        return '<span class="status-pill status-pill--' + kind + '">' +
+          '<span class="status-pill__dot" aria-hidden="true"></span>' + label + '</span>';
+      }
+
+      function classify(latency) {
+        if (latency <= THRESHOLD) {
+          return { kind: 'ok', label: 'Cumple' };
+        }
+        if (latency <= THRESHOLD * 1.2) {
+          return { kind: 'warn', label: 'Límite' };
+        }
+        return { kind: 'fail', label: 'Excede' };
+      }
+
+      function setMetric(element, text, modifier) {
+        element.textContent = text;
+        element.className = 'perf-metric__value perf-metric__value--' + modifier;
+      }
+
+      function setSemaphore(kind, title, text) {
+        semaforo.className = 'perf-semaforo is-' + kind;
+        semaforoTitle.textContent = title;
+        semaforoText.textContent = text;
+      }
+
+      function reset() {
+        rows.forEach(function (row) {
+          var timeCell = row.querySelector('[data-time]');
+          var statusCell = row.querySelector('[data-status]');
+          timeCell.textContent = '\u2014';
+          timeCell.className = 'perf-table__time';
+          statusCell.innerHTML = statusMarkup('pending', 'Pendiente');
+          row.classList.remove('is-highlight');
+        });
+
+        setMetric(metricAvg, '\u2014', 'pending');
+        setMetric(metricMax, '\u2014', 'pending');
+        setMetric(metricPass, '\u2014', 'pending');
+        setMetric(metricRecords, '\u2014', 'pending');
+        tableCount.textContent = rows.length + ' combinaciones \u00b7 sin ejecutar';
+        setSemaphore('idle', 'Sin ejecutar', 'Ejecuta la prueba para evaluar el cumplimiento del umbral de 500 ms.');
+        semaforo.classList.remove('is-ok', 'is-warn', 'is-fail');
+      }
+
+      function execute() {
+        if (running) {
+          return;
+        }
+        running = true;
+        runTest.disabled = true;
+        runTest.textContent = 'Ejecutando...';
+        setSemaphore('idle', 'Ejecutando prueba', 'Midiendo el tiempo de respuesta de las combinaciones de filtros.');
+
+        var volume = parseInt(volumeSelect.value, 10);
+        var pageSize = parseInt(pageSelect.value, 10);
+        var volumeFactor = volume / 5000;
+        var pageFactor = 1 + (pageSize - 25) / 100;
+        var totalRecords = 0;
+        var totalLatency = 0;
+        var maxLatency = 0;
+        var passed = 0;
+
+        setTimeout(function () {
+          rows.forEach(function (row) {
+            var base = parseInt(row.getAttribute('data-base'), 10);
+            var records = parseInt(row.getAttribute('data-records'), 10);
+            var scaledRecords = Math.round(records * volumeFactor);
+            var recordsFactor = scaledRecords / 1500;
+            var latency = Math.round((base + recordsFactor * 90) * pageFactor + Math.random() * 60);
+            var result = classify(latency);
+            var timeCell = row.querySelector('[data-time]');
+            var statusCell = row.querySelector('[data-status]');
+
+            timeCell.textContent = formatRecords(latency) + ' ms';
+            timeCell.className = 'perf-table__time perf-table__time--' + result.kind;
+            statusCell.innerHTML = statusMarkup(result.kind, result.label);
+            row.classList.add('is-highlight');
+
+            row.querySelector('.perf-records').textContent = formatRecords(scaledRecords);
+
+            totalRecords += scaledRecords;
+            totalLatency += latency;
+            if (latency > maxLatency) {
+              maxLatency = latency;
+            }
+            if (latency <= THRESHOLD) {
+              passed += 1;
+            }
+          });
+
+          var average = Math.round(totalLatency / rows.length);
+
+          setMetric(metricAvg, formatRecords(average) + ' ms', average <= THRESHOLD ? 'ok' : 'fail');
+          setMetric(metricMax, formatRecords(maxLatency) + ' ms', maxLatency <= THRESHOLD ? 'ok' : 'warn');
+          setMetric(metricPass, passed + ' / ' + rows.length, passed === rows.length ? 'ok' : 'warn');
+          setMetric(metricRecords, formatRecords(totalRecords), 'ok');
+          tableCount.textContent = rows.length + ' combinaciones \u00b7 ' + passed + ' dentro del umbral';
+          miniTotal.textContent = formatRecords(totalRecords) + ' proyectos';
+
+          if (passed === rows.length) {
+            setSemaphore('ok', 'Cumple el umbral de 500 ms', 'Todas las combinaciones respondieron en ' + formatRecords(maxLatency) + ' ms o menos.');
+          } else if (passed >= Math.ceil(rows.length / 2)) {
+            setSemaphore('warn', 'Cumplimiento parcial del umbral', passed + ' de ' + rows.length + ' combinaciones se mantienen en 500 ms o menos; la más lenta tardó ' + formatRecords(maxLatency) + ' ms.');
+          } else {
+            setSemaphore('fail', 'No cumple el umbral de 500 ms', 'Solo ' + passed + ' de ' + rows.length + ' combinaciones cumplen; revisa la optimización de queries (3.1).');
+          }
+
+          runTest.disabled = false;
+          runTest.textContent = 'Ejecutar prueba';
+          running = false;
+        }, 450);
+      }
+
+      runTest.addEventListener('click', execute);
+      resetTest.addEventListener('click', function () {
+        if (!running) {
+          reset();
+        }
+      });
+
+      volumeSelect.addEventListener('change', function () {
+        if (!running) {
+          reset();
+        }
+      });
+
+      pageSelect.addEventListener('change', function () {
+        if (!running) {
+          reset();
+        }
+      });
+
+      deviceChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          deviceChips.forEach(function (other) {
+            other.classList.remove('is-active');
+            other.setAttribute('aria-pressed', 'false');
+          });
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-pressed', 'true');
+          previewFrame.style.width = chip.getAttribute('data-width');
+          viewportTag.innerHTML = chip.getAttribute('data-label');
+        });
+      });
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

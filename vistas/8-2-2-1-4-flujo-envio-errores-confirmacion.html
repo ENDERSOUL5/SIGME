@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Flujo de envío, errores y confirmación de recepción</title>
+  <!-- Trazabilidad issue 2.2.1.4 (#8): hoja de estilos existente del panel de pruebas del flujo de envío -->
+  <link rel="stylesheet" href="../css/8-2-2-1-4-probar-el-flujo-completo-de-env-o-manejo-de-errores-y-confirmaci-n-de-recepci-n.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.1.4 (#8): contenedor general de la vista del flujo completo de envío -->
+  <div class="submission-shell">
+
+    <!-- Trazabilidad issue 2.2.1.4 (#8): encabezado con marca SIGME, issue y retorno al inicio -->
+    <header class="submission-header">
+      <div class="submission-brand">
+        <span class="submission-brand__mark" aria-hidden="true">S</span>
+        <div class="submission-brand__text">
+          <span class="submission-brand__name">SIGME</span>
+          <span class="submission-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <span class="submission-header__issue">WBS 2.2.1.4 · Issue #8</span>
+      <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <main id="main">
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): resumen de la ejecución del flujo de envío -->
+      <section class="submission-summary" aria-labelledby="summaryTitle">
+        <div class="submission-summary__headline">
+          <h1 class="submission-summary__title" id="summaryTitle">Flujo completo de envío y confirmación de recepción</h1>
+          <p class="submission-summary__description">
+            Panel de pruebas del formulario del MVP: valida el envío de documentos, la
+            retroalimentación ante errores y la confirmación de recepción con el estado
+            inicial <strong>En revisión</strong>.
+          </p>
+        </div>
+
+        <div class="submission-metrics" role="list" aria-label="Métricas de la ejecución">
+          <div class="metric-card metric-card--success" role="listitem">
+            <span class="metric-card__label">Envíos confirmados</span>
+            <span class="metric-card__value" id="metricSent">1</span>
+            <span class="metric-card__hint">Confirmación de recepción recibida</span>
+          </div>
+          <div class="metric-card metric-card--danger" role="listitem">
+            <span class="metric-card__label">Errores simulados</span>
+            <span class="metric-card__value" id="metricErrors">0</span>
+            <span class="metric-card__hint">Validación, red o servidor</span>
+          </div>
+          <div class="metric-card metric-card--warning" role="listitem">
+            <span class="metric-card__label">Estado del trámite</span>
+            <span class="metric-card__value" id="metricState">En revisión</span>
+            <span class="metric-card__hint">Actualizable mientras esté en revisión</span>
+          </div>
+          <div class="metric-card" role="listitem">
+            <span class="metric-card__label">Tiempo de respuesta</span>
+            <span class="metric-card__value" id="metricTime">420 ms</span>
+            <span class="metric-card__hint">Máximo permitido: 500 ms</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): simulador del envío con alternancia error/confirmación -->
+      <section class="flow-panel" aria-labelledby="simulatorTitle">
+        <div class="section-heading">
+          <h2 class="section-heading__title" id="simulatorTitle">Simulador del envío</h2>
+          <p class="section-heading__subtitle">
+            Ejecuta un escenario para alternar entre la confirmación de recepción y
+            los mensajes de error accionables.
+          </p>
+        </div>
+
+        <div class="receipt-card__actions" role="group" aria-label="Escenarios de simulación del envío">
+          <button type="button" class="btn btn--primary" id="btnSuccess">Simular envío exitoso</button>
+          <button type="button" class="btn btn--ghost" id="btnValidation">Simular error de validación</button>
+          <button type="button" class="btn btn--ghost" id="btnNetwork">Simular error de red</button>
+          <button type="button" class="btn btn--ghost" id="btnServer">Simular error del servidor</button>
+        </div>
+
+        <p class="metric-card__hint" id="liveStatus" role="status" aria-live="polite" aria-atomic="true">
+          Envío completado: el servidor confirmó la recepción de los documentos.
+        </p>
+
+        <!-- Trazabilidad issue 2.2.1.4 (#8): mensaje de error dinámico (se alterna con la confirmación) -->
+        <div id="simError" hidden>
+          <article class="error-card" id="simErrorCard" aria-labelledby="simErrorTitle">
+            <span class="error-card__code" id="simErrorCode">ERR-000</span>
+            <h3 class="error-card__title" id="simErrorTitle">Error de envío</h3>
+            <p class="error-card__message" id="simErrorMessage"></p>
+            <p class="error-card__action" id="simErrorAction"></p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): pasos y estados del flujo completo de envío -->
+      <section class="flow-panel" aria-labelledby="flowTitle">
+        <div class="section-heading">
+          <h2 class="section-heading__title" id="flowTitle">Estados del flujo</h2>
+          <p class="section-heading__subtitle">Secuencia validada de la carga de documentos del MVP.</p>
+        </div>
+
+        <ol class="flow-steps">
+          <li class="flow-step flow-step--done" id="step1">
+            <span class="flow-step__index" aria-hidden="true">1</span>
+            <div class="flow-step__body">
+              <span class="flow-step__title">Validación de datos</span>
+              <span class="flow-step__desc">Campos obligatorios y formato del formulario.</span>
+            </div>
+            <span class="flow-step__status flow-step__status--ok">Completado</span>
+          </li>
+          <li class="flow-step flow-step--done" id="step2">
+            <span class="flow-step__index" aria-hidden="true">2</span>
+            <div class="flow-step__body">
+              <span class="flow-step__title">Carga de adjuntos</span>
+              <span class="flow-step__desc">PDF e imágenes con validación de peso y formato.</span>
+            </div>
+            <span class="flow-step__status flow-step__status--ok">Completado</span>
+          </li>
+          <li class="flow-step flow-step--done" id="step3">
+            <span class="flow-step__index" aria-hidden="true">3</span>
+            <div class="flow-step__body">
+              <span class="flow-step__title">Envío al servidor</span>
+              <span class="flow-step__desc">Solicitud segura al API de almacenamiento.</span>
+            </div>
+            <span class="flow-step__status flow-step__status--ok">Completado</span>
+          </li>
+          <li class="flow-step flow-step--done" id="step4">
+            <span class="flow-step__index" aria-hidden="true">4</span>
+            <div class="flow-step__body">
+              <span class="flow-step__title">Confirmación de recepción</span>
+              <span class="flow-step__desc">Comprobante con radicado y fecha de recepción.</span>
+            </div>
+            <span class="flow-step__status flow-step__status--ok">Completado</span>
+          </li>
+          <li class="flow-step flow-step--done" id="step5">
+            <span class="flow-step__index" aria-hidden="true">5</span>
+            <div class="flow-step__body">
+              <span class="flow-step__title">Estado En revisión</span>
+              <span class="flow-step__desc">El trámite queda actualizable mientras esté en revisión.</span>
+            </div>
+            <span class="flow-step__status flow-step__status--ok">Completado</span>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): escenarios de prueba del flujo de envío -->
+      <section class="scenario-panel" aria-labelledby="scenarioTitle">
+        <div class="section-heading">
+          <h2 class="section-heading__title" id="scenarioTitle">Escenarios de prueba</h2>
+          <p class="section-heading__subtitle">Casos cubiertos por la prueba del flujo completo.</p>
+        </div>
+
+        <div class="scenario-table-wrapper">
+          <table class="scenario-table">
+            <thead>
+              <tr>
+                <th scope="col">Escenario</th>
+                <th scope="col">Acción</th>
+                <th scope="col">Resultado esperado</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Envío válido</td>
+                <td><code>POST /api/mvp/envio</code></td>
+                <td>Confirmación de recepción con radicado</td>
+                <td><span class="status status--ok">Aprobado</span></td>
+              </tr>
+              <tr>
+                <td>Campos obligatorios vacíos</td>
+                <td><code>validarFormulario()</code></td>
+                <td>Mensaje de validación accionable en el campo</td>
+                <td><span class="status status--warn">En revisión</span></td>
+              </tr>
+              <tr>
+                <td>Archivo fuera de formato o peso</td>
+                <td><code>validarAdjunto()</code></td>
+                <td>Rechazo del archivo con formato permitido</td>
+                <td><span class="status status--danger">Rechazado</span></td>
+              </tr>
+              <tr>
+                <td>Interrupción de red</td>
+                <td><code>reintentarEnvio()</code></td>
+                <td>Mensaje de red con opción de reintento</td>
+                <td><span class="status status--warn">En revisión</span></td>
+              </tr>
+              <tr>
+                <td>Error interno del servidor</td>
+                <td><code>POST /api/mvp/envio</code></td>
+                <td>Mensaje de error con acción de soporte</td>
+                <td><span class="status status--danger">Rechazado</span></td>
+              </tr>
+              <tr>
+                <td>Actualización en estado En revisión</td>
+                <td><code>PUT /api/mvp/documentos</code></td>
+                <td>Documentos actualizados sin perder el radicado</td>
+                <td><span class="status status--ok">Aprobado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): catálogo de mensajes de error claros y accionables -->
+      <section class="error-panel" aria-labelledby="errorTitle">
+        <div class="section-heading">
+          <h2 class="section-heading__title" id="errorTitle">Manejo de errores</h2>
+          <p class="section-heading__subtitle">Mensajes claros y accionables ante fallos de validación o de envío.</p>
+        </div>
+
+        <div class="error-grid">
+          <article class="error-card error-card--validation">
+            <span class="error-card__code">ERR-VAL-01</span>
+            <h3 class="error-card__title">Datos incompletos o inválidos</h3>
+            <p class="error-card__message">Revisa los campos obligatorios y el formato de los documentos antes de reenviar.</p>
+            <p class="error-card__action">Acción sugerida: corrige los campos marcados y vuelve a enviar.</p>
+          </article>
+
+          <article class="error-card error-card--network">
+            <span class="error-card__code">ERR-NET-02</span>
+            <h3 class="error-card__title">No se pudo conectar con el servidor</h3>
+            <p class="error-card__message">La conexión se interrumpió durante el envío. Verifica tu red e inténtalo de nuevo.</p>
+            <p class="error-card__action">Acción sugerida: reintenta el envío cuando recuperes la conexión.</p>
+          </article>
+
+          <article class="error-card error-card--server">
+            <span class="error-card__code">ERR-SRV-03</span>
+            <h3 class="error-card__title">Error interno del servidor</h3>
+            <p class="error-card__message">El servidor no pudo procesar la solicitud. Tu información no se perdió.</p>
+            <p class="error-card__action">Acción sugerida: espera unos segundos y reintenta; si persiste, contacta a soporte.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 2.2.1.4 (#8): confirmación de recepción del formulario del MVP -->
+      <section class="receipt-panel" aria-labelledby="receiptTitle">
+        <div class="section-heading">
+          <h2 class="section-heading__title" id="receiptTitle">Confirmación de recepción</h2>
+          <p class="section-heading__subtitle">Comprobante generado cuando el envío finaliza correctamente.</p>
+        </div>
+
+        <div class="receipt-card" id="receiptCard" aria-live="polite">
+          <div class="receipt-card__header">
+            <span class="receipt-card__check" aria-hidden="true">&#10003;</span>
+            <div class="receipt-card__heading">
+              <h3 class="receipt-card__title" id="receiptCardTitle">Documentos recibidos correctamente</h3>
+              <p class="receipt-card__subtitle">Tu postulación quedó registrada y pasa al estado En revisión.</p>
+            </div>
+            <span class="receipt-card__badge">En revisión</span>
+          </div>
+
+          <dl class="receipt-card__details">
+            <div class="receipt-card__row">
+              <dt>Radicado</dt>
+              <dd><code id="receiptId">SIGME-MVP-2026-000184</code></dd>
+            </div>
+            <div class="receipt-card__row">
+              <dt>Fecha de recepción</dt>
+              <dd id="receiptDate">07/11/2026, 17:20</dd>
+            </div>
+            <div class="receipt-card__row">
+              <dt>Documentos enviados</dt>
+              <dd>3 archivos adjuntos</dd>
+            </div>
+            <div class="receipt-card__row">
+              <dt>Estado del trámite</dt>
+              <dd>En revisión</dd>
+            </div>
+            <div class="receipt-card__row">
+              <dt>Tiempo de respuesta</dt>
+              <dd>420 ms</dd>
+            </div>
+          </dl>
+
+          <div class="receipt-card__actions">
+            <button type="button" class="btn btn--primary" id="btnUpdateDocs">Actualizar documentos</button>
+            <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Trazabilidad issue 2.2.1.4 (#8): pie con referencia de la issue implementada -->
+    <footer class="submission-footer">
+      <span class="submission-footer__issue">Issue 2.2.1.4 (#8) · Paquete 2.2.1 · Prototipo SIGME</span>
+      <span>Predecesora: 2.2.1.3 · Requisitos 3.3, 3.2 y 3.1</span>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.2.1.4 (#8): JS vanilla para simular el envío y alternar error/confirmación -->
+  <script>
+    (function () {
+      "use strict";
+
+      var receiptCard = document.getElementById("receiptCard");
+      var simError = document.getElementById("simError");
+      var simErrorCard = document.getElementById("simErrorCard");
+      var simErrorCode = document.getElementById("simErrorCode");
+      var simErrorTitle = document.getElementById("simErrorTitle");
+      var simErrorMessage = document.getElementById("simErrorMessage");
+      var simErrorAction = document.getElementById("simErrorAction");
+      var liveStatus = document.getElementById("liveStatus");
+      var receiptId = document.getElementById("receiptId");
+      var receiptDate = document.getElementById("receiptDate");
+      var metricSent = document.getElementById("metricSent");
+      var metricErrors = document.getElementById("metricErrors");
+      var metricTime = document.getElementById("metricTime");
+
+      var sent = 1;
+      var errors = 0;
+
+      var stepIds = ["step1", "step2", "step3", "step4", "step5"];
+
+      var errorsCatalog = {
+        validation: {
+          code: "ERR-VAL-01",
+          title: "Datos incompletos o inválidos",
+          message: "Revisa los campos obligatorios y el formato de los documentos antes de reenviar.",
+          action: "Acción sugerida: corrige los campos marcados y vuelve a enviar.",
+          variant: "error-card--validation"
+        },
+        network: {
+          code: "ERR-NET-02",
+          title: "No se pudo conectar con el servidor",
+          message: "La conexión se interrumpió durante el envío. Verifica tu red e inténtalo de nuevo.",
+          action: "Acción sugerida: reintenta el envío cuando recuperes la conexión.",
+          variant: "error-card--network"
+        },
+        server: {
+          code: "ERR-SRV-03",
+          title: "Error interno del servidor",
+          message: "El servidor no pudo procesar la solicitud. Tu información no se perdió.",
+          action: "Acción sugerida: espera unos segundos y reintenta; si persiste, contacta a soporte.",
+          variant: "error-card--server"
+        }
+      };
+
+      function setStep(id, state, label) {
+        var step = document.getElementById(id);
+        var status = step.querySelector(".flow-step__status");
+
+        step.classList.remove("flow-step--done", "flow-step--warn");
+        status.classList.remove("flow-step__status--ok", "flow-step__status--warn");
+
+        if (state === "done") {
+          step.classList.add("flow-step--done");
+          status.classList.add("flow-step__status--ok");
+        } else if (state === "warn") {
+          step.classList.add("flow-step--warn");
+          status.classList.add("flow-step__status--warn");
+        }
+
+        status.textContent = label;
+      }
+
+      function markAllDone() {
+        stepIds.forEach(function (id) {
+          setStep(id, "done", "Completado");
+        });
+      }
+
+      function markFlowError() {
+        setStep("step1", "done", "Completado");
+        setStep("step2", "done", "Completado");
+        setStep("step3", "warn", "Error");
+        setStep("step4", "pending", "Pendiente");
+        setStep("step5", "pending", "Pendiente");
+      }
+
+      function showSuccess() {
+        sent += 1;
+        metricSent.textContent = String(sent);
+        metricTime.textContent = "420 ms";
+
+        receiptId.textContent = "SIGME-MVP-2026-" + String(100183 + sent);
+        receiptDate.textContent = new Date().toLocaleString("es-CO", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+        receiptCard.hidden = false;
+        simError.hidden = true;
+        markAllDone();
+
+        liveStatus.textContent = "Envío completado: el servidor confirmó la recepción de los documentos.";
+      }
+
+      function showError(type) {
+        var data = errorsCatalog[type];
+
+        errors += 1;
+        metricErrors.textContent = String(errors);
+        metricTime.textContent = "—";
+
+        simErrorCard.classList.remove(
+          "error-card--validation",
+          "error-card--network",
+          "error-card--server"
+        );
+        simErrorCard.classList.add(data.variant);
+
+        simErrorCode.textContent = data.code;
+        simErrorTitle.textContent = data.title;
+        simErrorMessage.textContent = data.message;
+        simErrorAction.textContent = data.action;
+
+        receiptCard.hidden = true;
+        simError.hidden = false;
+        markFlowError();
+
+        liveStatus.textContent = data.code + ": " + data.title + ". " + data.action;
+      }
+
+      document.getElementById("btnSuccess").addEventListener("click", showSuccess);
+      document.getElementById("btnValidation").addEventListener("click", function () {
+        showError("validation");
+      });
+      document.getElementById("btnNetwork").addEventListener("click", function () {
+        showError("network");
+      });
+      document.getElementById("btnServer").addEventListener("click", function () {
+        showError("server");
+      });
+
+      document.getElementById("btnUpdateDocs").addEventListener("click", function () {
+        liveStatus.textContent = "Actualización habilitada: el trámite está en revisión y admite nuevos documentos.";
+      });
+    })();
+  </script>
+
+</body>
+</html>

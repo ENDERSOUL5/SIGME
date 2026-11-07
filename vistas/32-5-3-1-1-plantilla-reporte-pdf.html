@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Plantilla del reporte PDF</title>
+  <!-- Trazabilidad issue 5.3.1.1 (#32): hoja de estilos de la plantilla visual del reporte PDF -->
+  <link rel="stylesheet" href="../css/32-5-3-1-1-plantilla-reporte-pdf.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 5.3.1.1 (#32): barra superior de la página, oculta al imprimir -->
+  <header class="report-topbar no-print">
+    <div class="report-brand">
+      <span class="report-brand__mark" aria-hidden="true">S</span>
+      <div class="report-brand__text">
+        <span class="report-brand__name">SIGME</span>
+        <span class="report-brand__subtitle">Gestión de movilidad estudiantil</span>
+      </div>
+    </div>
+    <div class="report-topbar__actions">
+      <span class="issue-tag">Issue 5.3.1.1 · #32</span>
+      <button type="button" class="report-topbar__button" id="printReportBtn">Imprimir / Guardar PDF</button>
+      <a class="report-topbar__link" href="../index.html">Volver al inicio</a>
+    </div>
+  </header>
+
+  <!-- Trazabilidad issue 5.3.1.1 (#32): escenario con las hojas A4 del reporte -->
+  <main class="report-stage">
+    <p class="report-stage__hint no-print">
+      Vista previa de la plantilla · hoja A4 (210 × 297 mm) · usa «Imprimir / Guardar PDF» para validar la salida.
+    </p>
+
+    <!-- Trazabilidad issue 5.3.1.1 (#32): primera hoja del reporte (resumen ejecutivo) -->
+    <article class="report-page" aria-labelledby="reportTitle">
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): encabezado institucional SIGME -->
+      <header class="report-head">
+        <div class="report-head__brand">
+          <span class="report-head__mark" aria-hidden="true">S</span>
+          <div>
+            <p class="report-head__name">SIGME</p>
+            <p class="report-head__unit">Sistema de Gestión de Movilidad Estudiantil</p>
+          </div>
+        </div>
+        <div class="report-head__meta">
+          <strong>REPORTE CONSOLIDADO</strong>
+          <span>Código: SIG-RPT-2026-018</span><br>
+          <span>Versión: 1.0</span>
+        </div>
+      </header>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): título y periodo del reporte -->
+      <div class="report-title-block">
+        <p class="report-title-block__eyebrow">Oficina de Relaciones Internacionales</p>
+        <h1 class="report-title-block__title" id="reportTitle">Reporte de movilidad estudiantil</h1>
+        <p class="report-title-block__period">
+          Periodo académico: <strong>2026-1</strong> · Rango de consulta:
+          <strong>01/01/2026 – 30/06/2026</strong> · Fecha de corte: <strong>30/06/2026</strong>
+        </p>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): métricas consolidadas del dashboard -->
+      <section class="report-section" aria-labelledby="metricsTitle">
+        <div class="report-section__head">
+          <h2 class="report-section__title" id="metricsTitle">Métricas consolidadas</h2>
+          <p class="report-section__note">Datos del dashboard de seguimiento</p>
+        </div>
+        <div class="report-metrics">
+          <div class="metric-card">
+            <p class="metric-card__label">Postulaciones</p>
+            <p class="metric-card__value">248</p>
+            <p class="metric-card__hint">Total del periodo</p>
+          </div>
+          <div class="metric-card metric-card--ok">
+            <p class="metric-card__label">Aprobadas</p>
+            <p class="metric-card__value">154</p>
+            <p class="metric-card__hint">62 % del total</p>
+          </div>
+          <div class="metric-card metric-card--warn">
+            <p class="metric-card__label">En revisión</p>
+            <p class="metric-card__value">52</p>
+            <p class="metric-card__hint">21 % del total</p>
+          </div>
+          <div class="metric-card metric-card--danger">
+            <p class="metric-card__label">Rechazadas</p>
+            <p class="metric-card__value">42</p>
+            <p class="metric-card__hint">17 % del total</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): gráficos simples de barras y dona -->
+      <section class="report-section" aria-labelledby="chartsTitle">
+        <div class="report-section__head">
+          <h2 class="report-section__title" id="chartsTitle">Distribución de postulaciones</h2>
+          <p class="report-section__note">Periodo 2026-1</p>
+        </div>
+        <div class="report-charts">
+          <div class="chart-card">
+            <h3 class="chart-card__title">Postulaciones por facultad</h3>
+            <div class="chart-bars" role="img" aria-label="Gráfico de barras: Ingeniería 92, Ciencias Sociales 61, Economía 48, Humanidades 47">
+              <div class="chart-bars__item">
+                <span class="chart-bars__value">92</span>
+                <span class="chart-bars__bar" style="height: 88%;"></span>
+              </div>
+              <div class="chart-bars__item">
+                <span class="chart-bars__value">61</span>
+                <span class="chart-bars__bar chart-bars__bar--ok" style="height: 58%;"></span>
+              </div>
+              <div class="chart-bars__item">
+                <span class="chart-bars__value">48</span>
+                <span class="chart-bars__bar chart-bars__bar--warn" style="height: 46%;"></span>
+              </div>
+              <div class="chart-bars__item">
+                <span class="chart-bars__value">47</span>
+                <span class="chart-bars__bar chart-bars__bar--danger" style="height: 45%;"></span>
+              </div>
+            </div>
+            <div class="chart-bars__labels" aria-hidden="true">
+              <span class="chart-bars__label">Ingeniería</span>
+              <span class="chart-bars__label">C. Sociales</span>
+              <span class="chart-bars__label">Economía</span>
+              <span class="chart-bars__label">Humanidades</span>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-card__title">Estado de las postulaciones</h3>
+            <div class="chart-donut">
+              <div class="chart-donut__ring" role="img" aria-label="Dona: 62 % aprobadas, 21 % en revisión, 17 % rechazadas">
+                <span class="chart-donut__hole">248</span>
+              </div>
+              <ul class="chart-donut__legend">
+                <li><span class="chart-donut__swatch chart-donut__swatch--ok"></span> Aprobadas · 62 %</li>
+                <li><span class="chart-donut__swatch chart-donut__swatch--warn"></span> En revisión · 21 %</li>
+                <li><span class="chart-donut__swatch chart-donut__swatch--danger"></span> Rechazadas · 17 %</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): tabla resumen por facultad -->
+      <section class="report-section" aria-labelledby="summaryTitle">
+        <div class="report-section__head">
+          <h2 class="report-section__title" id="summaryTitle">Resumen por facultad</h2>
+          <p class="report-section__note">Cifras consolidadas</p>
+        </div>
+        <table class="report-table">
+          <caption>Postulaciones, aprobaciones y tasa de aprobación por facultad.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Facultad</th>
+              <th scope="col" class="is-numeric">Postulaciones</th>
+              <th scope="col" class="is-numeric">Aprobadas</th>
+              <th scope="col" class="is-numeric">En revisión</th>
+              <th scope="col" class="is-numeric">Rechazadas</th>
+              <th scope="col" class="is-numeric">Tasa aprobación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ingeniería</td>
+              <td class="is-numeric">92</td>
+              <td class="is-numeric">61</td>
+              <td class="is-numeric">18</td>
+              <td class="is-numeric">13</td>
+              <td class="is-numeric">66 %</td>
+            </tr>
+            <tr>
+              <td>Ciencias Sociales</td>
+              <td class="is-numeric">61</td>
+              <td class="is-numeric">38</td>
+              <td class="is-numeric">13</td>
+              <td class="is-numeric">10</td>
+              <td class="is-numeric">62 %</td>
+            </tr>
+            <tr>
+              <td>Economía</td>
+              <td class="is-numeric">48</td>
+              <td class="is-numeric">28</td>
+              <td class="is-numeric">11</td>
+              <td class="is-numeric">9</td>
+              <td class="is-numeric">58 %</td>
+            </tr>
+            <tr>
+              <td>Humanidades</td>
+              <td class="is-numeric">47</td>
+              <td class="is-numeric">27</td>
+              <td class="is-numeric">10</td>
+              <td class="is-numeric">10</td>
+              <td class="is-numeric">57 %</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total</td>
+              <td class="is-numeric">248</td>
+              <td class="is-numeric">154</td>
+              <td class="is-numeric">52</td>
+              <td class="is-numeric">42</td>
+              <td class="is-numeric">62 %</td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): pie de la primera hoja con fecha y folio -->
+      <footer class="report-foot">
+        <div class="report-foot__left">
+          <p>Documento generado automáticamente por SIGME. Uso institucional interno.</p>
+          <p>Oficina de Relaciones Internacionales · Universidad</p>
+        </div>
+        <div class="report-foot__right">
+          <p>Fecha de generación: 30/06/2026 18:40</p>
+          <p class="report-foot__folio">Folio 1 de 2</p>
+        </div>
+      </footer>
+
+    </article>
+
+    <!-- Trazabilidad issue 5.3.1.1 (#32): segunda hoja del reporte (detalle) -->
+    <article class="report-page" aria-labelledby="detailTitle">
+
+      <header class="report-head">
+        <div class="report-head__brand">
+          <span class="report-head__mark" aria-hidden="true">S</span>
+          <div>
+            <p class="report-head__name">SIGME</p>
+            <p class="report-head__unit">Sistema de Gestión de Movilidad Estudiantil</p>
+          </div>
+        </div>
+        <div class="report-head__meta">
+          <strong>REPORTE CONSOLIDADO</strong>
+          <span>Código: SIG-RPT-2026-018</span><br>
+          <span>Periodo: 2026-1</span>
+        </div>
+      </header>
+
+      <div class="report-title-block">
+        <p class="report-title-block__eyebrow">Anexo de detalle</p>
+        <h2 class="report-title-block__title" id="detailTitle">Postulaciones destacadas</h2>
+        <p class="report-title-block__period">Muestra de los proyectos con mayor avance en el periodo.</p>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): tabla de detalle de postulaciones -->
+      <section class="report-section" aria-labelledby="detailTableTitle">
+        <div class="report-section__head">
+          <h2 class="report-section__title" id="detailTableTitle">Detalle de proyectos</h2>
+          <p class="report-section__note">Datos de ejemplo</p>
+        </div>
+        <table class="report-table">
+          <caption>Postulaciones representativas con radicado, programa, facultad, destino y estado.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Radicado</th>
+              <th scope="col">Proyecto / Estudiante</th>
+              <th scope="col">Facultad</th>
+              <th scope="col">Destino</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SIG-2026-0101</td>
+              <td>Movilidad académica · María F. López</td>
+              <td>Ingeniería</td>
+              <td>Canadá</td>
+              <td><span class="report-pill report-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0102</td>
+              <td>Intercambio · Carlos A. Ramírez</td>
+              <td>Ciencias Sociales</td>
+              <td>España</td>
+              <td><span class="report-pill report-pill--warn">En revisión</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0103</td>
+              <td>Doble titulación · Laura S. Martínez</td>
+              <td>Ingeniería</td>
+              <td>Alemania</td>
+              <td><span class="report-pill report-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0104</td>
+              <td>Prácticas internacionales · Andrés F. Gómez</td>
+              <td>Economía</td>
+              <td>Brasil</td>
+              <td><span class="report-pill report-pill--danger">Rechazado</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0105</td>
+              <td>Curso de idiomas · Valentina Torres</td>
+              <td>Humanidades</td>
+              <td>Francia</td>
+              <td><span class="report-pill report-pill--info">Registrado</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0106</td>
+              <td>Investigación · Santiago Herrera</td>
+              <td>Ingeniería</td>
+              <td>Japón</td>
+              <td><span class="report-pill report-pill--warn">En revisión</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0107</td>
+              <td>Semestre académico · Daniela Rojas</td>
+              <td>Ciencias Sociales</td>
+              <td>Chile</td>
+              <td><span class="report-pill report-pill--ok">Aprobado</span></td>
+            </tr>
+            <tr>
+              <td>SIG-2026-0108</td>
+              <td>Voluntariado · Julián Castaño</td>
+              <td>Humanidades</td>
+              <td>Perú</td>
+              <td><span class="report-pill report-pill--danger">Rechazado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): notas metodológicas del reporte -->
+      <section class="report-section" aria-labelledby="notesTitle">
+        <div class="report-section__head">
+          <h2 class="report-section__title" id="notesTitle">Notas metodológicas</h2>
+        </div>
+        <div class="report-grid-2">
+          <div class="chart-card">
+            <h3 class="chart-card__title">Criterios de consolidación</h3>
+            <p class="report-note">
+              <strong>Fuente:</strong> dashboard de seguimiento (HU 5.2 / HU 5.3).
+              Las cifras corresponden a postulaciones registradas dentro del periodo
+              y se consolidan al cierre del corte. Una postulación aprobada puede
+              superar el cupo de un destino; el reporte no altera el estado.
+            </p>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-card__title">Trazabilidad y alcance</h3>
+            <p class="report-note">
+              <strong>Plantilla:</strong> 5.3.1.1 (#32). Habilita el renderizado PDF
+              del servidor (5.3.1.2, #33) y el endpoint/botón de exportación
+              (5.3.1.4). El diseño replica la identidad gráfica de SIGME y es
+              adaptable a pantalla e impresión A4.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trazabilidad issue 5.3.1.1 (#32): pie de la segunda hoja con fecha y folio -->
+      <footer class="report-foot">
+        <div class="report-foot__left">
+          <p>Documento generado automáticamente por SIGME. Uso institucional interno.</p>
+          <p>Oficina de Relaciones Internacionales · Universidad</p>
+        </div>
+        <div class="report-foot__right">
+          <p>Fecha de generación: 30/06/2026 18:40</p>
+          <p class="report-foot__folio">Folio 2 de 2</p>
+        </div>
+      </footer>
+
+    </article>
+  </main>
+
+  <!-- Trazabilidad issue 5.3.1.1 (#32): JS vanilla para abrir el diálogo de impresión/guardar PDF -->
+  <script>
+    (function () {
+      var printBtn = document.getElementById('printReportBtn');
+      if (!printBtn) {
+        return;
+      }
+      printBtn.addEventListener('click', function () {
+        window.print();
+      });
+    })();
+  </script>
+
+</body>
+</html>

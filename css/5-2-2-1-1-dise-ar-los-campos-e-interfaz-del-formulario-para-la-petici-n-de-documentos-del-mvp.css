@@ -1,0 +1,449 @@
+/* Trazabilidad issue 2.2.1.1 (#5): estilos del prototipo del formulario de petición de documentos del MVP */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-success: #1f8a5b;
+  --color-success-bg: #e4f5ec;
+  --color-required: #c0392b;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): contenedor general del prototipo */
+.form-shell {
+  width: min(920px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): encabezado del formulario */
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.form-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.form-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.form-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.form-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background-color: #e6effb;
+  color: var(--color-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): bloque de introducción de la issue */
+.form-intro {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-intro__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+}
+
+.form-intro__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+}
+
+.form-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+  color: var(--color-muted);
+}
+
+.form-meta strong {
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): formulario principal */
+.doc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): secciones del formulario */
+.form-section {
+  margin: 0;
+  padding: 1.5rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form-section--plain {
+  background-color: transparent;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.form-section__legend {
+  padding: 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.form-section__hint {
+  margin: 0 0 1.25rem;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): rejilla de campos */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): estilos de los campos */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.req {
+  color: var(--color-required);
+}
+
+.field__input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #fff;
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.field__input[readonly] {
+  background-color: #f7f9fc;
+  color: var(--color-muted);
+}
+
+.field__textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.field__help {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): lista de verificación de documentos */
+.check-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-item {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #fbfcfe;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.check-item:hover {
+  border-color: var(--color-primary);
+  background-color: #f4f8ff;
+}
+
+.check-item__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  cursor: pointer;
+}
+
+.check-item__input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-primary);
+}
+
+.check-item__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.9rem;
+}
+
+.check-item__desc {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): zona de carga de adjuntos */
+.upload {
+  position: relative;
+  border: 2px dashed var(--color-border);
+  border-radius: 10px;
+  background-color: #fbfcfe;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.upload:hover,
+.upload:focus-within {
+  border-color: var(--color-primary);
+  background-color: #f4f8ff;
+}
+
+.upload__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #e6effb;
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.upload__title {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.upload__hint {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.upload__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): listado de archivos adjuntos */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  font-size: 0.85rem;
+}
+
+.file-item__name {
+  flex: 1;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.file-item__size {
+  color: var(--color-muted);
+}
+
+.file-item__status {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): aceptación de términos */
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: var(--color-surface);
+  cursor: pointer;
+}
+
+.terms__input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-primary);
+}
+
+.terms__text {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): acciones del formulario */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.btn {
+  padding: 0.65rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--secondary {
+  background-color: #fff;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): pie de página */
+.form-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.1 (#5): adaptación responsive del formulario */
+@media (max-width: 720px) {
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid,
+  .check-list {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

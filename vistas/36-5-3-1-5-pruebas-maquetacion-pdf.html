@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Pruebas de maquetación y paginación del PDF</title>
+  <!-- Trazabilidad issue 5.3.1.5 (#36): hoja de estilos del banco de pruebas -->
+  <link rel="stylesheet" href="../css/36-5-3-1-5-pruebas-maquetacion-pdf.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 5.3.1.5 (#36): contenedor general del banco de pruebas -->
+  <div class="pdfqa-shell">
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): encabezado con marca SIGME y enlace de regreso -->
+    <header class="pdfqa-header">
+      <div class="pdfqa-brand">
+        <span class="pdfqa-brand__mark" aria-hidden="true">S</span>
+        <div class="pdfqa-brand__text">
+          <span class="pdfqa-brand__name">SIGME</span>
+          <span class="pdfqa-brand__subtitle">Pruebas de maquetación, paginación y legibilidad del PDF</span>
+        </div>
+      </div>
+      <span class="pdfqa-issue-tag">Issue 5.3.1.5 &middot; #36</span>
+      <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): resumen de la ejecución -->
+    <section class="pdfqa-overview" aria-labelledby="pdfqaOverviewTitle">
+      <h1 class="pdfqa-overview__title" id="pdfqaOverviewTitle">Validación del reporte PDF</h1>
+      <p class="pdfqa-overview__lead">
+        Banco de pruebas de la maquetación, la paginación correcta, el rendimiento de
+        conversi&oacute;n y la legibilidad del reporte exportable. Ejecuta la simulaci&oacute;n para
+        verificar los requisitos 2.2.3 (reportes PDF y Excel) y 3.3 (interfaz legible y clara)
+        sobre el mismo contenido del dashboard (HU 5.3).
+      </p>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): métricas de conversión y legibilidad -->
+      <div class="pdfqa-metrics">
+        <div class="pdfqa-metric">
+          <span class="pdfqa-metric__label">P&aacute;ginas generadas</span>
+          <span class="pdfqa-metric__value pdfqa-metric__value--pending" id="metricPages">&mdash;</span>
+          <span class="pdfqa-metric__meta">Paginaci&oacute;n del reporte</span>
+        </div>
+        <div class="pdfqa-metric">
+          <span class="pdfqa-metric__label">Tiempo de conversi&oacute;n</span>
+          <span class="pdfqa-metric__value pdfqa-metric__value--pending" id="metricTime">&mdash;</span>
+          <span class="pdfqa-metric__meta">Objetivo &le; 3,0 s (2.2.3)</span>
+        </div>
+        <div class="pdfqa-metric">
+          <span class="pdfqa-metric__label">Peso del archivo</span>
+          <span class="pdfqa-metric__value pdfqa-metric__value--pending" id="metricSize">&mdash;</span>
+          <span class="pdfqa-metric__meta">Objetivo &le; 5 MB</span>
+        </div>
+        <div class="pdfqa-metric">
+          <span class="pdfqa-metric__label">Puntaje de legibilidad</span>
+          <span class="pdfqa-metric__value pdfqa-metric__value--pending" id="metricLegibility">&mdash;</span>
+          <span class="pdfqa-metric__meta">Objetivo &ge; 90 % (3.3)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): panel de ejecución de pruebas -->
+    <section class="pdfqa-panel" aria-labelledby="pdfqaPanelTitle">
+      <div class="pdfqa-panel__header">
+        <div>
+          <h2 class="pdfqa-panel__title" id="pdfqaPanelTitle">Ejecutar pruebas del PDF</h2>
+          <p class="pdfqa-panel__hint">Configura el reporte y el volumen de datos, luego ejecuta la simulaci&oacute;n.</p>
+        </div>
+      </div>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): controles de la prueba -->
+      <div class="pdfqa-controls">
+        <div class="pdfqa-controls__field">
+          <label class="pdfqa-controls__label" for="reportSelect">Tipo de reporte</label>
+          <select class="pdfqa-controls__select" id="reportSelect">
+            <option value="consolidado" selected>Reporte consolidado (HU 5.3)</option>
+            <option value="facultad">Reporte por facultad</option>
+            <option value="detalle">Detalle de proyectos</option>
+          </select>
+        </div>
+        <div class="pdfqa-controls__field">
+          <label class="pdfqa-controls__label" for="volumeSelect">Volumen de datos</label>
+          <select class="pdfqa-controls__select" id="volumeSelect">
+            <option value="1000">1.000 registros</option>
+            <option value="5000" selected>5.000 registros</option>
+            <option value="10000">10.000 registros</option>
+          </select>
+        </div>
+        <div class="pdfqa-controls__field">
+          <label class="pdfqa-controls__label" for="engineSelect">Motor de conversi&oacute;n</label>
+          <select class="pdfqa-controls__select" id="engineSelect">
+            <option value="chromium" selected>Chromium headless</option>
+            <option value="wkhtmltopdf">wkhtmltopdf</option>
+            <option value="libreoffice">LibreOffice</option>
+          </select>
+        </div>
+        <div class="pdfqa-controls__actions">
+          <button type="button" class="btn btn--primary" id="runTest" aria-describedby="runTestHelp">Ejecutar pruebas</button>
+          <button type="button" class="btn btn--ghost" id="resetTest">Reiniciar</button>
+        </div>
+      </div>
+
+      <p class="sr-only" id="runTestHelp">Ejecuta las pruebas simuladas de maquetaci&oacute;n, paginaci&oacute;n, conversi&oacute;n y legibilidad del reporte PDF.</p>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): estado global y progreso de la ejecución -->
+      <div class="pdfqa-status" id="statusBox" role="status" aria-live="polite">
+        <span class="pdfqa-status__lights" aria-hidden="true">
+          <span class="pdfqa-status__light pdfqa-status__light--ok"></span>
+          <span class="pdfqa-status__light pdfqa-status__light--warn"></span>
+          <span class="pdfqa-status__light pdfqa-status__light--fail"></span>
+        </span>
+        <span class="pdfqa-status__body">
+          <span class="pdfqa-status__title" id="statusTitle">Sin ejecutar</span>
+          <span class="pdfqa-status__text" id="statusText">Ejecuta las pruebas para validar maquetaci&oacute;n, paginaci&oacute;n, conversi&oacute;n y legibilidad.</span>
+        </span>
+      </div>
+
+      <div class="pdfqa-progress">
+        <div class="pdfqa-progress__track" role="progressbar" aria-labelledby="progressLabel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+          <div class="pdfqa-progress__bar" id="progressBar"></div>
+        </div>
+        <div class="pdfqa-progress__meta">
+          <span id="progressLabel">Progreso de la conversi&oacute;n</span>
+          <span id="progressValue">0 %</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): checklists de maquetación, paginación y legibilidad -->
+    <section class="pdfqa-checklists" aria-label="Checklists de validación del PDF">
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): checklist de maquetación -->
+      <article class="pdfqa-checklist" data-group="maquetacion">
+        <div class="pdfqa-checklist__header">
+          <div>
+            <h2 class="pdfqa-checklist__title">Maquetaci&oacute;n</h2>
+            <p class="pdfqa-checklist__ref">Dise&ntilde;o y estructura visual del reporte</p>
+          </div>
+          <span class="pdfqa-checklist__score" data-score>&mdash;</span>
+        </div>
+        <ul class="pdfqa-checklist__list">
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>M&aacute;rgenes y &aacute;rea &uacute;til A4 (210 &times; 297 mm)
+                <span class="pdfqa-check__detail">Contenido dentro de m&aacute;rgenes de 15&ndash;20 mm.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Encabezado y pie institucional SIGME
+                <span class="pdfqa-check__detail">Marca, c&oacute;digo de reporte y fecha de generaci&oacute;n.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Jerarqu&iacute;a tipogr&aacute;fica y espaciado coherente
+                <span class="pdfqa-check__detail">T&iacute;tulos, subt&iacute;tulos y cuerpo con escala consistente.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Gr&aacute;ficos e im&aacute;genes sin recortes ni deformaci&oacute;n
+                <span class="pdfqa-check__detail">Barras, dona y tablas conservan proporci&oacute;n.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Alineaci&oacute;n con la identidad gr&aacute;fica institucional
+                <span class="pdfqa-check__detail">Paleta, tipograf&iacute;a y logotipo consistentes.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): checklist de paginación -->
+      <article class="pdfqa-checklist" data-group="paginacion">
+        <div class="pdfqa-checklist__header">
+          <div>
+            <h2 class="pdfqa-checklist__title">Paginaci&oacute;n correcta</h2>
+            <p class="pdfqa-checklist__ref">Saltos de p&aacute;gina y continuidad del contenido</p>
+          </div>
+          <span class="pdfqa-checklist__score" data-score>&mdash;</span>
+        </div>
+        <ul class="pdfqa-checklist__list">
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Filas de tabla sin cortes entre p&aacute;ginas
+                <span class="pdfqa-check__detail">Cada fila permanece &iacute;ntegra en una sola p&aacute;gina.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Folios &laquo;P&aacute;gina X de Y&raquo; en cada hoja
+                <span class="pdfqa-check__detail">Numeraci&oacute;n continua y sin omisiones.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Encabezados de tabla repetidos al continuar
+                <span class="pdfqa-check__detail">Tablas multip&aacute;gina repiten la cabecera.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Secciones y bloques sin hu&eacute;rfanos
+                <span class="pdfqa-check__detail">T&iacute;tulos no quedan solos al final de p&aacute;gina.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Orden de lectura correcto en cada p&aacute;gina
+                <span class="pdfqa-check__detail">Flujo de columnas y tablas consistente.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): checklist de rendimiento de conversión -->
+      <article class="pdfqa-checklist" data-group="conversion">
+        <div class="pdfqa-checklist__header">
+          <div>
+            <h2 class="pdfqa-checklist__title">Rendimiento de conversi&oacute;n</h2>
+            <p class="pdfqa-checklist__ref">Tiempo, peso y estabilidad del proceso</p>
+          </div>
+          <span class="pdfqa-checklist__score" data-score>&mdash;</span>
+        </div>
+        <ul class="pdfqa-checklist__list">
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Conversi&oacute;n total en 3,0 s o menos
+                <span class="pdfqa-check__detail">Medici&oacute;n extremo a extremo de la exportaci&oacute;n.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Peso del archivo dentro de 5 MB
+                <span class="pdfqa-check__detail">Optimizaci&oacute;n de fuentes e im&aacute;genes.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Consumo de memoria dentro del l&iacute;mite
+                <span class="pdfqa-check__detail">Sin picos que afecten al servidor de reportes.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Proceso en cola sin bloquear la interfaz
+                <span class="pdfqa-check__detail">La exportaci&oacute;n se ejecuta en segundo plano.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Trazabilidad issue 5.3.1.5 (#36): checklist de legibilidad -->
+      <article class="pdfqa-checklist" data-group="legibilidad">
+        <div class="pdfqa-checklist__header">
+          <div>
+            <h2 class="pdfqa-checklist__title">Legibilidad</h2>
+            <p class="pdfqa-checklist__ref">Texto claro, contraste y accesibilidad</p>
+          </div>
+          <span class="pdfqa-checklist__score" data-score>&mdash;</span>
+        </div>
+        <ul class="pdfqa-checklist__list">
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Tama&ntilde;o m&iacute;nimo de 9 pt en el cuerpo
+                <span class="pdfqa-check__detail">Tablas y notas legibles al imprimir.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Contraste de al menos 4.5:1
+                <span class="pdfqa-check__detail">Texto sobre fondos claros y p&iacute;ldoras de estado.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Fuentes incrustadas en el documento
+                <span class="pdfqa-check__detail">Sin sustituciones al abrir en otro equipo.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Texto seleccionable y buscable
+                <span class="pdfqa-check__detail">Capa de texto real, no imagen rasterizada.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+          <li class="pdfqa-check" data-status="pending">
+            <span class="pdfqa-check__label">
+              <span class="pdfqa-check__box" aria-hidden="true">&#10003;</span>
+              <span>Metadatos y textos alternativos completos
+                <span class="pdfqa-check__detail">T&iacute;tulo del documento y descripci&oacute;n de gr&aacute;ficos.</span>
+              </span>
+            </span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </li>
+        </ul>
+      </article>
+
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): métricas de rendimiento de conversión por reporte -->
+    <section class="pdfqa-conversion" aria-labelledby="pdfqaConversionTitle">
+      <div class="pdfqa-conversion__header">
+        <h2 class="pdfqa-conversion__title" id="pdfqaConversionTitle">Rendimiento de conversi&oacute;n por reporte</h2>
+        <p class="pdfqa-conversion__hint" id="conversionHint">Sin ejecutar &middot; umbrales: 3,0 s y 5 MB</p>
+      </div>
+      <div class="pdfqa-table-wrap">
+        <table class="pdfqa-table">
+          <caption>Resultados simulados de la exportaci&oacute;n a PDF para cada variante del reporte.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Reporte</th>
+              <th scope="col">P&aacute;ginas</th>
+              <th scope="col">Registros</th>
+              <th scope="col">Tiempo</th>
+              <th scope="col">Peso</th>
+              <th scope="col">Resultado</th>
+            </tr>
+          </thead>
+          <tbody id="conversionBody">
+            <tr data-report="consolidado" data-pages="4" data-base-time="1.9" data-base-size="2.6">
+              <td>Consolidado (HU 5.3)</td>
+              <td class="pdfqa-table__num" data-pages>&mdash;</td>
+              <td class="pdfqa-table__num" data-records>&mdash;</td>
+              <td class="pdfqa-table__num" data-time>&mdash;</td>
+              <td class="pdfqa-table__num" data-size>&mdash;</td>
+              <td data-result><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-report="facultad" data-pages="5" data-base-time="2.1" data-base-size="3.1">
+              <td>Por facultad</td>
+              <td class="pdfqa-table__num" data-pages>&mdash;</td>
+              <td class="pdfqa-table__num" data-records>&mdash;</td>
+              <td class="pdfqa-table__num" data-time>&mdash;</td>
+              <td class="pdfqa-table__num" data-size>&mdash;</td>
+              <td data-result><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-report="detalle" data-pages="6" data-base-time="2.5" data-base-size="3.9">
+              <td>Detalle de proyectos</td>
+              <td class="pdfqa-table__num" data-pages>&mdash;</td>
+              <td class="pdfqa-table__num" data-records>&mdash;</td>
+              <td class="pdfqa-table__num" data-time>&mdash;</td>
+              <td class="pdfqa-table__num" data-size>&mdash;</td>
+              <td data-result><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+            <tr data-report="historial" data-pages="3" data-base-time="1.6" data-base-size="2.1">
+              <td>Historial de postulaciones</td>
+              <td class="pdfqa-table__num" data-pages>&mdash;</td>
+              <td class="pdfqa-table__num" data-records>&mdash;</td>
+              <td class="pdfqa-table__num" data-time>&mdash;</td>
+              <td class="pdfqa-table__num" data-size>&mdash;</td>
+              <td data-result><span class="status-pill status-pill--pending"><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): previsualización de páginas del PDF -->
+    <section class="pdfqa-previews" aria-labelledby="pdfqaPreviewsTitle">
+      <div class="pdfqa-previews__header">
+        <h2 class="pdfqa-previews__title" id="pdfqaPreviewsTitle">Previsualizaci&oacute;n de p&aacute;ginas</h2>
+        <p class="pdfqa-previews__hint">Miniaturas de las tres primeras p&aacute;ginas del reporte consolidado.</p>
+      </div>
+      <div class="pdfqa-pages" id="pagePreviews">
+
+        <!-- Trazabilidad issue 5.3.1.5 (#36): página 1, resumen ejecutivo -->
+        <figure class="pdfqa-page" data-page="1" data-group="maquetacion">
+          <div class="pdfqa-page__frame">
+            <div class="pdfqa-page__brand">
+              <span class="pdfqa-page__brand-name"><span class="pdfqa-page__brand-mark" aria-hidden="true">S</span>SIGME</span>
+              <span class="pdfqa-page__folio">P&aacute;gina 1 de 3</span>
+            </div>
+            <div class="pdfqa-page__title"></div>
+            <div class="pdfqa-page__subtitle"></div>
+            <div class="pdfqa-page__blocks">
+              <div class="pdfqa-page__kpis">
+                <div class="pdfqa-page__kpi"></div>
+                <div class="pdfqa-page__kpi"></div>
+                <div class="pdfqa-page__kpi"></div>
+                <div class="pdfqa-page__kpi"></div>
+              </div>
+              <div class="pdfqa-page__line"></div>
+              <div class="pdfqa-page__line pdfqa-page__line--medium"></div>
+              <div class="pdfqa-page__chart">
+                <span class="pdfqa-page__bar" style="height: 55%"></span>
+                <span class="pdfqa-page__bar" style="height: 78%"></span>
+                <span class="pdfqa-page__bar pdfqa-page__bar--accent" style="height: 92%"></span>
+                <span class="pdfqa-page__bar" style="height: 64%"></span>
+                <span class="pdfqa-page__bar" style="height: 46%"></span>
+              </div>
+              <div class="pdfqa-page__line pdfqa-page__line--short"></div>
+            </div>
+            <div class="pdfqa-page__footer">Reporte consolidado &middot; SIGME</div>
+          </div>
+          <figcaption class="pdfqa-page__caption">
+            <span class="pdfqa-page__label">P&aacute;gina 1 &middot; Resumen ejecutivo</span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </figcaption>
+        </figure>
+
+        <!-- Trazabilidad issue 5.3.1.5 (#36): página 2, métricas por facultad -->
+        <figure class="pdfqa-page" data-page="2" data-group="paginacion">
+          <div class="pdfqa-page__frame">
+            <div class="pdfqa-page__brand">
+              <span class="pdfqa-page__brand-name"><span class="pdfqa-page__brand-mark" aria-hidden="true">S</span>SIGME</span>
+              <span class="pdfqa-page__folio">P&aacute;gina 2 de 3</span>
+            </div>
+            <div class="pdfqa-page__title"></div>
+            <div class="pdfqa-page__subtitle"></div>
+            <div class="pdfqa-page__blocks">
+              <div class="pdfqa-page__chart">
+                <span class="pdfqa-page__bar" style="height: 40%"></span>
+                <span class="pdfqa-page__bar" style="height: 62%"></span>
+                <span class="pdfqa-page__bar pdfqa-page__bar--accent" style="height: 84%"></span>
+                <span class="pdfqa-page__bar" style="height: 56%"></span>
+                <span class="pdfqa-page__bar" style="height: 72%"></span>
+                <span class="pdfqa-page__bar" style="height: 48%"></span>
+              </div>
+              <div class="pdfqa-page__table">
+                <div class="pdfqa-page__tr pdfqa-page__tr--head">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+              </div>
+              <div class="pdfqa-page__line"></div>
+              <div class="pdfqa-page__line pdfqa-page__line--medium"></div>
+            </div>
+            <div class="pdfqa-page__footer">M&eacute;tricas por facultad &middot; SIGME</div>
+          </div>
+          <figcaption class="pdfqa-page__caption">
+            <span class="pdfqa-page__label">P&aacute;gina 2 &middot; M&eacute;tricas por facultad</span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </figcaption>
+        </figure>
+
+        <!-- Trazabilidad issue 5.3.1.5 (#36): página 3, detalle de proyectos -->
+        <figure class="pdfqa-page" data-page="3" data-group="legibilidad">
+          <div class="pdfqa-page__frame">
+            <div class="pdfqa-page__brand">
+              <span class="pdfqa-page__brand-name"><span class="pdfqa-page__brand-mark" aria-hidden="true">S</span>SIGME</span>
+              <span class="pdfqa-page__folio">P&aacute;gina 3 de 3</span>
+            </div>
+            <div class="pdfqa-page__title"></div>
+            <div class="pdfqa-page__subtitle"></div>
+            <div class="pdfqa-page__blocks">
+              <div class="pdfqa-page__table">
+                <div class="pdfqa-page__tr pdfqa-page__tr--head">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+                <div class="pdfqa-page__tr">
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                  <span class="pdfqa-page__td"></span>
+                </div>
+              </div>
+              <div class="pdfqa-page__line"></div>
+              <div class="pdfqa-page__line pdfqa-page__line--short"></div>
+              <div class="pdfqa-page__line pdfqa-page__line--medium"></div>
+            </div>
+            <div class="pdfqa-page__footer">Detalle de proyectos &middot; SIGME</div>
+          </div>
+          <figcaption class="pdfqa-page__caption">
+            <span class="pdfqa-page__label">P&aacute;gina 3 &middot; Detalle de proyectos</span>
+            <span class="status-pill status-pill--pending" data-pill><span class="status-pill__dot" aria-hidden="true"></span>Pendiente</span>
+          </figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 5.3.1.5 (#36): nota de alcance y dependencias -->
+    <footer class="pdfqa-footer">
+      <p>
+        Issue 5.3.1.5 (#36). Predecesora: 5.3.1.4. Los resultados de maquetaci&oacute;n,
+        paginaci&oacute;n, conversi&oacute;n y legibilidad son simulados en el cliente con
+        JavaScript nativo para validar los requisitos 2.2.3 y 3.3; no se modificaron
+        otras issues ni hojas de estilo.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 5.3.1.5 (#36): JS nativo para la ejecución simulada de pruebas -->
+  <script>
+    (function () {
+      'use strict';
+
+      var TIME_LIMIT = 3.0;
+      var SIZE_LIMIT = 5.0;
+      var LEGIBILITY_TARGET = 90;
+
+      var runTest = document.getElementById('runTest');
+      var resetTest = document.getElementById('resetTest');
+      var reportSelect = document.getElementById('reportSelect');
+      var volumeSelect = document.getElementById('volumeSelect');
+      var engineSelect = document.getElementById('engineSelect');
+      var statusBox = document.getElementById('statusBox');
+      var statusTitle = document.getElementById('statusTitle');
+      var statusText = document.getElementById('statusText');
+      var progressTrack = document.getElementById('progressTrack');
+      var progressBar = document.getElementById('progressBar');
+      var progressValue = document.getElementById('progressValue');
+      var metricPages = document.getElementById('metricPages');
+      var metricTime = document.getElementById('metricTime');
+      var metricSize = document.getElementById('metricSize');
+      var metricLegibility = document.getElementById('metricLegibility');
+      var conversionBody = document.getElementById('conversionBody');
+      var conversionHint = document.getElementById('conversionHint');
+      var pagePreviews = document.getElementById('pagePreviews');
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.pdfqa-check'));
+      var checklists = Array.prototype.slice.call(document.querySelectorAll('.pdfqa-checklist'));
+      var pages = Array.prototype.slice.call(pagePreviews.querySelectorAll('.pdfqa-page'));
+      var conversionRows = Array.prototype.slice.call(conversionBody.querySelectorAll('tr'));
+
+      var running = false;
+      var progressTimer = null;
+      var numberFormatter = new Intl.NumberFormat('es-CO');
+
+      function formatNumber(value) {
+        return numberFormatter.format(value);
+      }
+
+      function formatDecimals(value) {
+        return value.toFixed(1).replace('.', ',');
+      }
+
+      function pillMarkup(kind, label) {
+        return '<span class="status-pill status-pill--' + kind + '" data-pill>' +
+          '<span class="status-pill__dot" aria-hidden="true"></span>' + label + '</span>';
+      }
+
+      function setMetric(element, text, modifier) {
+        element.textContent = text;
+        element.className = 'pdfqa-metric__value pdfqa-metric__value--' + modifier;
+      }
+
+      function setStatus(kind, title, text) {
+        statusBox.className = 'pdfqa-status is-' + kind;
+        statusTitle.textContent = title;
+        statusText.textContent = text;
+      }
+
+      function setProgress(percent) {
+        progressBar.style.width = percent + '%';
+        progressValue.textContent = percent + ' %';
+        progressTrack.setAttribute('aria-valuenow', String(percent));
+      }
+
+      function setCheck(check, kind, label) {
+        check.setAttribute('data-status', kind);
+        check.className = 'pdfqa-check is-' + kind;
+        check.querySelector('[data-pill]').outerHTML = pillMarkup(kind, label);
+      }
+
+      function clearCheck(check) {
+        check.setAttribute('data-status', 'pending');
+        check.className = 'pdfqa-check';
+        check.querySelector('[data-pill]').outerHTML = pillMarkup('pending', 'Pendiente');
+      }
+
+      function clearPage(page) {
+        page.className = 'pdfqa-page';
+        page.querySelector('[data-pill]').outerHTML = pillMarkup('pending', 'Pendiente');
+      }
+
+      function reset() {
+        checks.forEach(clearCheck);
+        checklists.forEach(function (card) {
+          card.querySelector('[data-score]').textContent = '\u2014';
+        });
+        pages.forEach(clearPage);
+
+        conversionRows.forEach(function (row) {
+          row.querySelector('[data-pages]').textContent = '\u2014';
+          row.querySelector('[data-records]').textContent = '\u2014';
+          row.querySelector('[data-time]').textContent = '\u2014';
+          row.querySelector('[data-size]').textContent = '\u2014';
+          row.querySelector('[data-time]').className = 'pdfqa-table__num pdfqa-table__num--pending';
+          row.querySelector('[data-size]').className = 'pdfqa-table__num pdfqa-table__num--pending';
+          row.querySelector('[data-result]').innerHTML = pillMarkup('pending', 'Pendiente');
+        });
+
+        setMetric(metricPages, '\u2014', 'pending');
+        setMetric(metricTime, '\u2014', 'pending');
+        setMetric(metricSize, '\u2014', 'pending');
+        setMetric(metricLegibility, '\u2014', 'pending');
+        setStatus('idle', 'Sin ejecutar', 'Ejecuta las pruebas para validar maquetaci\u00f3n, paginaci\u00f3n, conversi\u00f3n y legibilidad.');
+        statusBox.classList.remove('is-ok', 'is-warn', 'is-fail');
+        setProgress(0);
+        progressBar.style.backgroundColor = '';
+        conversionHint.textContent = 'Sin ejecutar \u00b7 umbrales: 3,0 s y 5 MB';
+      }
+
+      function engineFactor(engine) {
+        if (engine === 'wkhtmltopdf') {
+          return 1.15;
+        }
+        if (engine === 'libreoffice') {
+          return 1.32;
+        }
+        return 1;
+      }
+
+      function reportFactor(report) {
+        if (report === 'facultad') {
+          return 1.08;
+        }
+        if (report === 'detalle') {
+          return 1.18;
+        }
+        if (report === 'historial') {
+          return 0.92;
+        }
+        return 1;
+      }
+
+      function pseudoRandom(seed) {
+        var x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+        return x - Math.floor(x);
+      }
+
+      function evaluateCheck(index, volume) {
+        var roll = pseudoRandom(index + 1);
+        var volumePenalty = volume === 10000 ? 0.12 : (volume === 1000 ? -0.08 : 0);
+        var adjusted = roll + volumePenalty;
+
+        if (adjusted < 0.86) {
+          return { kind: 'ok', label: 'Aprobado' };
+        }
+        if (adjusted < 0.95) {
+          return { kind: 'warn', label: 'Revisar' };
+        }
+        return { kind: 'fail', label: 'Fallido' };
+      }
+
+      function runSimulation() {
+        var report = reportSelect.value;
+        var volume = parseInt(volumeSelect.value, 10);
+        var engine = engineSelect.value;
+        var volumeFactor = volume / 5000;
+        var factor = engineFactor(engine) * reportFactor(report);
+        var groupResults = {};
+        var totalChecks = 0;
+        var passedChecks = 0;
+
+        checks.forEach(function (check, index) {
+          var result = evaluateCheck(index, volume);
+          setCheck(check, result.kind, result.label);
+
+          var group = check.closest('.pdfqa-checklist').getAttribute('data-group');
+          if (!groupResults[group]) {
+            groupResults[group] = { ok: 0, total: 0 };
+          }
+          groupResults[group].total += 1;
+          if (result.kind === 'ok') {
+            groupResults[group].ok += 1;
+            passedChecks += 1;
+          }
+          totalChecks += 1;
+        });
+
+        checklists.forEach(function (card) {
+          var group = card.getAttribute('data-group');
+          var data = groupResults[group] || { ok: 0, total: 1 };
+          var percent = Math.round((data.ok / data.total) * 100);
+          card.querySelector('[data-score]').textContent = percent + ' %';
+        });
+
+        var legibilityGroup = groupResults.legibilidad || { ok: 0, total: 1 };
+        var legibility = Math.round((legibilityGroup.ok / legibilityGroup.total) * 100);
+        var totalPages = 0;
+
+        conversionRows.forEach(function (row, index) {
+          var pagesForRow = parseInt(row.getAttribute('data-pages'), 10);
+          var baseTime = parseFloat(row.getAttribute('data-base-time'));
+          var baseSize = parseFloat(row.getAttribute('data-base-size'));
+          var records = Math.round(volume * (0.9 + index * 0.12));
+          var growth = Math.max(0, volumeFactor - 1);
+          var time = (baseTime + growth * 0.45) * factor + pseudoRandom(index + 20) * 0.35;
+          var size = (baseSize + growth * 0.6) * (engine === 'libreoffice' ? 1.12 : 1) + pseudoRandom(index + 30) * 0.3;
+          var pagesScaled = pagesForRow + Math.round(growth * 2);
+          var timeOk = time <= TIME_LIMIT;
+          var sizeOk = size <= SIZE_LIMIT;
+          var kind = timeOk && sizeOk ? 'ok' : (timeOk || sizeOk ? 'warn' : 'fail');
+          var label = kind === 'ok' ? 'Cumple' : (kind === 'warn' ? 'L\u00edmite' : 'Excede');
+          var timeCell = row.querySelector('[data-time]');
+          var sizeCell = row.querySelector('[data-size]');
+
+          row.querySelector('[data-pages]').textContent = pagesScaled;
+          row.querySelector('[data-records]').textContent = formatNumber(records);
+          timeCell.textContent = formatDecimals(time) + ' s';
+          timeCell.className = 'pdfqa-table__num pdfqa-table__num--' + (timeOk ? 'ok' : 'warn');
+          sizeCell.textContent = formatDecimals(size) + ' MB';
+          sizeCell.className = 'pdfqa-table__num pdfqa-table__num--' + (sizeOk ? 'ok' : 'warn');
+          row.querySelector('[data-result]').innerHTML = pillMarkup(kind, label);
+
+          totalPages = Math.max(totalPages, pagesScaled);
+        });
+
+        var selectedRow = conversionRows.filter(function (row) {
+          return row.getAttribute('data-report') === report;
+        })[0] || conversionRows[0];
+        var totalTime = parseFloat(selectedRow.getAttribute('data-base-time')) + Math.max(0, volumeFactor - 1) * 0.45;
+        totalTime = totalTime * factor;
+        var totalSize = parseFloat(selectedRow.getAttribute('data-base-size')) + Math.max(0, volumeFactor - 1) * 0.6;
+        totalSize = totalSize * (engine === 'libreoffice' ? 1.12 : 1);
+
+        setMetric(metricPages, String(totalPages), 'ok');
+        setMetric(metricTime, formatDecimals(totalTime) + ' s', totalTime <= TIME_LIMIT ? 'ok' : (totalTime <= TIME_LIMIT * 1.2 ? 'warn' : 'fail'));
+        setMetric(metricSize, formatDecimals(totalSize) + ' MB', totalSize <= SIZE_LIMIT ? 'ok' : 'warn');
+        setMetric(metricLegibility, legibility + ' %', legibility >= LEGIBILITY_TARGET ? 'ok' : (legibility >= 75 ? 'warn' : 'fail'));
+
+        pages.forEach(function (page) {
+          var group = page.getAttribute('data-group');
+          var score = groupResults[group] || { ok: 0, total: 1 };
+          var pagePercent = Math.round((score.ok / score.total) * 100);
+          var kind = pagePercent >= 90 ? 'ok' : (pagePercent >= 60 ? 'warn' : 'fail');
+          var label = kind === 'ok' ? 'Validada' : (kind === 'warn' ? 'Con observaciones' : 'Fallida');
+          page.className = 'pdfqa-page is-' + kind;
+          page.querySelector('[data-pill]').outerHTML = pillMarkup(kind, label);
+        });
+
+        var passRatio = passedChecks / totalChecks;
+        var overallPercent = Math.round(passRatio * 100);
+
+        if (passRatio >= 0.85) {
+          progressBar.style.backgroundColor = 'var(--color-ok)';
+          setStatus('ok', 'Pruebas del PDF aprobadas',
+            'Maquetaci\u00f3n, paginaci\u00f3n, conversi\u00f3n y legibilidad cumplen: ' + overallPercent +
+            ' % de verificaciones aprobadas y conversi\u00f3n en ' + formatDecimals(totalTime) + ' s.');
+        } else if (passRatio >= 0.6) {
+          progressBar.style.backgroundColor = 'var(--color-warn)';
+          setStatus('warn', 'Pruebas aprobadas con observaciones',
+            overallPercent + ' % de verificaciones aprobadas. Revisa los puntos marcados como \u00abRevisar\u00bb antes de publicar el reporte.');
+        } else {
+          progressBar.style.backgroundColor = 'var(--color-danger)';
+          setStatus('fail', 'Pruebas del PDF no superadas',
+            'Solo ' + overallPercent + ' % de verificaciones aprobadas. Corrige la maquetaci\u00f3n, la paginaci\u00f3n o la legibilidad (3.3) antes de exportar.');
+        }
+
+        conversionHint.textContent = 'Ejecutado \u00b7 ' + overallPercent + ' % aprobado \u00b7 umbrales: 3,0 s y 5 MB';
+      }
+
+      function execute() {
+        if (running) {
+          return;
+        }
+        running = true;
+        runTest.disabled = true;
+        runTest.textContent = 'Ejecutando...';
+        setStatus('idle', 'Ejecutando pruebas', 'Evaluando maquetaci\u00f3n, paginaci\u00f3n, conversi\u00f3n y legibilidad del PDF.');
+        setProgress(0);
+
+        var percent = 0;
+        progressTimer = setInterval(function () {
+          percent += 10;
+          if (percent >= 100) {
+            percent = 100;
+            clearInterval(progressTimer);
+            progressTimer = null;
+            setProgress(100);
+            runSimulation();
+            runTest.disabled = false;
+            runTest.textContent = 'Ejecutar pruebas';
+            running = false;
+          } else {
+            setProgress(percent);
+          }
+        }, 90);
+      }
+
+      runTest.addEventListener('click', execute);
+
+      resetTest.addEventListener('click', function () {
+        if (running) {
+          return;
+        }
+        if (progressTimer) {
+          clearInterval(progressTimer);
+          progressTimer = null;
+        }
+        reset();
+      });
+
+      [reportSelect, volumeSelect, engineSelect].forEach(function (select) {
+        select.addEventListener('change', function () {
+          if (!running) {
+            reset();
+          }
+        });
+      });
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

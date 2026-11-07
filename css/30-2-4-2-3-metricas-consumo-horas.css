@@ -1,0 +1,826 @@
+/*
+  Trazabilidad issue 2.4.2.3 (#30):
+  Estilos de la sección de métricas e indicadores gráficos del consumo de horas
+  frente al mínimo exigido (WBS 2.4.2.3). Implementa únicamente esta issue.
+  Predecesora: 2.4.2.2 (#29). Continúa en 2.4.2.4 (#31).
+  Reutiliza las convenciones visuales de styles.css y de las hojas de la carpeta css/.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): contenedor general de la sección de métricas */
+.hours-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): encabezado con marca SIGME y retorno al inicio */
+.hours-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.hours-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hours-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.hours-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hours-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.hours-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): etiqueta de la issue implementada */
+.hours-issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): enlace de regreso al inicio */
+.hours-back {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+}
+
+.hours-back:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.hours-back:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): resumen y selector del periodo simulado */
+.hours-overview {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.hours-overview__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.hours-overview__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.hours-overview__lead {
+  margin: 0;
+  max-width: 72ch;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.hours-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.hours-toolbar__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 240px;
+}
+
+.hours-toolbar__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hours-control {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+}
+
+.hours-control:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+}
+
+.hours-toolbar__hint {
+  margin: 0 0 0.55rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): resumen textual anunciado al cambiar de periodo */
+.hours-summary {
+  margin: 1rem 0 0;
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0 8px 8px 0;
+  background-color: #f8fafd;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): tarjetas de indicadores clave del periodo */
+.hours-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.hours-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  padding: 0.9rem 1rem;
+}
+
+.hours-kpi__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hours-kpi__value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.hours-kpi__value--ok {
+  color: var(--color-ok);
+}
+
+.hours-kpi__value--info {
+  color: var(--color-info);
+}
+
+.hours-kpi__value--warn {
+  color: var(--color-warn);
+}
+
+.hours-kpi__value--danger {
+  color: var(--color-danger);
+}
+
+.hours-kpi__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): disposición del anillo y las barras mensuales */
+.hours-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 1.25rem;
+}
+
+.hours-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.hours-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hours-card__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.hours-card__hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): píldoras de estado con texto además de color */
+.hours-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  white-space: nowrap;
+}
+
+.hours-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.hours-pill--info {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.hours-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.hours-pill--danger {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): anillo o medidor de horas cumplidas */
+.hours-compare {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.hours-ring {
+  --pct: 0;
+  --ring-color: var(--color-primary);
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: conic-gradient(var(--ring-color) calc(var(--pct) * 1%), #e6ebf5 0);
+  transition: background 0.35s ease;
+}
+
+.hours-ring::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.hours-ring--ok {
+  --ring-color: var(--color-ok);
+}
+
+.hours-ring--info {
+  --ring-color: var(--color-info);
+}
+
+.hours-ring--warn {
+  --ring-color: var(--color-warn);
+}
+
+.hours-ring--danger {
+  --ring-color: var(--color-danger);
+}
+
+.hours-ring__center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  text-align: center;
+}
+
+.hours-ring__value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hours-ring__caption {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.hours-compare__info {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.hours-compare__note {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.hours-compare__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.hours-compare__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.hours-compare__fact-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hours-compare__fact-value {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): barra de comparación contra el mínimo exigido */
+.hours-meter__labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+}
+
+.hours-meter__track {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background-color: #eef1f8;
+}
+
+.hours-meter__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  transition: width 0.35s ease, background-color 0.35s ease;
+}
+
+.hours-meter__fill--ok {
+  background-color: var(--color-ok);
+}
+
+.hours-meter__fill--info {
+  background-color: var(--color-info);
+}
+
+.hours-meter__fill--warn {
+  background-color: var(--color-warn);
+}
+
+.hours-meter__fill--danger {
+  background-color: var(--color-danger);
+}
+
+.hours-meter__marker {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 100%;
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--color-text);
+  transition: left 0.35s ease;
+}
+
+.hours-meter__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.65rem 0 0;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+}
+
+.hours-meter__legend-line {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  border-radius: 2px;
+  background-color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): gráfico de barras por mes */
+.hours-chart {
+  margin: 0;
+}
+
+.hours-chart__caption {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+.hours-chart__scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.hours-chart__plot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  min-width: 520px;
+  padding-top: 0.5rem;
+}
+
+.hours-bar {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 34px;
+}
+
+.hours-bar__value {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.hours-bar__track {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 46px;
+  height: 170px;
+  border-radius: 8px 8px 4px 4px;
+  background-color: #eef1f8;
+  overflow: hidden;
+}
+
+.hours-bar__fill {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 8px 8px 0 0;
+  background-color: var(--color-primary);
+  transition: height 0.35s ease, background-color 0.35s ease;
+}
+
+.hours-bar__fill--ok {
+  background-color: var(--color-ok);
+}
+
+.hours-bar__fill--warn {
+  background-color: var(--color-warn);
+}
+
+.hours-bar__fill--danger {
+  background-color: var(--color-danger);
+}
+
+.hours-bar__target {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  border-top: 1px dashed rgba(27, 36, 54, 0.45);
+}
+
+.hours-bar__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): detalle mensual en tabla accesible */
+.hours-table-card {
+  margin-bottom: 1.25rem;
+}
+
+.hours-table-wrap {
+  overflow-x: auto;
+}
+
+.hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.hours-table th,
+.hours-table td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.hours-table th {
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.hours-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.hours-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.hours-mini__track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background-color: #eef1f8;
+  overflow: hidden;
+}
+
+.hours-mini__fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  transition: width 0.35s ease, background-color 0.35s ease;
+}
+
+.hours-mini__fill--ok {
+  background-color: var(--color-ok);
+}
+
+.hours-mini__fill--warn {
+  background-color: var(--color-warn);
+}
+
+.hours-mini__fill--danger {
+  background-color: var(--color-danger);
+}
+
+.hours-mini__text {
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): leyenda de colores y estados */
+.hours-legend {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.hours-legend__title {
+  margin: 0 0 0.85rem;
+  font-size: 1.15rem;
+}
+
+.hours-legend__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hours-legend__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.hours-legend__swatch {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.2rem;
+  border-radius: 4px;
+  background-color: var(--color-border);
+}
+
+.hours-legend__swatch--ok {
+  background-color: var(--color-ok);
+}
+
+.hours-legend__swatch--info {
+  background-color: var(--color-info);
+}
+
+.hours-legend__swatch--warn {
+  background-color: var(--color-warn);
+}
+
+.hours-legend__swatch--danger {
+  background-color: var(--color-danger);
+}
+
+.hours-legend__note {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): nota de alcance y dependencias */
+.hours-footer {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.hours-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): utilidad de accesibilidad */
+.hours-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): comportamiento responsive en tablet */
+@media (max-width: 900px) {
+  .hours-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .hours-compare {
+    justify-content: center;
+  }
+
+  .hours-compare__info {
+    flex-basis: 100%;
+  }
+}
+
+/* Trazabilidad issue 2.4.2.3 (#30): comportamiento responsive en móvil */
+@media (max-width: 600px) {
+  .hours-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .hours-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hours-overview,
+  .hours-card,
+  .hours-legend {
+    padding: 1rem;
+  }
+
+  .hours-overview__title {
+    font-size: 1.3rem;
+  }
+
+  .hours-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hours-toolbar__field {
+    min-width: 0;
+  }
+
+  .hours-compare {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hours-ring {
+    align-self: center;
+  }
+
+  .hours-bar__track {
+    height: 140px;
+  }
+}

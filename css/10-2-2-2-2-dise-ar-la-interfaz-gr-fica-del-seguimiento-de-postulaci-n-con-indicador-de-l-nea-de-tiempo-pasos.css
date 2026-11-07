@@ -1,0 +1,587 @@
+/*
+  Trazabilidad issue 2.2.2.2 (#10):
+  Estilos del prototipo de la interfaz gráfica del seguimiento de postulación con
+  indicador de línea de tiempo/pasos. Implementa SOLO la issue #10
+  (predecesora 2.2.1.1 / #5). No implementa otras issues.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): contenedor general de la pantalla de seguimiento */
+.tracking-shell {
+  width: min(1100px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): encabezado del seguimiento de postulación */
+.tracking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tracking-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.tracking-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.tracking-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.tracking-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): resumen de la postulación consultada */
+.tracking-overview {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-overview__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.tracking-overview__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.tracking-overview__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.tracking-overview__lead {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 64ch;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): tarjeta del estado actual de la postulación */
+.tracking-overview__status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 220px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: #f8fafd;
+  padding: 0.9rem 1rem;
+}
+
+.tracking-overview__status-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.tracking-overview__status-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-info);
+}
+
+.tracking-overview__status-meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): datos básicos de la postulación seguida */
+.tracking-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.tracking-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+}
+
+.tracking-fact__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.tracking-fact__value {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): contenedor del indicador de línea de tiempo/pasos */
+.tracking-timeline {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-timeline__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-timeline__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tracking-timeline__badge {
+  border-radius: 999px;
+  background-color: rgba(31, 95, 191, 0.12);
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): lista ordenada de pasos del proceso */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): cada paso de la línea de tiempo */
+.timeline__step {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.timeline__step:last-child {
+  padding-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): conectores verticales entre pasos */
+.timeline__step::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 30px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--color-border);
+}
+
+.timeline__step:last-child::before {
+  display: none;
+}
+
+.timeline__step--done::before {
+  background-color: var(--color-ok);
+}
+
+.timeline__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-border);
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): estados visuales de los pasos (completado/actual/pendiente) */
+.timeline__step--done .timeline__marker {
+  border-color: var(--color-ok);
+  background-color: var(--color-ok);
+}
+
+.timeline__step--done .timeline__dot {
+  background-color: #fff;
+}
+
+.timeline__step--current .timeline__marker {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 5px rgba(31, 95, 191, 0.15);
+}
+
+.timeline__step--current .timeline__dot {
+  background-color: var(--color-primary);
+}
+
+.timeline__step--pending .timeline__marker {
+  border-color: var(--color-border);
+  background-color: #f8fafd;
+}
+
+.timeline__step--pending .timeline__dot {
+  background-color: #c3cbdb;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): contenido textual de cada paso */
+.timeline__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-top: 0.15rem;
+}
+
+.timeline__step-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.timeline__step--current .timeline__step-label {
+  color: var(--color-primary);
+}
+
+.timeline__step-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.timeline__step-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+.timeline__step-date {
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.timeline__step--done .timeline__step-date {
+  color: var(--color-ok);
+}
+
+.timeline__step--current .timeline__step-date {
+  color: var(--color-info);
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): detalle del paso actual del seguimiento */
+.tracking-current {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-current__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tracking-current__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tracking-current__pill {
+  border-radius: 999px;
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+}
+
+.tracking-current__body {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.tracking-current__step {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.tracking-current__desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.tracking-current__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-left: 1px solid var(--color-border);
+  padding-left: 1.5rem;
+}
+
+.tracking-current__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tracking-current__item-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.tracking-current__item-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): historial de cambios de estado */
+.tracking-history {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.tracking-history__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.tracking-history__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tracking-history__count {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.tracking-history__table-wrap {
+  overflow-x: auto;
+}
+
+.tracking-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.tracking-history__table th,
+.tracking-history__table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tracking-history__table th {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.tracking-history__table td {
+  vertical-align: top;
+}
+
+.tracking-history__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): indicadores de estado del historial */
+.status-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+.status-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.status-pill--info {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.status-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.status-pill--danger {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): nota de alcance y dependencias de la issue */
+.tracking-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.tracking-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 2.2.2.2 (#10): comportamiento responsive del seguimiento */
+@media (max-width: 900px) {
+  .tracking-overview__heading {
+    flex-direction: column;
+  }
+
+  .tracking-overview__status {
+    width: 100%;
+  }
+
+  .tracking-facts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tracking-current__body {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-current__aside {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .tracking-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .tracking-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tracking-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-timeline__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

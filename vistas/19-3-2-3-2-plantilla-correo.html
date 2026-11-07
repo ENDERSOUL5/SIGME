@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Plantilla de correo al estudiante</title>
+  <!-- Trazabilidad issue 3.2.3.2 (#19): hoja de estilos de las plantillas HTML del correo al estudiante -->
+  <link rel="stylesheet" href="../css/19-3-2-3-2-plantilla-correo.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 3.2.3.2 (#19): contenedor general de la vista de la plantilla -->
+  <div class="mail-shell">
+
+    <!-- Trazabilidad issue 3.2.3.2 (#19): encabezado con marca SIGME y retorno al inicio -->
+    <header class="mail-header">
+      <div class="mail-brand">
+        <span class="mail-brand__mark" aria-hidden="true">S</span>
+        <div class="mail-brand__text">
+          <span class="mail-brand__name">SIGME</span>
+          <span class="mail-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <nav class="mail-nav" aria-label="Navegación de la pantalla">
+        <a href="../index.html">Volver al inicio</a>
+      </nav>
+      <span class="issue-tag">Issue 3.2.3.2 · #19</span>
+    </header>
+
+    <!-- Trazabilidad issue 3.2.3.2 (#19): resumen de la plantilla de correo -->
+    <section class="mail-overview" aria-labelledby="mailTitle">
+      <p class="mail-overview__eyebrow">Notificaciones automáticas por correo</p>
+      <h1 class="mail-overview__title" id="mailTitle">Plantilla HTML del correo al estudiante</h1>
+      <p class="mail-overview__lead">
+        Prototipo del formato de las plantillas que se envían al estudiante cuando su
+        proyecto es aprobado o rechazado y cuando se le asigna un módulo. Usa el
+        selector para revisar cada variante del correo.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 3.2.3.2 (#19): selector de variante (Aprobado / Rechazado / Asignación) -->
+    <div class="mail-toolbar">
+      <span class="mail-toolbar__label" id="variantLabel">Variante</span>
+      <div class="mail-tabs" role="tablist" aria-labelledby="variantLabel">
+        <button
+          type="button"
+          class="mail-tab is-active"
+          id="tab-aprobado"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-aprobado"
+          tabindex="0"
+          data-target="panel-aprobado"
+        >
+          Aprobado
+        </button>
+        <button
+          type="button"
+          class="mail-tab"
+          id="tab-rechazado"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-rechazado"
+          tabindex="-1"
+          data-target="panel-rechazado"
+        >
+          Rechazado / Ajustes
+        </button>
+        <button
+          type="button"
+          class="mail-tab"
+          id="tab-asignacion"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-asignacion"
+          tabindex="-1"
+          data-target="panel-asignacion"
+        >
+          Asignación de módulo
+        </button>
+      </div>
+    </div>
+
+    <!-- Trazabilidad issue 3.2.3.2 (#19): vista previa de las plantillas de correo -->
+    <section class="mail-stage" aria-label="Vista previa de las plantillas de correo">
+      <p class="mail-stage__hint">Vista previa del correo · ancho de plantilla 600 px</p>
+
+      <!-- Trazabilidad issue 3.2.3.2 (#19): variante de correo de aprobación -->
+      <div
+        class="mail-variant"
+        id="panel-aprobado"
+        role="tabpanel"
+        aria-labelledby="tab-aprobado"
+        tabindex="0"
+      >
+        <article class="email" aria-label="Correo de aprobación del proyecto">
+          <!-- Trazabilidad issue 3.2.3.2 (#19): cabecera institucional SIGME -->
+          <header class="email__header">
+            <span class="email__brand-mark" aria-hidden="true">S</span>
+            <div class="email__brand-text">
+              <span class="email__brand-name">SIGME</span>
+              <span class="email__brand-subtitle">Sistema de Gestión de Movilidad Estudiantil</span>
+            </div>
+          </header>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): asunto y destinatario del correo -->
+          <div class="email__meta">
+            <p>
+              <span class="email__meta-label">Asunto:</span>
+              <span class="email__meta-subject">Tu proyecto fue aprobado — SIGME</span>
+            </p>
+            <p><span class="email__meta-label">Para:</span> maria.lopez@universidad.edu.co</p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): saludo, mensaje de aprobación y asignación de módulo -->
+          <div class="email__body">
+            <p class="email__greeting">Hola, María Fernanda:</p>
+            <p class="email__lead">
+              Nos complace informarte que el comité de evaluación aprobó tu proyecto
+              de movilidad estudiantil. A continuación encontrarás el resultado y los
+              datos de tu asignación.
+            </p>
+
+            <div class="email-status email-status--ok" role="status">
+              <span class="email-status__label">Resultado de la evaluación</span>
+              <h2 class="email-status__title">Proyecto aprobado</h2>
+              <p class="email-status__text">
+                Tu propuesta cumple con los requisitos académicos y de movilidad. La
+                decisión quedó registrada en el sistema con fecha del 26/09/2026.
+              </p>
+            </div>
+
+            <div class="email-card">
+              <h2 class="email-card__title">Asignación de módulo</h2>
+              <dl class="email-dl">
+                <dt class="email-dl__label">Módulo</dt>
+                <dd class="email-dl__value">Módulo 3 · Innovación y Emprendimiento</dd>
+                <dt class="email-dl__label">Código</dt>
+                <dd class="email-dl__value">MOD-2026-03</dd>
+                <dt class="email-dl__label">Docente responsable</dt>
+                <dd class="email-dl__value">Ing. Carlos Ramírez</dd>
+                <dt class="email-dl__label">Horario</dt>
+                <dd class="email-dl__value">Martes y jueves · 14:00 a 16:00</dd>
+                <dt class="email-dl__label">Fecha de inicio</dt>
+                <dd class="email-dl__value">05/10/2026</dd>
+              </dl>
+            </div>
+
+            <div class="email-actions">
+              <a class="email-btn" href="#">Consultar mi asignación</a>
+              <a class="email-btn email-btn--ghost" href="#">Ver seguimiento</a>
+            </div>
+
+            <p class="email-note">
+              <strong>Recuerda:</strong> confirma tu participación y revisa las
+              normativas de movilidad antes del inicio del módulo.
+            </p>
+
+            <p class="email-contact">
+              ¿Tienes dudas? Escríbenos a
+              <a href="mailto:movilidad@universidad.edu.co">movilidad@universidad.edu.co</a>
+              o llama al <a href="tel:+576011234567">(+57) 601 123 4567</a>,
+              lunes a viernes de 8:00 a 17:00.
+            </p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): pie institucional con notas y enlaces -->
+          <footer class="email__footer">
+            <ul class="email__footer-links">
+              <li><a href="#">Centro de ayuda</a></li>
+              <li><a href="#">Normativas de movilidad</a></li>
+              <li><a href="#">Política de privacidad</a></li>
+            </ul>
+            <p>Universidad Institucional · Oficina de Movilidad Estudiantil</p>
+            <p>Sede principal · Bogotá D.C., Colombia</p>
+            <p class="email__footer-legal">
+              Este es un mensaje automático del sistema SIGME. Por favor, no respondas
+              directamente a este correo.
+            </p>
+          </footer>
+        </article>
+      </div>
+
+      <!-- Trazabilidad issue 3.2.3.2 (#19): variante de correo de rechazo/ajustes -->
+      <div
+        class="mail-variant"
+        id="panel-rechazado"
+        role="tabpanel"
+        aria-labelledby="tab-rechazado"
+        tabindex="0"
+        hidden
+      >
+        <article class="email" aria-label="Correo de rechazo y ajustes solicitados">
+          <!-- Trazabilidad issue 3.2.3.2 (#19): cabecera institucional SIGME -->
+          <header class="email__header">
+            <span class="email__brand-mark" aria-hidden="true">S</span>
+            <div class="email__brand-text">
+              <span class="email__brand-name">SIGME</span>
+              <span class="email__brand-subtitle">Sistema de Gestión de Movilidad Estudiantil</span>
+            </div>
+          </header>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): asunto y destinatario del correo -->
+          <div class="email__meta">
+            <p>
+              <span class="email__meta-label">Asunto:</span>
+              <span class="email__meta-subject">Resultado de la evaluación: ajustes requeridos — SIGME</span>
+            </p>
+            <p><span class="email__meta-label">Para:</span> maria.lopez@universidad.edu.co</p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): saludo, mensaje de rechazo y ajustes solicitados -->
+          <div class="email__body">
+            <p class="email__greeting">Hola, María Fernanda:</p>
+            <p class="email__lead">
+              El comité de evaluación revisó tu proyecto de movilidad estudiantil y
+              determinó que requiere ajustes antes de continuar con el proceso.
+            </p>
+
+            <div class="email-status email-status--danger" role="status">
+              <span class="email-status__label">Resultado de la evaluación</span>
+              <h2 class="email-status__title">Proyecto rechazado: ajustes solicitados</h2>
+              <p class="email-status__text">
+                La propuesta no detalla los objetivos específicos ni el cronograma de
+                actividades, por lo que no es posible continuar con la evaluación en
+                su estado actual.
+              </p>
+            </div>
+
+            <div class="email-card">
+              <h2 class="email-card__title">Ajustes solicitados</h2>
+              <ul class="email-list">
+                <li>Detallar los objetivos específicos y los indicadores de impacto del proyecto.</li>
+                <li>Adjuntar el cronograma actualizado con hitos y responsables.</li>
+                <li>Incluir la carta de aval del programa académico.</li>
+              </ul>
+            </div>
+
+            <div class="email-card">
+              <h2 class="email-card__title">Plazo y seguimiento</h2>
+              <dl class="email-dl">
+                <dt class="email-dl__label">Fecha límite de respuesta</dt>
+                <dd class="email-dl__value">10/10/2026</dd>
+                <dt class="email-dl__label">Estado de la postulación</dt>
+                <dd class="email-dl__value">En revisión</dd>
+                <dt class="email-dl__label">Módulo</dt>
+                <dd class="email-dl__value">Pendiente de asignación</dd>
+              </dl>
+            </div>
+
+            <div class="email-actions">
+              <a class="email-btn" href="#">Actualizar documentos del MVP</a>
+              <a class="email-btn email-btn--ghost" href="#">Ver observaciones completas</a>
+            </div>
+
+            <p class="email-note">
+              <strong>Importante:</strong> puedes actualizar los documentos del MVP
+              dentro del plazo indicado. Si no se recibe respuesta, la postulación
+              permanecerá rechazada.
+            </p>
+
+            <p class="email-contact">
+              Para aclaraciones, escríbenos a
+              <a href="mailto:movilidad@universidad.edu.co">movilidad@universidad.edu.co</a>
+              o llama al <a href="tel:+576011234567">(+57) 601 123 4567</a>,
+              lunes a viernes de 8:00 a 17:00.
+            </p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): pie institucional con notas y enlaces -->
+          <footer class="email__footer">
+            <ul class="email__footer-links">
+              <li><a href="#">Centro de ayuda</a></li>
+              <li><a href="#">Normativas de movilidad</a></li>
+              <li><a href="#">Política de privacidad</a></li>
+            </ul>
+            <p>Universidad Institucional · Oficina de Movilidad Estudiantil</p>
+            <p>Sede principal · Bogotá D.C., Colombia</p>
+            <p class="email__footer-legal">
+              Este es un mensaje automático del sistema SIGME. Por favor, no respondas
+              directamente a este correo.
+            </p>
+          </footer>
+        </article>
+      </div>
+
+      <!-- Trazabilidad issue 3.2.3.2 (#19): variante de correo de asignación de módulo -->
+      <div
+        class="mail-variant"
+        id="panel-asignacion"
+        role="tabpanel"
+        aria-labelledby="tab-asignacion"
+        tabindex="0"
+        hidden
+      >
+        <article class="email" aria-label="Correo de asignación de módulo">
+          <!-- Trazabilidad issue 3.2.3.2 (#19): cabecera institucional SIGME -->
+          <header class="email__header">
+            <span class="email__brand-mark" aria-hidden="true">S</span>
+            <div class="email__brand-text">
+              <span class="email__brand-name">SIGME</span>
+              <span class="email__brand-subtitle">Sistema de Gestión de Movilidad Estudiantil</span>
+            </div>
+          </header>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): asunto y destinatario del correo -->
+          <div class="email__meta">
+            <p>
+              <span class="email__meta-label">Asunto:</span>
+              <span class="email__meta-subject">Se te asignó un módulo — SIGME</span>
+            </p>
+            <p><span class="email__meta-label">Para:</span> maria.lopez@universidad.edu.co</p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): saludo, mensaje de asignación y datos del módulo -->
+          <div class="email__body">
+            <p class="email__greeting">Hola, María Fernanda:</p>
+            <p class="email__lead">
+              Tu postulación fue aprobada y el sistema registró la asignación de tu
+              módulo. Revisa los datos y confirma tu participación.
+            </p>
+
+            <div class="email-status email-status--info" role="status">
+              <span class="email-status__label">Asignación registrada</span>
+              <h2 class="email-status__title">Módulo asignado</h2>
+              <p class="email-status__text">
+                La asignación quedó registrada el 27/09/2026 y está disponible en tu
+                panel de seguimiento.
+              </p>
+            </div>
+
+            <div class="email-card">
+              <h2 class="email-card__title">Datos del módulo</h2>
+              <dl class="email-dl">
+                <dt class="email-dl__label">Módulo</dt>
+                <dd class="email-dl__value">Módulo 3 · Innovación y Emprendimiento</dd>
+                <dt class="email-dl__label">Código</dt>
+                <dd class="email-dl__value">MOD-2026-03</dd>
+                <dt class="email-dl__label">Docente responsable</dt>
+                <dd class="email-dl__value">Ing. Carlos Ramírez</dd>
+                <dt class="email-dl__label">Horario</dt>
+                <dd class="email-dl__value">Martes y jueves · 14:00 a 16:00</dd>
+                <dt class="email-dl__label">Aula</dt>
+                <dd class="email-dl__value">Bloque B · Salón 204</dd>
+                <dt class="email-dl__label">Periodo</dt>
+                <dd class="email-dl__value">05/10/2026 al 30/11/2026</dd>
+              </dl>
+            </div>
+
+            <div class="email-actions">
+              <a class="email-btn" href="#">Confirmar asignación</a>
+              <a class="email-btn email-btn--ghost" href="#">Consultar horario</a>
+            </div>
+
+            <p class="email-note">
+              <strong>Recuerda:</strong> confirma tu asignación antes del 03/10/2026
+              para garantizar tu cupo en el módulo.
+            </p>
+
+            <p class="email-contact">
+              ¿Tienes dudas? Escríbenos a
+              <a href="mailto:movilidad@universidad.edu.co">movilidad@universidad.edu.co</a>
+              o llama al <a href="tel:+576011234567">(+57) 601 123 4567</a>,
+              lunes a viernes de 8:00 a 17:00.
+            </p>
+          </div>
+
+          <!-- Trazabilidad issue 3.2.3.2 (#19): pie institucional con notas y enlaces -->
+          <footer class="email__footer">
+            <ul class="email__footer-links">
+              <li><a href="#">Centro de ayuda</a></li>
+              <li><a href="#">Normativas de movilidad</a></li>
+              <li><a href="#">Política de privacidad</a></li>
+            </ul>
+            <p>Universidad Institucional · Oficina de Movilidad Estudiantil</p>
+            <p>Sede principal · Bogotá D.C., Colombia</p>
+            <p class="email__footer-legal">
+              Este es un mensaje automático del sistema SIGME. Por favor, no respondas
+              directamente a este correo.
+            </p>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.2.3.2 (#19): nota de alcance y dependencias de la issue -->
+    <footer class="mail-footer">
+      <p>
+        Prototipo de la issue 3.2.3.2 (#19). Depende de los triggers del servicio de
+        correo (3.2.3.1 · #18) y sirve de base para la integración del envío SMTP,
+        SendGrid o AWS SES (3.2.3.3 · #20).
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 3.2.3.2 (#19): JS vanilla para el selector de variante de la plantilla -->
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.mail-tab'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.mail-variant'));
+
+      function activate(tab) {
+        tabs.forEach(function (other) {
+          var active = other === tab;
+          other.classList.toggle('is-active', active);
+          other.setAttribute('aria-selected', String(active));
+          other.tabIndex = active ? 0 : -1;
+        });
+
+        panels.forEach(function (panel) {
+          var active = panel.id === tab.getAttribute('data-target');
+          panel.hidden = !active;
+        });
+      }
+
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () {
+          activate(tab);
+        });
+
+        tab.addEventListener('keydown', function (event) {
+          var nextIndex = index;
+
+          if (event.key === 'ArrowRight') {
+            nextIndex = (index + 1) % tabs.length;
+          } else if (event.key === 'ArrowLeft') {
+            nextIndex = (index - 1 + tabs.length) % tabs.length;
+          } else if (event.key === 'Home') {
+            nextIndex = 0;
+          } else if (event.key === 'End') {
+            nextIndex = tabs.length - 1;
+          } else {
+            return;
+          }
+
+          event.preventDefault();
+          activate(tabs[nextIndex]);
+          tabs[nextIndex].focus();
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

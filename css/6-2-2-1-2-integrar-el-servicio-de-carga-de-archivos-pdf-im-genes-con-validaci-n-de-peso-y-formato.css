@@ -1,0 +1,626 @@
+/* Trazabilidad issue 2.2.1.2 (#6): estilos del servicio de carga de archivos PDF/imágenes con validación de peso y formato */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f9d63;
+  --color-ok-soft: #e6f7ee;
+  --color-warn: #c07a12;
+  --color-warn-soft: #fdf3e2;
+  --color-danger: #c23b3b;
+  --color-danger-soft: #fdeaea;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): base tipográfica del módulo de carga */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): contenedor general del servicio de carga */
+.upload-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): encabezado del módulo */
+.upload-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.upload-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.upload-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.upload-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.upload-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.upload-header__issue {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #e8f0fc;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): resumen y reglas de validación */
+.upload-summary {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.upload-summary__headline {
+  margin-bottom: 1.25rem;
+}
+
+.upload-summary__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.upload-summary__description {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 62ch;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): tarjetas de reglas de peso y formato */
+.upload-rules {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.rule-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8fafd;
+}
+
+.rule-card--format {
+  border-left-color: var(--color-primary);
+}
+
+.rule-card--weight {
+  border-left-color: var(--color-warn);
+  background-color: var(--color-warn-soft);
+}
+
+.rule-card--count {
+  border-left-color: var(--color-ok);
+  background-color: var(--color-ok-soft);
+}
+
+.rule-card--service {
+  border-left-color: var(--color-primary-dark);
+}
+
+.rule-card__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.rule-card__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.rule-card__hint {
+  font-size: 0.76rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): encabezados de sección */
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.section-heading__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.section-heading__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): panel de zona de arrastre y selección */
+.dropzone-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): área de carga de archivos */
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  padding: 2.25rem 1.25rem;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radius);
+  background-color: #f4f8ff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone:focus-within {
+  background-color: #e8f0fc;
+  border-color: var(--color-primary-dark);
+}
+
+.dropzone__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.dropzone__title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.dropzone__hint {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.dropzone__formats {
+  margin-top: 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #e8f0fc;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): input de archivos oculto, activado por la zona */
+.dropzone__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.dropzone__help {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): panel de validación de archivos */
+.files-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.files-table-wrapper {
+  overflow-x: auto;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.files-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.files-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.files-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.files-table tbody tr:hover {
+  background-color: #f8fafd;
+}
+
+.files-table__name {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): iconos de tipo de archivo */
+.file-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 26px;
+  border-radius: 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.file-icon--pdf {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.file-icon--img {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.file-icon--bad {
+  background-color: #eceff5;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): etiquetas de estado de validación */
+.status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.status--ok {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.status--danger {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): resumen del resultado de la validación */
+.files-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.files-summary__item {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  background-color: #f2f5fb;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.files-summary__item--ok {
+  background-color: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+
+.files-summary__item--danger {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): panel de progreso de carga */
+.progress-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.progress-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.progress-item {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  background-color: #f8fafd;
+}
+
+.progress-item__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.progress-item__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress-item__state {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.progress-item__state--done {
+  color: var(--color-ok);
+}
+
+.progress-item__state--active {
+  color: var(--color-primary);
+}
+
+.progress-item__bar {
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--color-border);
+  overflow: hidden;
+}
+
+.progress-item__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+}
+
+.progress-item__fill--done {
+  background-color: var(--color-ok);
+}
+
+.progress-item__fill--active {
+  background-color: var(--color-primary);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): panel de mensajes del servicio */
+.messages-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.message-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-muted);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  background-color: #f8fafd;
+}
+
+.message--ok {
+  border-left-color: var(--color-ok);
+  background-color: var(--color-ok-soft);
+}
+
+.message--danger {
+  border-left-color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+.message__badge {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  min-width: 52px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background-color: rgba(27, 36, 54, 0.08);
+  color: var(--color-text);
+}
+
+.message--ok .message__badge {
+  background-color: var(--color-ok);
+  color: #fff;
+}
+
+.message--danger .message__badge {
+  background-color: var(--color-danger);
+  color: #fff;
+}
+
+.message__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.message__title {
+  font-size: 0.86rem;
+}
+
+.message__text {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): pie del módulo */
+.upload-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  padding: 0.5rem 0.25rem;
+}
+
+.upload-footer__issue {
+  font-weight: 600;
+}
+
+/* Trazabilidad issue 2.2.1.2 (#6): comportamiento responsive del módulo */
+@media (max-width: 900px) {
+  .upload-rules {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .upload-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .upload-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .upload-rules {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-summary,
+  .dropzone-panel,
+  .files-panel,
+  .progress-panel,
+  .messages-panel {
+    padding: 1rem;
+  }
+
+  .files-table__name {
+    white-space: normal;
+  }
+
+  .progress-item__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .message {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .upload-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

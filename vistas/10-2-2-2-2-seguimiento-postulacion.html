@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Seguimiento de postulación</title>
+  <!-- Trazabilidad issue 2.2.2.2 (#10): hoja de estilos del seguimiento de postulación con línea de tiempo/pasos -->
+  <link rel="stylesheet" href="../css/10-2-2-2-2-dise-ar-la-interfaz-gr-fica-del-seguimiento-de-postulaci-n-con-indicador-de-l-nea-de-tiempo-pasos.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.2.2.2 (#10): contenedor general de la pantalla de seguimiento -->
+  <div class="tracking-shell">
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): encabezado con marca SIGME y retorno al inicio -->
+    <header class="tracking-header">
+      <div class="tracking-brand">
+        <span class="tracking-brand__mark" aria-hidden="true">S</span>
+        <div class="tracking-brand__text">
+          <span class="tracking-brand__name">SIGME</span>
+          <span class="tracking-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <nav aria-label="Navegación de la pantalla">
+        <a href="../index.html">Volver al inicio</a>
+      </nav>
+      <span class="issue-tag">Issue 2.2.2.2 · #10</span>
+    </header>
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): resumen de la postulación consultada -->
+    <section class="tracking-overview" aria-labelledby="overviewTitle">
+      <div class="tracking-overview__heading">
+        <div>
+          <p class="tracking-overview__eyebrow">Seguimiento de postulación</p>
+          <h1 class="tracking-overview__title" id="overviewTitle">Postulación #SIG-2026-0142</h1>
+          <p class="tracking-overview__lead">
+            Consulta el avance de tu solicitud de movilidad estudiantil. El estado se
+            actualiza en tiempo real cuando el administrador evalúa el proyecto y
+            selecciona Aprobar o Rechazar.
+          </p>
+        </div>
+        <div class="tracking-overview__status" role="status" aria-live="polite">
+          <span class="tracking-overview__status-label">Estado actual</span>
+          <span class="tracking-overview__status-value">En Revisión</span>
+          <span class="tracking-overview__status-meta">Actualizado el 24/09/2026 · 10:35</span>
+        </div>
+      </div>
+
+      <!-- Trazabilidad issue 2.2.2.2 (#10): datos básicos de la postulación seguida -->
+      <dl class="tracking-facts">
+        <div class="tracking-fact">
+          <dt class="tracking-fact__label">Estudiante</dt>
+          <dd class="tracking-fact__value">María Fernanda López</dd>
+        </div>
+        <div class="tracking-fact">
+          <dt class="tracking-fact__label">Documento</dt>
+          <dd class="tracking-fact__value">1.032.456.789</dd>
+        </div>
+        <div class="tracking-fact">
+          <dt class="tracking-fact__label">Programa académico</dt>
+          <dd class="tracking-fact__value">Ingeniería de Sistemas</dd>
+        </div>
+        <div class="tracking-fact">
+          <dt class="tracking-fact__label">Fecha de registro</dt>
+          <dd class="tracking-fact__value">20/09/2026</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): indicador de línea de tiempo/pasos del estado -->
+    <section class="tracking-timeline" aria-labelledby="timelineTitle">
+      <div class="tracking-timeline__header">
+        <h2 class="tracking-timeline__title" id="timelineTitle">Línea de tiempo del trámite</h2>
+        <span class="tracking-timeline__badge">Paso 2 de 3</span>
+      </div>
+
+      <ol class="timeline" aria-label="Estados de la postulación">
+        <!-- Trazabilidad issue 2.2.2.2 (#10): paso completado -->
+        <li class="timeline__step timeline__step--done">
+          <span class="timeline__marker" aria-hidden="true">
+            <span class="timeline__dot"></span>
+          </span>
+          <div class="timeline__content">
+            <span class="timeline__step-label">Paso 1 · Completado</span>
+            <h3 class="timeline__step-title">Registrado</h3>
+            <p class="timeline__step-desc">
+              La postulación fue recibida y registrada correctamente en el sistema.
+            </p>
+            <span class="timeline__step-date">20/09/2026 · 09:12</span>
+          </div>
+        </li>
+
+        <!-- Trazabilidad issue 2.2.2.2 (#10): paso actual resaltado -->
+        <li class="timeline__step timeline__step--current" aria-current="step">
+          <span class="timeline__marker" aria-hidden="true">
+            <span class="timeline__dot"></span>
+          </span>
+          <div class="timeline__content">
+            <span class="timeline__step-label">Paso 2 · En curso</span>
+            <h3 class="timeline__step-title">En Revisión</h3>
+            <p class="timeline__step-desc">
+              El administrador está evaluando la documentación y el proyecto presentado.
+            </p>
+            <span class="timeline__step-date">24/09/2026 · 10:35</span>
+          </div>
+        </li>
+
+        <!-- Trazabilidad issue 2.2.2.2 (#10): paso pendiente -->
+        <li class="timeline__step timeline__step--pending">
+          <span class="timeline__marker" aria-hidden="true">
+            <span class="timeline__dot"></span>
+          </span>
+          <div class="timeline__content">
+            <span class="timeline__step-label">Paso 3 · Pendiente</span>
+            <h3 class="timeline__step-title">Aprobado / Rechazado</h3>
+            <p class="timeline__step-desc">
+              Resultado final de la evaluación. En caso de rechazo se incluirá el
+              comentario o justificación correspondiente.
+            </p>
+            <span class="timeline__step-date">Fecha estimada: por definir</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): detalle del paso actual del seguimiento -->
+    <section class="tracking-current" aria-labelledby="currentTitle">
+      <div class="tracking-current__header">
+        <h2 class="tracking-current__title" id="currentTitle">Detalle del estado actual</h2>
+        <span class="tracking-current__pill">En Revisión</span>
+      </div>
+      <div class="tracking-current__body">
+        <div>
+          <p class="tracking-current__step">Evaluación de la postulación por el administrador</p>
+          <p class="tracking-current__desc">
+            Tu solicitud se encuentra en proceso de revisión. Cuando el administrador
+            evalúe el proyecto y seleccione Aprobar o Rechazar, el estado se actualizará
+            y podrás consultarlo en esta misma pantalla. Si la postulación es rechazada,
+            se mostrará el comentario o justificación asociada.
+          </p>
+        </div>
+        <aside class="tracking-current__aside" aria-label="Información complementaria del paso actual">
+          <div class="tracking-current__item">
+            <span class="tracking-current__item-label">Responsable</span>
+            <span class="tracking-current__item-value">Comité de evaluación</span>
+          </div>
+          <div class="tracking-current__item">
+            <span class="tracking-current__item-label">Inicio del paso</span>
+            <span class="tracking-current__item-value">24/09/2026</span>
+          </div>
+          <div class="tracking-current__item">
+            <span class="tracking-current__item-label">Última actualización</span>
+            <span class="tracking-current__item-value">hace 2 horas</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): historial de cambios de estado -->
+    <section class="tracking-history" aria-labelledby="historyTitle">
+      <div class="tracking-history__header">
+        <h2 class="tracking-history__title" id="historyTitle">Historial de estados</h2>
+        <span class="tracking-history__count">2 registros</span>
+      </div>
+      <div class="tracking-history__table-wrap">
+        <table class="tracking-history__table">
+          <thead>
+            <tr>
+              <th scope="col">Fecha y hora</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Observación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>20/09/2026 · 09:12</td>
+              <td><span class="status-pill status-pill--ok">Registrado</span></td>
+              <td>Postulación recibida y registrada en el sistema.</td>
+            </tr>
+            <tr>
+              <td>24/09/2026 · 10:35</td>
+              <td><span class="status-pill status-pill--info">En Revisión</span></td>
+              <td>Asignada al comité de evaluación para su revisión.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.2.2.2 (#10): nota de alcance y dependencias de la issue -->
+    <footer class="tracking-footer">
+      <p>
+        Prototipo de la interfaz de seguimiento de postulación con indicador de
+        línea de tiempo/pasos. La visualización de observaciones y retroalimentación
+        en caso de rechazo se aborda en la issue 2.2.2.3 (#11).
+      </p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Filtro por rango de fechas y orden cronológico</title>
+  <!-- Trazabilidad issue 3.1.1.4 (#15): hoja de estilos del filtro de fechas y orden cronológico -->
+  <link rel="stylesheet" href="../css/15-3-1-1-4-filtro-fechas-orden.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 3.1.1.4 (#15): contenedor general de la pantalla de filtrado -->
+  <div class="date-filter-shell">
+
+    <!-- Trazabilidad issue 3.1.1.4 (#15): encabezado con marca SIGME y retorno al inicio -->
+    <header class="date-filter-header">
+      <div class="date-filter-brand">
+        <span class="date-filter-brand__mark" aria-hidden="true">S</span>
+        <div class="date-filter-brand__text">
+          <span class="date-filter-brand__name">SIGME</span>
+          <span class="date-filter-brand__subtitle">Gestión de movilidad estudiantil</span>
+        </div>
+      </div>
+      <nav class="date-filter-header__nav" aria-label="Navegación de la pantalla">
+        <a href="../index.html">Volver al inicio</a>
+      </nav>
+      <span class="date-filter-tag">Issue 3.1.1.4 · #15</span>
+    </header>
+
+    <!-- Trazabilidad issue 3.1.1.4 (#15): descripción del filtro de fechas de postulación -->
+    <section class="date-filter-intro" aria-labelledby="dateFilterTitle">
+      <p class="date-filter-intro__eyebrow">Panel de filtrado de proyectos postulados</p>
+      <h1 class="date-filter-intro__title" id="dateFilterTitle">Filtro por rango de fechas de postulación</h1>
+      <p class="date-filter-intro__lead">
+        Selecciona un rango de fechas de postulación y elige el orden cronológico de los
+        resultados. El filtro se combina con los criterios de estado y facultad definidos
+        en el panel de búsqueda avanzada.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.4 (#15): tarjeta con los controles de rango y orden -->
+    <section class="date-filter-panel" aria-labelledby="dateFilterPanelTitle">
+      <h2 class="date-filter-panel__title" id="dateFilterPanelTitle">Criterios de fecha y orden</h2>
+
+      <!-- Trazabilidad issue 3.1.1.4 (#15): formulario del rango de fechas y orden cronológico -->
+      <form class="date-filter-form" id="dateFilterForm" novalidate>
+        <div class="date-filter-field">
+          <label class="date-filter-field__label" for="fechaDesde">Desde</label>
+          <input
+            class="date-filter-field__input"
+            id="fechaDesde"
+            name="fechaDesde"
+            type="date"
+            aria-describedby="fechaDesdeHint"
+          >
+          <span class="date-filter-field__hint" id="fechaDesdeHint">Fecha inicial del rango (incluida).</span>
+        </div>
+
+        <div class="date-filter-field">
+          <label class="date-filter-field__label" for="fechaHasta">Hasta</label>
+          <input
+            class="date-filter-field__input"
+            id="fechaHasta"
+            name="fechaHasta"
+            type="date"
+            aria-describedby="fechaHastaHint"
+          >
+          <span class="date-filter-field__hint" id="fechaHastaHint">Fecha final del rango (incluida).</span>
+        </div>
+
+        <div class="date-filter-field">
+          <label class="date-filter-field__label" for="ordenCronologico">Orden cronológico</label>
+          <select class="date-filter-field__select" id="ordenCronologico" name="ordenCronologico">
+            <option value="asc">Ascendente (más antiguas primero)</option>
+            <option value="desc" selected>Descendente (más recientes primero)</option>
+          </select>
+          <span class="date-filter-field__hint">Se aplica sobre la fecha de postulación.</span>
+        </div>
+
+        <div class="date-filter-actions">
+          <button class="btn btn--ghost" type="reset" id="btnLimpiar">Limpiar</button>
+          <button class="btn btn--primary" type="submit">Aplicar filtro</button>
+        </div>
+      </form>
+
+      <!-- Trazabilidad issue 3.1.1.4 (#15): mensaje de validación cuando "desde" es mayor que "hasta" -->
+      <div class="date-filter-validation" id="dateFilterValidation" role="alert" aria-live="assertive">
+        <span class="date-filter-validation__icon" aria-hidden="true">&#9888;</span>
+        <span id="dateFilterValidationText">La fecha "Desde" no puede ser posterior a la fecha "Hasta".</span>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.4 (#15): listado de resultados con fechas de postulación -->
+    <section class="date-filter-results" aria-labelledby="dateResultsTitle">
+      <div class="date-filter-results__header">
+        <h2 class="date-filter-results__title" id="dateResultsTitle">Proyectos postulados</h2>
+        <p class="date-filter-results__meta" id="dateResultsMeta" aria-live="polite">
+          <strong id="dateResultsCount">0</strong> resultados ·
+          Orden: <span id="dateResultsOrder">descendente</span>
+        </p>
+      </div>
+
+      <div class="date-filter-table-wrap">
+        <table class="date-filter-table">
+          <caption class="sr-only">Resultados de proyectos postulados filtrados por rango de fechas y ordenados cronológicamente</caption>
+          <thead>
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Proyecto</th>
+              <th scope="col">Facultad</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Fecha de postulación</th>
+            </tr>
+          </thead>
+          <tbody id="dateResultsBody">
+            <!-- Trazabilidad issue 3.1.1.4 (#15): filas de ejemplo con atributo data-date (ISO) para filtrar y ordenar -->
+            <tr data-date="2026-09-28">
+              <td>SIG-2026-0148</td>
+              <td>Movilidad internacional - Universidad de Sevilla</td>
+              <td>Ingeniería</td>
+              <td><span class="status-pill status-pill--info">En revisión</span></td>
+              <td class="date-filter-table__date">28/09/2026</td>
+            </tr>
+            <tr data-date="2026-09-24">
+              <td>SIG-2026-0142</td>
+              <td>Intercambio académico - Tecnológico de Monterrey</td>
+              <td>Ingeniería</td>
+              <td><span class="status-pill status-pill--info">En revisión</span></td>
+              <td class="date-filter-table__date">24/09/2026</td>
+            </tr>
+            <tr data-date="2026-09-15">
+              <td>SIG-2026-0137</td>
+              <td>Prácticas internacionales - Universidad de Chile</td>
+              <td>Ciencias Económicas</td>
+              <td><span class="status-pill status-pill--warn">Ajustes</span></td>
+              <td class="date-filter-table__date">15/09/2026</td>
+            </tr>
+            <tr data-date="2026-09-03">
+              <td>SIG-2026-0129</td>
+              <td>Doble titulación - Politécnico de Milán</td>
+              <td>Ingeniería</td>
+              <td><span class="status-pill status-pill--ok">Aprobado</span></td>
+              <td class="date-filter-table__date">03/09/2026</td>
+            </tr>
+            <tr data-date="2026-08-21">
+              <td>SIG-2026-0118</td>
+              <td>Curso corto - Universidad de Salamanca</td>
+              <td>Humanidades</td>
+              <td><span class="status-pill status-pill--ok">Aprobado</span></td>
+              <td class="date-filter-table__date">21/08/2026</td>
+            </tr>
+            <tr data-date="2026-08-07">
+              <td>SIG-2026-0104</td>
+              <td>Movilidad nacional - Universidad de Antioquia</td>
+              <td>Ciencias Sociales</td>
+              <td><span class="status-pill status-pill--danger">Rechazado</span></td>
+              <td class="date-filter-table__date">07/08/2026</td>
+            </tr>
+            <tr data-date="2026-07-30">
+              <td>SIG-2026-0097</td>
+              <td>Investigación conjunta - Universidad de Coímbra</td>
+              <td>Ciencias de la Salud</td>
+              <td><span class="status-pill status-pill--warn">Ajustes</span></td>
+              <td class="date-filter-table__date">30/07/2026</td>
+            </tr>
+            <tr data-date="2026-07-12">
+              <td>SIG-2026-0085</td>
+              <td>Verano académico - Universidad de Toronto</td>
+              <td>Ingeniería</td>
+              <td><span class="status-pill status-pill--ok">Aprobado</span></td>
+              <td class="date-filter-table__date">12/07/2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Trazabilidad issue 3.1.1.4 (#15): estado vacío cuando el rango no arroja resultados -->
+      <p class="date-filter-empty" id="dateFilterEmpty" role="status">
+        No hay proyectos postulados dentro del rango de fechas seleccionado.
+      </p>
+    </section>
+
+    <!-- Trazabilidad issue 3.1.1.4 (#15): nota de alcance y dependencias de la issue -->
+    <footer class="date-filter-footer">
+      <p>
+        Trazabilidad: el rango de fechas y el orden cronológico se combinan con los filtros
+        de estado y facultad (2.2.1) y alimentan la revisión de proyectos postulados (HU 2.1).
+        Se integra con la API de búsqueda avanzada de la issue 3.1.1.5.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Trazabilidad issue 3.1.1.4 (#15): lógica vanilla para filtrar por rango y ordenar cronológicamente -->
+  <script>
+    (function () {
+      "use strict";
+
+      var form = document.getElementById("dateFilterForm");
+      var desdeInput = document.getElementById("fechaDesde");
+      var hastaInput = document.getElementById("fechaHasta");
+      var ordenSelect = document.getElementById("ordenCronologico");
+      var validation = document.getElementById("dateFilterValidation");
+      var validationText = document.getElementById("dateFilterValidationText");
+      var body = document.getElementById("dateResultsBody");
+      var empty = document.getElementById("dateFilterEmpty");
+      var countEl = document.getElementById("dateResultsCount");
+      var orderEl = document.getElementById("dateResultsOrder");
+
+      var rows = Array.prototype.slice.call(body.querySelectorAll("tr"));
+
+      function setInvalid(input, invalid) {
+        if (invalid) {
+          input.setAttribute("aria-invalid", "true");
+        } else {
+          input.removeAttribute("aria-invalid");
+        }
+      }
+
+      function showValidation(message) {
+        validationText.textContent = message;
+        validation.classList.add("is-visible");
+        setInvalid(desdeInput, true);
+        setInvalid(hastaInput, true);
+      }
+
+      function clearValidation() {
+        validation.classList.remove("is-visible");
+        setInvalid(desdeInput, false);
+        setInvalid(hastaInput, false);
+      }
+
+      function updateMeta(visibleCount, order) {
+        countEl.textContent = String(visibleCount);
+        orderEl.textContent = order === "asc" ? "ascendente" : "descendente";
+      }
+
+      function applyFilter() {
+        var desde = desdeInput.value;
+        var hasta = hastaInput.value;
+        var order = ordenSelect.value;
+
+        clearValidation();
+
+        if (desde && hasta && desde > hasta) {
+          showValidation('La fecha "Desde" (' + formatDisplay(desde) + ') no puede ser posterior a la fecha "Hasta" (' + formatDisplay(hasta) + ').');
+          return;
+        }
+
+        var visible = rows.filter(function (row) {
+          var date = row.getAttribute("data-date");
+          if (desde && date < desde) {
+            return false;
+          }
+          if (hasta && date > hasta) {
+            return false;
+          }
+          return true;
+        });
+
+        visible.sort(function (a, b) {
+          var da = a.getAttribute("data-date");
+          var db = b.getAttribute("data-date");
+          if (da === db) {
+            return 0;
+          }
+          return order === "asc" ? (da < db ? -1 : 1) : (da > db ? -1 : 1);
+        });
+
+        rows.forEach(function (row) {
+          row.hidden = true;
+        });
+
+        visible.forEach(function (row) {
+          row.hidden = false;
+          body.appendChild(row);
+        });
+
+        empty.classList.toggle("is-visible", visible.length === 0);
+        updateMeta(visible.length, order);
+      }
+
+      function formatDisplay(isoDate) {
+        var parts = isoDate.split("-");
+        if (parts.length !== 3) {
+          return isoDate;
+        }
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        applyFilter();
+      });
+
+      ordenSelect.addEventListener("change", function () {
+        applyFilter();
+      });
+
+      desdeInput.addEventListener("input", clearValidation);
+      hastaInput.addEventListener("input", clearValidation);
+
+      form.addEventListener("reset", function () {
+        window.setTimeout(function () {
+          clearValidation();
+          rows.forEach(function (row) {
+            row.hidden = false;
+          });
+          rows.sort(function (a, b) {
+            var da = a.getAttribute("data-date");
+            var db = b.getAttribute("data-date");
+            return da > db ? -1 : (da < db ? 1 : 0);
+          });
+          rows.forEach(function (row) {
+            body.appendChild(row);
+          });
+          empty.classList.remove("is-visible");
+          updateMeta(rows.length, "desc");
+        }, 0);
+      });
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>

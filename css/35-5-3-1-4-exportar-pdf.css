@@ -1,0 +1,804 @@
+/*
+  Trazabilidad issue 5.3.1.4 (#35):
+  Estilos de la barra de acciones de exportación, del selector de formato, del
+  botón «Exportar reporte», de los estados de progreso/éxito/error y de la
+  tarjeta de descarga automática del dashboard. Sigue las convenciones de css/
+  y styles.css: variables :root con la paleta SIGME, tipografía Segoe UI,
+  box-sizing global, nomenclatura BEM propia del componente y foco visible.
+  No modifica styles.css ni las hojas de otras issues.
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-ok-bg: #eaf7f0;
+  --color-warn: #b4761a;
+  --color-warn-bg: #fdf4e5;
+  --color-danger: #b23b3b;
+  --color-danger-bg: #fdeeee;
+  --color-info: #2b6cb0;
+  --color-info-bg: #eaf2fb;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+  --font-base: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+button,
+select,
+input {
+  font-family: inherit;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): utilidad de accesibilidad para texto solo para lectores */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): barra superior con marca SIGME y navegación */
+.app-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 10px rgba(27, 36, 54, 0.06);
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.app-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.app-brand__subtitle {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.app-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+.app-topbar__button {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.app-topbar__button:hover {
+  background-color: var(--color-info-bg);
+  border-color: var(--color-primary);
+}
+
+.app-topbar__button:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+.app-topbar__link {
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-topbar__link:hover,
+.app-topbar__link:focus-visible {
+  text-decoration: underline;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): contenedor general del dashboard */
+.dashboard-shell {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.75rem 0 3rem;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): encabezado del dashboard */
+.dashboard-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.dashboard-eyebrow {
+  margin: 0 0 0.25rem;
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dashboard-title {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.dashboard-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.dashboard-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.78rem;
+}
+
+.dashboard-meta__label {
+  color: var(--color-muted);
+}
+
+.dashboard-meta__value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): rejilla de métricas consolidadas del dashboard */
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.metric-card {
+  padding: 0.95rem 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(27, 36, 54, 0.05);
+}
+
+.metric-card--ok {
+  border-top-color: var(--color-ok);
+}
+
+.metric-card--warn {
+  border-top-color: var(--color-warn);
+}
+
+.metric-card--danger {
+  border-top-color: var(--color-danger);
+}
+
+.metric-card__label {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.metric-card__value {
+  margin: 0.3rem 0 0;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-card__hint {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): barra de acciones de exportación */
+.export-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.85rem 2rem;
+  padding: 1.4rem 1.5rem;
+  margin-bottom: 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.export-bar__info {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.export-bar__title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.export-bar__description {
+  margin: 0.3rem 0 0;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+
+.export-bar__controls {
+  grid-column: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.export-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.export-field__label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): selector de formato de exportación */
+.export-select {
+  appearance: none;
+  min-width: 190px;
+  padding: 0.65rem 2.2rem 0.65rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background-color: #f8fafd;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2366708a' d='M1.4 0 6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.export-select:hover {
+  border-color: var(--color-primary);
+}
+
+.export-select:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): botón principal «Exportar reporte» */
+.export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.72rem 1.4rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.export-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.export-button:active {
+  transform: translateY(1px);
+}
+
+.export-button:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+.export-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.export-button__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.export-bar__hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): opciones de simulación del prototipo estático */
+.export-sim {
+  grid-column: 1 / -1;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.export-sim__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.export-sim__checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+}
+
+.export-sim__checkbox:focus-visible {
+  outline: 3px solid rgba(31, 95, 191, 0.35);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): panel de estados de la exportación */
+.export-status {
+  min-height: 1px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): estado inicial */
+.export-idle {
+  padding: 1rem 1.25rem;
+  background-color: #f8fafd;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.export-idle p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): estado de progreso con barra determinada */
+.export-progress {
+  padding: 1.2rem 1.4rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-info);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.export-progress__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.export-progress__value {
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.export-progress__track {
+  height: 10px;
+  margin-top: 0.65rem;
+  background-color: #e8edf7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.export-progress__bar {
+  width: 0;
+  height: 100%;
+  background-image: linear-gradient(90deg, var(--color-primary), #4f8be0);
+  border-radius: 999px;
+  transition: width 0.15s linear;
+}
+
+.export-progress__hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): estado de éxito y tarjeta de descarga */
+.export-success {
+  padding: 1.2rem 1.4rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-ok);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: export-fade-in 0.25s ease-out;
+}
+
+.export-success__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.export-success__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--color-ok-bg);
+  color: var(--color-ok);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.export-success__title {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--color-ok);
+}
+
+.export-success__text {
+  margin: 0.5rem 0 0;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): tarjeta del archivo generado */
+.download-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background-color: #f8fafd;
+  border: 1px dashed var(--color-border);
+  border-radius: 10px;
+}
+
+.download-card__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.download-card__icon--csv {
+  background-color: var(--color-ok-bg);
+  color: var(--color-ok);
+}
+
+.download-card__body {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.download-card__name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.download-card__meta {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.download-card__link {
+  color: var(--color-primary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.download-card__link:hover,
+.download-card__link:focus-visible {
+  text-decoration: underline;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): estado de error del endpoint simulado */
+.export-error {
+  padding: 1.2rem 1.4rem;
+  background-color: var(--color-danger-bg);
+  border: 1px solid #f2cfcf;
+  border-left: 4px solid var(--color-danger);
+  border-radius: var(--radius);
+  animation: export-fade-in 0.25s ease-out;
+}
+
+.export-error__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.export-error__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: var(--color-danger);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.export-error__title {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--color-danger);
+}
+
+.export-error__text {
+  margin: 0.5rem 0 0;
+  font-size: 0.86rem;
+  color: #7a2f2f;
+}
+
+.export-error__actions {
+  margin-top: 0.85rem;
+}
+
+.export-error__retry {
+  border: 1px solid var(--color-danger);
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: var(--color-danger);
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.export-error__retry:hover {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(178, 59, 59, 0.15);
+}
+
+.export-error__retry:focus-visible {
+  outline: 3px solid rgba(178, 59, 59, 0.3);
+  outline-offset: 2px;
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): animación de entrada de estados */
+@keyframes export-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): adaptación a tabletas */
+@media (max-width: 900px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .export-bar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .export-bar__info,
+  .export-bar__controls {
+    grid-column: 1;
+  }
+
+  .export-bar__controls {
+    align-items: stretch;
+  }
+
+  .export-field {
+    flex: 1 1 200px;
+  }
+
+  .export-select {
+    width: 100%;
+  }
+
+  .export-button {
+    flex: 1 1 200px;
+  }
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): adaptación a móviles */
+@media (max-width: 600px) {
+  .app-topbar {
+    align-items: flex-start;
+    padding: 0.8rem 1rem;
+  }
+
+  .app-topbar__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .dashboard-shell {
+    width: calc(100% - 1.5rem);
+    padding-top: 1.25rem;
+  }
+
+  .dashboard-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-meta {
+    align-items: flex-start;
+  }
+
+  .dashboard-title {
+    font-size: 1.35rem;
+  }
+
+  .dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .export-bar {
+    padding: 1.1rem;
+  }
+
+  .export-bar__controls {
+    flex-direction: column;
+  }
+
+  .export-field,
+  .export-button {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .export-progress__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .download-card {
+    align-items: flex-start;
+  }
+
+  .download-card__link {
+    white-space: normal;
+  }
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): impresión de la vista del dashboard */
+@media print {
+  body {
+    background-color: #ffffff;
+  }
+
+  .app-topbar__actions,
+  .export-bar,
+  .export-status {
+    display: none !important;
+  }
+
+  .dashboard-shell {
+    width: 100%;
+    padding: 0;
+  }
+
+  .metric-card {
+    box-shadow: none;
+  }
+}
+
+/* Trazabilidad issue 5.3.1.4 (#35): respeto a la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .export-progress__bar,
+  .export-button,
+  .app-topbar__button {
+    transition: none;
+  }
+
+  .export-success,
+  .export-error {
+    animation: none;
+  }
+}

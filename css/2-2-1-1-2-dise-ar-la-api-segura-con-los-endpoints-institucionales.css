@@ -1,0 +1,370 @@
+/* Trazabilidad issue 2.1.1.2 (#2): estilos del prototipo de API segura con endpoints institucionales */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-get: #1f8a5b;
+  --color-get-bg: #e4f5ec;
+  --color-post: #1f5fbf;
+  --color-post-bg: #e6effb;
+  --color-patch: #a05a00;
+  --color-patch-bg: #fdf0dd;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): contenedor general del prototipo */
+.api-shell {
+  width: min(1100px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): encabezado de la documentación */
+.api-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.api-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.api-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.api-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.api-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.api-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): distintivo de la issue */
+.api-badge {
+  display: inline-block;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): bloque de introducción y alcance */
+.api-intro {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.api-intro__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.api-intro__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  max-width: 70ch;
+}
+
+.api-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.api-meta strong {
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): secciones de la documentación */
+.api-section {
+  margin-bottom: 1.5rem;
+}
+
+.api-section__title {
+  margin: 0 0 0.9rem;
+  font-size: 1.2rem;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): rejilla de tarjetas de seguridad */
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.api-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.api-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--color-primary-dark);
+}
+
+.api-card__text {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.api-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.api-list li {
+  margin-bottom: 0.3rem;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): convenciones del contrato */
+.api-conventions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.api-convention {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+}
+
+.api-convention__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.api-convention__value {
+  font-size: 0.88rem;
+  color: var(--color-primary-dark);
+  word-break: break-word;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): grupos de endpoints */
+.endpoint-group {
+  margin-bottom: 1.25rem;
+}
+
+.endpoint-group__title {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): tarjeta de endpoint institucional */
+.endpoint {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.6rem;
+  box-shadow: 0 4px 14px rgba(27, 36, 54, 0.04);
+}
+
+.endpoint__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.endpoint__path {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.endpoint__role {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.endpoint__desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): métodos HTTP con color semántico */
+.method {
+  display: inline-block;
+  min-width: 58px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.45rem;
+}
+
+.method--get {
+  color: var(--color-get);
+  background-color: var(--color-get-bg);
+}
+
+.method--post {
+  color: var(--color-post);
+  background-color: var(--color-post-bg);
+}
+
+.method--patch {
+  color: var(--color-patch);
+  background-color: var(--color-patch-bg);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): tabla de códigos de respuesta */
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: 0.88rem;
+}
+
+.api-table thead th {
+  text-align: left;
+  background-color: #eef2f9;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+}
+
+.api-table td {
+  padding: 0.65rem 1rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.api-table td:first-child {
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): pie de página con la referencia de la issue */
+.api-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Trazabilidad issue 2.1.1.2 (#2): comportamiento responsive del prototipo */
+@media (max-width: 600px) {
+  .api-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .api-header {
+    flex-wrap: wrap;
+  }
+
+  .api-intro {
+    padding: 1rem;
+  }
+
+  .endpoint__role {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .api-table thead {
+    display: none;
+  }
+
+  .api-table,
+  .api-table tbody,
+  .api-table tr,
+  .api-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .api-table tr {
+    border-top: 1px solid var(--color-border);
+    padding: 0.5rem 0;
+  }
+
+  .api-table td {
+    border-top: 0;
+    padding: 0.25rem 1rem;
+  }
+}

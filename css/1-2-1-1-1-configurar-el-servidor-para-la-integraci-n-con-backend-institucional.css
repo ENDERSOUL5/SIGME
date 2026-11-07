@@ -1,0 +1,460 @@
+/* Trazabilidad issue 2.1.1.1 (#1): estilos de la pantalla de configuración del servidor para la integración con backend institucional */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1c7a4d;
+  --color-ok-bg: #e5f5ec;
+  --color-pending: #9a6a12;
+  --color-pending-bg: #fdf3dd;
+  --color-off: #8a94a8;
+  --color-off-bg: #eef1f6;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): contenedor general de la pantalla de configuración */
+.server-config {
+  width: min(1200px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): encabezado de la pantalla */
+.server-config__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.server-config__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.server-config__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.server-config__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.server-config__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.server-config__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): etiqueta de la issue asociada */
+.server-config__issue-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  background-color: #e6eefb;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): introducción y alcance de la configuración */
+.server-config__intro {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.server-config__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+}
+
+.server-config__description {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): disposición principal formulario + estado lateral */
+.server-config__layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.server-config__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.server-config__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): paneles de configuración y estado */
+.panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.panel--compact {
+  padding: 1.1rem;
+}
+
+.panel--note {
+  background-color: #f8fafd;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel__title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+}
+
+.panel__header .panel__title {
+  margin-bottom: 0;
+}
+
+.panel__meta {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.panel__text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): formulario de parámetros de conexión */
+.config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field__input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.field__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.config-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): botones de acción */
+.btn {
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.btn--outline {
+  border: 1px solid var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.btn--outline:hover {
+  background-color: #e6eefb;
+}
+
+.btn--primary {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): indicadores de estado (badges) */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.badge--pending {
+  color: var(--color-pending);
+  background-color: var(--color-pending-bg);
+}
+
+.badge--ok {
+  color: var(--color-ok);
+  background-color: var(--color-ok-bg);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): listado de servicios institucionales */
+.endpoint-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.endpoint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+}
+
+.endpoint__info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.endpoint__method {
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 0.2rem 0.45rem;
+  letter-spacing: 0.04em;
+}
+
+.endpoint__method--get {
+  color: var(--color-primary-dark);
+  background-color: #e6eefb;
+}
+
+.endpoint__method--post {
+  color: var(--color-ok);
+  background-color: var(--color-ok-bg);
+}
+
+.endpoint__path {
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.endpoint__status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.endpoint__status--on {
+  color: var(--color-ok);
+}
+
+.endpoint__status--off {
+  color: var(--color-off);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): resumen del estado de la integración */
+.status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.status-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.status-list__label {
+  color: var(--color-muted);
+}
+
+.status-list__value {
+  font-weight: 600;
+}
+
+.status-list__value--neutral {
+  color: var(--color-pending);
+}
+
+.status-list__value--ok {
+  color: var(--color-ok);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): registro de actividad de la integración */
+.log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.log-list__item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+}
+
+.log-list__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.log-list__time {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.log-list__text {
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.1.1.1 (#1): comportamiento responsive de la pantalla */
+@media (max-width: 960px) {
+  .server-config__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .server-config {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .server-config__intro,
+  .panel {
+    padding: 1rem;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .config-form__actions {
+    flex-direction: column;
+  }
+
+  .config-form__actions .btn {
+    width: 100%;
+  }
+
+  .endpoint {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}

@@ -1,0 +1,903 @@
+/*
+  Trazabilidad issue 2.2.2.4 (#12):
+  Estilos del banco de pruebas de actualización en tiempo real y respuesta responsive
+  en dispositivos móviles. Implementa SOLO la issue #12 (predecesora 2.2.2.3 / #11).
+*/
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #dbe1ee;
+  --color-primary: #1f5fbf;
+  --color-primary-dark: #174a96;
+  --color-text: #1b2436;
+  --color-muted: #66708a;
+  --color-ok: #1f8a52;
+  --color-warn: #b4761a;
+  --color-danger: #b23b3b;
+  --color-info: #2b6cb0;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): contenedor general del banco de pruebas */
+.rt-shell {
+  width: min(1180px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): encabezado del banco de pruebas */
+.rt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.rt-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rt-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.rt-brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.rt-brand__name {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.rt-brand__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): etiqueta de identificación de la issue implementada */
+.issue-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): resumen de la ejecución de pruebas */
+.rt-overview {
+  margin-bottom: 1.25rem;
+}
+
+.rt-overview__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.rt-overview__lead {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  max-width: 78ch;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): tarjetas de métricas globales */
+.rt-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.rt-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.15rem;
+}
+
+.rt-metric__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rt-metric__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.rt-metric__value--pending {
+  color: var(--color-muted);
+}
+
+.rt-metric__value--ok {
+  color: var(--color-ok);
+}
+
+.rt-metric__value--fail {
+  color: var(--color-danger);
+}
+
+.rt-metric__meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): panel de pruebas de actualización en tiempo real */
+.rt-live {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.rt-live__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rt-live__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.rt-live__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): indicador del canal en vivo */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background-color: #eef2fa;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  white-space: nowrap;
+}
+
+.live-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-muted);
+}
+
+.live-badge--on {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.live-badge--on .live-badge__dot {
+  background-color: var(--color-ok);
+  animation: live-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): controles de la simulación en tiempo real */
+.rt-live__controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rt-live__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rt-live__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.rt-live__control {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.65rem;
+}
+
+.rt-live__control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
+}
+
+.rt-live__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): botones del banco de pruebas */
+.btn {
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn--primary {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): bandeja de eventos y última actualización */
+.rt-live__body {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rt-live__feed-wrap {
+  min-width: 0;
+}
+
+.rt-live__feed-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+
+.rt-live__feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.rt-feed-empty {
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.rt-feed-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.84rem;
+  animation: feed-in 0.3s ease;
+}
+
+@keyframes feed-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rt-feed-item__time {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.rt-feed-item__radicado {
+  font-weight: 600;
+}
+
+.rt-feed-item__latency {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): tarjeta con la última actualización reflejada */
+.rt-live__latest {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  padding: 1rem;
+}
+
+.rt-live__latest-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rt-live__latest-radicado {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.rt-live__latest-time {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): panel de pruebas responsive */
+.rt-responsive {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.rt-responsive__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rt-responsive__title {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.rt-responsive__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): etiqueta del ancho de vista en prueba */
+.viewport-tag {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): selector de anchos de pantalla */
+.rt-device-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.device-chip {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: #f8fafd;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.device-chip:hover {
+  border-color: var(--color-primary);
+}
+
+.device-chip.is-active {
+  border-color: var(--color-primary);
+  background-color: rgba(31, 95, 191, 0.1);
+  color: var(--color-primary);
+}
+
+.rt-responsive__grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): escenario del visor de dispositivo */
+.rt-preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  background-color: #eef2fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.rt-preview__frame {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background-color: var(--color-surface);
+  box-shadow: 0 12px 28px rgba(27, 36, 54, 0.16);
+  overflow: hidden;
+  transition: width 0.35s ease;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): el contenido del visor se evalúa con container queries */
+.rt-preview__content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.mini-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.mini-head__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.mini-head__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.mini-head__radicado {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.mini-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #f8fafd;
+  padding: 0.6rem;
+}
+
+.mini-metric__label {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+.mini-metric__value {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): línea de tiempo que refluye según el ancho */
+.mini-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.mini-step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.mini-step__dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.mini-step--done {
+  color: var(--color-ok);
+}
+
+.mini-step--done .mini-step__dot {
+  border-color: var(--color-ok);
+  background-color: var(--color-ok);
+}
+
+.mini-step--current {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.mini-step--current .mini-step__dot {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+.mini-text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.mini-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): áreas táctiles del visor (mínimo 44 px) */
+.mini-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+}
+
+.mini-btn--primary {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): reflujo del visor en anchos móviles */
+@container (max-width: 600px) {
+  .mini-timeline {
+    flex-direction: column;
+  }
+
+  .mini-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-head {
+    flex-direction: column;
+  }
+
+  .mini-actions {
+    flex-direction: column;
+  }
+
+  .mini-btn {
+    width: 100%;
+  }
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): resultados de las verificaciones responsive */
+.rt-checks {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.rt-checks__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.rt-checks__title {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.rt-checks__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.rt-checks__table th,
+.rt-checks__table td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.rt-checks__table th {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rt-checks__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): píldoras de resultado de las pruebas */
+.result-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+.result-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.result-pill--fail {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+.result-pill--pending {
+  background-color: #eef2fa;
+  color: var(--color-muted);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): indicadores de estado de la postulación */
+.state-pill {
+  display: inline-block;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+.state-pill--ok {
+  background-color: rgba(31, 138, 82, 0.12);
+  color: var(--color-ok);
+}
+
+.state-pill--info {
+  background-color: rgba(43, 108, 176, 0.12);
+  color: var(--color-info);
+}
+
+.state-pill--warn {
+  background-color: rgba(180, 118, 26, 0.14);
+  color: var(--color-warn);
+}
+
+.state-pill--danger {
+  background-color: rgba(178, 59, 59, 0.12);
+  color: var(--color-danger);
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): tabla de casos de prueba */
+.rt-cases {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.rt-cases__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.rt-cases__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.rt-cases__count {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.rt-cases__wrap {
+  overflow-x: auto;
+}
+
+.rt-cases__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.rt-cases__table th,
+.rt-cases__table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.rt-cases__table th {
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rt-cases__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): nota de alcance y dependencias */
+.rt-footer {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.rt-footer p {
+  margin: 0;
+}
+
+/* Trazabilidad issue 2.2.2.4 (#12): comportamiento responsive del propio banco */
+@media (max-width: 980px) {
+  .rt-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rt-responsive__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .rt-live__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .rt-shell {
+    width: calc(100% - 1.25rem);
+    padding-top: 1rem;
+  }
+
+  .rt-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rt-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .rt-live__header,
+  .rt-responsive__header {
+    flex-direction: column;
+  }
+
+  .rt-live__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rt-live__actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .rt-feed-item {
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: min-content;
+  }
+
+  .rt-checks__table {
+    font-size: 0.8rem;
+  }
+}

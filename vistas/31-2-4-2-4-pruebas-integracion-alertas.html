@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Pruebas de integración de turnos y alertas</title>
+  <!-- Trazabilidad issue 2.4.2.4 (#31): hoja de estilos del banco de pruebas -->
+  <link rel="stylesheet" href="../css/31-2-4-2-4-pruebas-integracion-alertas.css">
+</head>
+<body>
+
+  <!-- Trazabilidad issue 2.4.2.4 (#31): contenedor general de la validación -->
+  <div class="hours-shell">
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): encabezado con marca SIGME y enlace de regreso -->
+    <header class="hours-header">
+      <div class="hours-brand">
+        <span class="hours-brand__mark" aria-hidden="true">S</span>
+        <div class="hours-brand__text">
+          <span class="hours-brand__name">SIGME</span>
+          <span class="hours-brand__subtitle">Pruebas de integración &middot; Tablero de horas</span>
+        </div>
+      </div>
+      <span class="hours-issue-tag">Issue 2.4.2.4 &middot; #31</span>
+      <a class="btn btn--ghost" href="../index.html">Volver al inicio</a>
+    </header>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): resumen de la ejecución de pruebas -->
+    <section class="hours-overview" aria-labelledby="hoursOverviewTitle">
+      <h1 class="hours-overview__title" id="hoursOverviewTitle">Pruebas de integración de turnos y alertas del tablero de horas</h1>
+      <p class="hours-overview__lead">
+        Validación visual del tablero personal de horas operadas con datos reales simulados
+        de apertura y cierre de turnos. La ejecución calcula las horas acumuladas mientras el
+        switch del catálogo ha estado en &laquo;Abierto&raquo; (HU 5.1), identifica turnos sin
+        cerrar, excesos de horas e inconsistencias, y verifica las estadísticas personales y
+        los umbrales de respuesta (3.1).
+      </p>
+
+      <!-- Trazabilidad issue 2.4.2.4 (#31): tarjetas de resumen -->
+      <div class="hours-summary">
+        <div class="hours-summary__card">
+          <span class="hours-summary__label">Turnos evaluados</span>
+          <span class="hours-summary__value hours-summary__value--pending" id="summaryTurns">&mdash;</span>
+          <span class="hours-summary__meta">Corte simulado sep&ndash;oct 2026</span>
+        </div>
+        <div class="hours-summary__card">
+          <span class="hours-summary__label">Horas acumuladas</span>
+          <span class="hours-summary__value hours-summary__value--pending" id="summaryHours">&mdash;</span>
+          <span class="hours-summary__meta">Tiempo con el switch en &laquo;Abierto&raquo; (HU 5.1)</span>
+        </div>
+        <div class="hours-summary__card">
+          <span class="hours-summary__label">Alertas detectadas</span>
+          <span class="hours-summary__value hours-summary__value--pending" id="summaryAlerts">&mdash;</span>
+          <span class="hours-summary__meta">Sin cierre &middot; exceso &middot; inconsistencia</span>
+        </div>
+        <div class="hours-summary__card">
+          <span class="hours-summary__label">Pruebas aprobadas</span>
+          <span class="hours-summary__value hours-summary__value--pending" id="summaryTests">&mdash;</span>
+          <span class="hours-summary__meta">Resultados de integración</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): panel de ejecución de las pruebas -->
+    <section class="hours-panel" aria-labelledby="hoursPanelTitle">
+      <div class="hours-panel__header">
+        <div>
+          <h2 class="hours-panel__title" id="hoursPanelTitle">Ejecutar pruebas de integración</h2>
+          <p class="hours-panel__hint">Procesa el corte de turnos y valida el cálculo de horas y las reglas de alerta.</p>
+        </div>
+        <span class="hours-dataset">Datos reales simulados &middot; sep&ndash;oct 2026</span>
+      </div>
+
+      <!-- Trazabilidad issue 2.4.2.4 (#31): controles y estado de la ejecución -->
+      <div class="hours-controls">
+        <div class="hours-run-status" id="runStatus" role="status" aria-live="polite">
+          <span class="hours-run-status__dot" aria-hidden="true"></span>
+          <div class="hours-run-status__body">
+            <strong class="hours-run-status__title" id="runStatusTitle">Sin ejecutar</strong>
+            <span class="hours-run-status__text" id="runStatusText">Ejecuta las pruebas para calcular las horas y visualizar las alertas.</span>
+          </div>
+        </div>
+        <div class="hours-actions">
+          <button type="button" class="btn btn--primary" id="runTests" aria-describedby="runTestsHelp">Ejecutar pruebas</button>
+          <button type="button" class="btn btn--ghost" id="resetTests">Reiniciar</button>
+        </div>
+      </div>
+      <p class="sr-only" id="runTestsHelp">Ejecuta la evaluación de los seis turnos y las siete pruebas de integración.</p>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): panel de alertas del tablero de horas -->
+    <section class="hours-alerts" aria-labelledby="hoursAlertsTitle">
+      <div class="hours-alerts__header">
+        <h2 class="hours-alerts__title" id="hoursAlertsTitle">Alertas del tablero de horas</h2>
+        <span class="hours-alerts__count" id="alertsCount">Sin ejecutar</span>
+      </div>
+
+      <!-- Trazabilidad issue 2.4.2.4 (#31): contenedor dinámico de alertas -->
+      <div class="hours-alerts__list" id="alertsList" aria-live="polite" aria-label="Alertas del tablero de horas">
+        <p class="hours-alerts__empty" id="alertsEmpty">
+          Aún no hay alertas. Ejecuta las pruebas para validar turnos sin cerrar, excesos de horas e inconsistencias.
+        </p>
+      </div>
+
+      <!-- Trazabilidad issue 2.4.2.4 (#31): leyenda de severidad -->
+      <ul class="hours-alerts__legend">
+        <li><span class="hours-alerts__dot hours-alerts__dot--warn" aria-hidden="true"></span>Advertencia: requiere revisión</li>
+        <li><span class="hours-alerts__dot hours-alerts__dot--danger" aria-hidden="true"></span>Crítica: requiere corrección</li>
+      </ul>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): tabla de turnos con apertura y cierre -->
+    <section class="hours-table-card" aria-labelledby="hoursTurnosTitle">
+      <div class="hours-table-card__header">
+        <h2 class="hours-table-card__title" id="hoursTurnosTitle">Turnos registrados (apertura / cierre)</h2>
+        <span class="hours-table-card__count" id="tableCount">6 turnos &middot; sin ejecutar</span>
+      </div>
+      <div class="hours-table-wrap">
+        <table class="hours-table">
+          <caption class="sr-only">
+            Turnos simulados de apertura y cierre del switch del catálogo, con duración, horas
+            acumuladas, estado y alerta asociada.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Turno</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Apertura</th>
+              <th scope="col">Cierre</th>
+              <th scope="col">Duración</th>
+              <th scope="col">Horas</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Alerta</th>
+            </tr>
+          </thead>
+          <tbody id="turnosBody">
+            <tr
+              data-turno="TRN-2026-0142"
+              data-fecha="2026-09-28"
+              data-apertura="08:00"
+              data-cierre="14:30"
+            >
+              <td class="hours-table__turno">TRN-2026-0142</td>
+              <td>2026-09-28</td>
+              <td class="hours-table__time">08:00</td>
+              <td class="hours-table__time">14:30</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+            <tr
+              data-turno="TRN-2026-0143"
+              data-fecha="2026-10-02"
+              data-apertura="09:00"
+              data-cierre="21:45"
+            >
+              <td class="hours-table__turno">TRN-2026-0143</td>
+              <td>2026-10-02</td>
+              <td class="hours-table__time">09:00</td>
+              <td class="hours-table__time">21:45</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+            <tr
+              data-turno="TRN-2026-0144"
+              data-fecha="2026-10-05"
+              data-apertura="07:30"
+              data-cierre=""
+            >
+              <td class="hours-table__turno">TRN-2026-0144</td>
+              <td>2026-10-05</td>
+              <td class="hours-table__time">07:30</td>
+              <td class="hours-table__time">Sin cierre</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+            <tr
+              data-turno="TRN-2026-0145"
+              data-fecha="2026-10-06"
+              data-apertura="13:00"
+              data-cierre="12:30"
+            >
+              <td class="hours-table__turno">TRN-2026-0145</td>
+              <td>2026-10-06</td>
+              <td class="hours-table__time">13:00</td>
+              <td class="hours-table__time">12:30</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+            <tr
+              data-turno="TRN-2026-0146"
+              data-fecha="2026-10-08"
+              data-apertura="10:00"
+              data-cierre="16:00"
+            >
+              <td class="hours-table__turno">TRN-2026-0146</td>
+              <td>2026-10-08</td>
+              <td class="hours-table__time">10:00</td>
+              <td class="hours-table__time">16:00</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+            <tr
+              data-turno="TRN-2026-0147"
+              data-fecha="2026-09-30"
+              data-apertura="08:15"
+              data-cierre="15:45"
+            >
+              <td class="hours-table__turno">TRN-2026-0147</td>
+              <td>2026-09-30</td>
+              <td class="hours-table__time">08:15</td>
+              <td class="hours-table__time">15:45</td>
+              <td class="hours-table__time" data-duration>&mdash;</td>
+              <td class="hours-table__hours" data-hours>&mdash;</td>
+              <td data-state><span class="hours-pill hours-pill--pending"><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span></td>
+              <td class="hours-table__alert" data-alert>&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): resultados de pruebas de integración con estados -->
+    <section class="hours-tests" aria-labelledby="hoursTestsTitle">
+      <div class="hours-tests__header">
+        <h2 class="hours-tests__title" id="hoursTestsTitle">Resultados de pruebas de integración</h2>
+        <span class="hours-tests__count" id="testsCount">7 pruebas &middot; sin ejecutar</span>
+      </div>
+
+      <!-- Trazabilidad issue 2.4.2.4 (#31): lista de casos de prueba -->
+      <div class="hours-tests__list" id="testsList" role="list" aria-label="Casos de prueba de integración">
+        <article class="hours-test" data-test="T1" role="listitem">
+          <span class="hours-test__id">T1</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Apertura y cierre de turnos (HU 4.2)</h3>
+            <p class="hours-test__desc">Procesa los turnos y obtiene la duración entre la apertura y el cierre.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T2" role="listitem">
+          <span class="hours-test__id">T2</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Horas acumuladas (HU 5.1)</h3>
+            <p class="hours-test__desc">Suma las horas de los turnos cerrados, equivalentes al tiempo con el switch en &laquo;Abierto&raquo;.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T3" role="listitem">
+          <span class="hours-test__id">T3</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Alerta de turno sin cerrar</h3>
+            <p class="hours-test__desc">Verifica que un turno sin cierre genere la alerta correspondiente en el tablero.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T4" role="listitem">
+          <span class="hours-test__id">T4</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Alerta de exceso de horas</h3>
+            <p class="hours-test__desc">Verifica que una duración mayor a 12 h genere la alerta de exceso de horas.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T5" role="listitem">
+          <span class="hours-test__id">T5</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Alerta de inconsistencia de horarios</h3>
+            <p class="hours-test__desc">Verifica que un cierre anterior a la apertura se marque como inconsistencia.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T6" role="listitem">
+          <span class="hours-test__id">T6</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Estadísticas personales (2.1.4)</h3>
+            <p class="hours-test__desc">Comprueba los meses activos y las horas acumuladas del estudiante.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+
+        <article class="hours-test" data-test="T7" role="listitem">
+          <span class="hours-test__id">T7</span>
+          <div class="hours-test__body">
+            <h3 class="hours-test__name">Tiempo de respuesta (3.1)</h3>
+            <p class="hours-test__desc">Comprueba que las consultas simuladas respondan en 500 ms o menos.</p>
+            <p class="hours-test__detail" data-detail>Sin ejecutar.</p>
+          </div>
+          <div class="hours-test__meta">
+            <span class="hours-pill hours-pill--pending" data-status><span class="hours-pill__dot" aria-hidden="true"></span>Pendiente</span>
+            <span class="hours-test__time" data-time>&mdash;</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Trazabilidad issue 2.4.2.4 (#31): nota de alcance y dependencias -->
+    <footer class="hours-footer">
+      <p>
+        Issue 2.4.2.4 (#31). Predecesora: 2.4.2.3 (#30). Los turnos y las horas son datos
+        reales simulados para validar el tablero de horas, las alertas y las pruebas de
+        integración; no se modificaron otras issues ni hojas de estilo. Los mensajes de alerta
+        incluyen una acción sugerida para cumplir con mensajes claros y accionables (3.3).
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Trazabilidad issue 2.4.2.4 (#31): JS nativo para simular la ejecución de las pruebas -->
+  <script>
+    (function () {
+      'use strict';
+
+      var MAX_HORAS_TURNO = 12;
+      var TIEMPOS_PRUEBA = { T1: 180, T2: 210, T3: 160, T4: 190, T5: 205, T6: 230, T7: 320 };
+
+      var runTests = document.getElementById('runTests');
+      var resetTests = document.getElementById('resetTests');
+      var runStatus = document.getElementById('runStatus');
+      var runStatusTitle = document.getElementById('runStatusTitle');
+      var runStatusText = document.getElementById('runStatusText');
+      var alertsList = document.getElementById('alertsList');
+      var alertsCount = document.getElementById('alertsCount');
+      var tableCount = document.getElementById('tableCount');
+      var testsCount = document.getElementById('testsCount');
+      var summaryTurns = document.getElementById('summaryTurns');
+      var summaryHours = document.getElementById('summaryHours');
+      var summaryAlerts = document.getElementById('summaryAlerts');
+      var summaryTests = document.getElementById('summaryTests');
+      var turnos = Array.prototype.slice.call(document.querySelectorAll('#turnosBody tr'));
+      var testItems = Array.prototype.slice.call(document.querySelectorAll('.hours-test'));
+
+      var numberFormatter = new Intl.NumberFormat('es-CO');
+      var hoursFormatter = new Intl.NumberFormat('es-CO', {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+
+      var running = false;
+
+      function parseTime(value) {
+        if (!value) {
+          return null;
+        }
+        var parts = value.split(':');
+        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+      }
+
+      function formatDuration(minutes) {
+        var hours = Math.floor(minutes / 60);
+        var mins = minutes % 60;
+        if (hours === 0) {
+          return mins + ' min';
+        }
+        if (mins === 0) {
+          return hours + ' h';
+        }
+        return hours + ' h ' + mins + ' min';
+      }
+
+      function formatHours(minutes) {
+        return hoursFormatter.format(minutes / 60) + ' h';
+      }
+
+      function pill(kind, label) {
+        return '<span class="hours-pill hours-pill--' + kind + '">' +
+          '<span class="hours-pill__dot" aria-hidden="true"></span>' + label + '</span>';
+      }
+
+      function setSummary(element, text, modifier) {
+        element.textContent = text;
+        element.className = 'hours-summary__value hours-summary__value--' + modifier;
+      }
+
+      function setRunStatus(kind, title, text) {
+        runStatus.className = 'hours-run-status is-' + kind;
+        runStatusTitle.textContent = title;
+        runStatusText.textContent = text;
+      }
+
+      function evaluateTurn(row) {
+        var turno = row.getAttribute('data-turno');
+        var fecha = row.getAttribute('data-fecha');
+        var start = parseTime(row.getAttribute('data-apertura'));
+        var cierreRaw = row.getAttribute('data-cierre');
+        var end = parseTime(cierreRaw);
+
+        if (end === null) {
+          return {
+            type: 'open',
+            turno: turno,
+            fecha: fecha,
+            minutes: null,
+            stateKind: 'warn',
+            stateLabel: 'Sin cerrar',
+            alertKind: 'warn',
+            alertLabel: 'Cierre pendiente',
+            icon: '!',
+            severity: 'warn',
+            title: 'Turno sin cerrar',
+            text: 'El turno ' + turno + ' del ' + fecha + ' no registra hora de cierre.',
+            action: 'Acción: registra el cierre del turno para acumular sus horas.'
+          };
+        }
+
+        if (end <= start) {
+          return {
+            type: 'inconsistent',
+            turno: turno,
+            fecha: fecha,
+            minutes: null,
+            stateKind: 'danger',
+            stateLabel: 'Inconsistencia',
+            alertKind: 'danger',
+            alertLabel: 'Cierre anterior a apertura',
+            icon: '\u2260',
+            severity: 'danger',
+            title: 'Inconsistencia de horarios',
+            text: 'El turno ' + turno + ' cierra a las ' + cierreRaw + ', antes de su apertura a las ' +
+              row.getAttribute('data-apertura') + '.',
+            action: 'Acción: corrige las horas del turno antes de consolidar las estadísticas.'
+          };
+        }
+
+        var minutes = end - start;
+
+        if (minutes > MAX_HORAS_TURNO * 60) {
+          return {
+            type: 'excess',
+            turno: turno,
+            fecha: fecha,
+            minutes: minutes,
+            stateKind: 'warn',
+            stateLabel: 'Exceso',
+            alertKind: 'warn',
+            alertLabel: 'Excede 12 h',
+            icon: '\u2191',
+            severity: 'warn',
+            title: 'Exceso de horas',
+            text: 'El turno ' + turno + ' registró ' + formatDuration(minutes) + ' (' +
+              formatHours(minutes) + '), por encima del máximo de ' + MAX_HORAS_TURNO +
+              ' h por turno.',
+            action: 'Acción: revisa si el switch del catálogo permaneció abierto más tiempo del previsto.'
+          };
+        }
+
+        return {
+          type: 'ok',
+          turno: turno,
+          fecha: fecha,
+          minutes: minutes,
+          stateKind: 'ok',
+          stateLabel: 'Correcto',
+          alertKind: '',
+          alertLabel: '\u2014',
+          hoursKind: 'ok'
+        };
+      }
+
+      function renderTurn(row, result) {
+        var durationCell = row.querySelector('[data-duration]');
+        var hoursCell = row.querySelector('[data-hours]');
+        var stateCell = row.querySelector('[data-state]');
+        var alertCell = row.querySelector('[data-alert]');
+
+        if (result.minutes === null) {
+          durationCell.textContent = '\u2014';
+          hoursCell.textContent = '\u2014';
+          hoursCell.className = 'hours-table__hours';
+        } else {
+          durationCell.textContent = formatDuration(result.minutes);
+          hoursCell.textContent = formatHours(result.minutes);
+          hoursCell.className = 'hours-table__hours hours-table__hours--' + (result.hoursKind || result.stateKind);
+        }
+
+        stateCell.innerHTML = pill(result.stateKind, result.stateLabel);
+        alertCell.textContent = result.alertLabel;
+        alertCell.className = 'hours-table__alert' +
+          (result.alertKind ? ' hours-table__alert--' + result.alertKind : '');
+
+        row.classList.add('is-highlight');
+        if (result.stateKind === 'danger') {
+          row.classList.add('is-error');
+        } else if (result.stateKind === 'warn') {
+          row.classList.add('is-alert');
+        }
+      }
+
+      function renderAlerts(alerts) {
+        alertsList.innerHTML = '';
+
+        if (alerts.length === 0) {
+          alertsList.innerHTML =
+            '<p class="hours-alerts__empty">Sin alertas: todos los turnos están cerrados y sus horarios son consistentes.</p>';
+          return;
+        }
+
+        alerts.forEach(function (alert) {
+          var article = document.createElement('article');
+          article.className = 'hours-alert hours-alert--' + alert.severity;
+          article.setAttribute('role', 'listitem');
+          article.innerHTML =
+            '<span class="hours-alert__icon" aria-hidden="true">' + alert.icon + '</span>' +
+            '<div class="hours-alert__body">' +
+              '<h3 class="hours-alert__title">' + alert.title + '</h3>' +
+              '<p class="hours-alert__text">' + alert.text + '</p>' +
+              '<p class="hours-alert__action">' + alert.action + '</p>' +
+            '</div>';
+          alertsList.appendChild(article);
+        });
+      }
+
+      function renderTest(item, statusKind, statusLabel, detail, time) {
+        var status = item.querySelector('[data-status]');
+        var detailCell = item.querySelector('[data-detail]');
+        var timeCell = item.querySelector('[data-time]');
+
+        status.innerHTML = pill(statusKind, statusLabel);
+        detailCell.textContent = detail;
+        timeCell.textContent = numberFormatter.format(time) + ' ms';
+      }
+
+      function resetTest(item) {
+        var status = item.querySelector('[data-status]');
+        var detailCell = item.querySelector('[data-detail]');
+        var timeCell = item.querySelector('[data-time]');
+
+        status.innerHTML = pill('pending', 'Pendiente');
+        detailCell.textContent = 'Sin ejecutar.';
+        timeCell.textContent = '\u2014';
+      }
+
+      function reset() {
+        turnos.forEach(function (row) {
+          row.classList.remove('is-highlight', 'is-alert', 'is-error');
+          row.querySelector('[data-duration]').textContent = '\u2014';
+          row.querySelector('[data-hours]').textContent = '\u2014';
+          row.querySelector('[data-hours]').className = 'hours-table__hours';
+          row.querySelector('[data-state]').innerHTML = pill('pending', 'Pendiente');
+          var alertCell = row.querySelector('[data-alert]');
+          alertCell.textContent = '\u2014';
+          alertCell.className = 'hours-table__alert';
+        });
+
+        testItems.forEach(resetTest);
+        alertsList.innerHTML =
+          '<p class="hours-alerts__empty" id="alertsEmpty">Aún no hay alertas. Ejecuta las pruebas para validar turnos sin cerrar, excesos de horas e inconsistencias.</p>';
+
+        setSummary(summaryTurns, '\u2014', 'pending');
+        setSummary(summaryHours, '\u2014', 'pending');
+        setSummary(summaryAlerts, '\u2014', 'pending');
+        setSummary(summaryTests, '\u2014', 'pending');
+        setRunStatus('idle', 'Sin ejecutar', 'Ejecuta las pruebas para calcular las horas y visualizar las alertas.');
+        alertsCount.textContent = 'Sin ejecutar';
+        tableCount.textContent = turnos.length + ' turnos \u00b7 sin ejecutar';
+        testsCount.textContent = testItems.length + ' pruebas \u00b7 sin ejecutar';
+      }
+
+      function execute() {
+        if (running) {
+          return;
+        }
+
+        running = true;
+        runTests.disabled = true;
+        resetTests.disabled = true;
+        runTests.textContent = 'Ejecutando...';
+        setRunStatus('running', 'Ejecutando pruebas', 'Procesando ' + turnos.length +
+          ' turnos y validando las reglas de alerta.');
+        alertsCount.textContent = 'Procesando...';
+        testsCount.textContent = 'Procesando...';
+
+        setTimeout(function () {
+          var results = turnos.map(function (row) {
+            var result = evaluateTurn(row);
+            renderTurn(row, result);
+            return result;
+          });
+
+          var alerts = results.filter(function (result) {
+            return result.type !== 'ok';
+          });
+
+          var alertOrder = { open: 0, excess: 1, inconsistent: 2 };
+          alerts.sort(function (a, b) {
+            return alertOrder[a.type] - alertOrder[b.type];
+          });
+
+          var closedResults = results.filter(function (result) {
+            return result.minutes !== null;
+          });
+
+          var totalMinutes = closedResults.reduce(function (total, result) {
+            return total + result.minutes;
+          }, 0);
+
+          var months = {};
+          results.forEach(function (result) {
+            months[result.fecha.slice(0, 7)] = true;
+          });
+          var monthCount = Object.keys(months).length;
+
+          var openCount = results.filter(function (result) { return result.type === 'open'; }).length;
+          var excessCount = results.filter(function (result) { return result.type === 'excess'; }).length;
+          var inconsistentCount = results.filter(function (result) { return result.type === 'inconsistent'; }).length;
+          var maxLatency = Object.keys(TIEMPOS_PRUEBA).reduce(function (max, key) {
+            return Math.max(max, TIEMPOS_PRUEBA[key]);
+          }, 0);
+
+          var testResults = [
+            {
+              id: 'T1',
+              detail: results.length + ' turnos procesados; ' + closedResults.length +
+                ' con apertura y cierre válidos.'
+            },
+            {
+              id: 'T2',
+              detail: formatHours(totalMinutes) +
+                ' acumuladas a partir del tiempo en \u00abAbierto\u00bb (HU 5.1).'
+            },
+            {
+              id: 'T3',
+              detail: openCount + ' turno' + (openCount === 1 ? '' : 's') +
+                ' sin cierre detectado' + (openCount === 1 ? '' : 's') +
+                ' y visualizado' + (openCount === 1 ? '' : 's') + '.'
+            },
+            {
+              id: 'T4',
+              detail: excessCount + ' turno' + (excessCount === 1 ? '' : 's') +
+                ' con exceso de horas detectado' + (excessCount === 1 ? '' : 's') + '.'
+            },
+            {
+              id: 'T5',
+              detail: inconsistentCount + ' inconsistencia' + (inconsistentCount === 1 ? '' : 's') +
+                ' de horarios detectada' + (inconsistentCount === 1 ? '' : 's') +
+                ' y marcada como crítica.'
+            },
+            {
+              id: 'T6',
+              detail: monthCount + ' meses activos y ' + formatHours(totalMinutes) +
+                ' acumuladas (2.1.4).'
+            },
+            {
+              id: 'T7',
+              detail: 'Respuesta máxima simulada: ' + numberFormatter.format(maxLatency) +
+                ' ms; todas por debajo de 500 ms (3.1).'
+            }
+          ];
+
+          testItems.forEach(function (item) {
+            var id = item.getAttribute('data-test');
+            var testResult = testResults.filter(function (result) {
+              return result.id === id;
+            })[0];
+            var latency = TIEMPOS_PRUEBA[id];
+
+            if (latency <= 500) {
+              renderTest(item, 'ok', 'Aprobada', testResult.detail, latency);
+            } else {
+              renderTest(item, 'warn', 'Con observación', testResult.detail, latency);
+            }
+          });
+
+          renderAlerts(alerts);
+
+          setSummary(summaryTurns, String(results.length), 'ok');
+          setSummary(summaryHours, formatHours(totalMinutes), 'ok');
+          setSummary(summaryAlerts, String(alerts.length), alerts.length > 0 ? 'warn' : 'ok');
+          setSummary(summaryTests, testItems.length + ' / ' + testItems.length, 'ok');
+
+          alertsCount.textContent = alerts.length + ' alerta' + (alerts.length === 1 ? '' : 's') +
+            (inconsistentCount > 0 ? ' \u00b7 ' + inconsistentCount + ' crítica' : '');
+          tableCount.textContent = results.length + ' turnos \u00b7 ' + alerts.length + ' con alerta';
+          testsCount.textContent = testItems.length + ' / ' + testItems.length + ' aprobadas';
+          setRunStatus('ok', 'Integración validada', testItems.length + ' de ' + testItems.length +
+            ' pruebas aprobadas y ' + alerts.length + ' alertas visualizadas correctamente.');
+
+          runTests.disabled = false;
+          resetTests.disabled = false;
+          runTests.textContent = 'Ejecutar pruebas';
+          running = false;
+        }, 700);
+      }
+
+      runTests.addEventListener('click', execute);
+      resetTests.addEventListener('click', function () {
+        if (!running) {
+          reset();
+        }
+      });
+
+      reset();
+    })();
+  </script>
+</body>
+</html>
