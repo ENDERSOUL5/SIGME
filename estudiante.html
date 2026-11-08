@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!--
+    TRAZABILIDAD PRODUCT BACKLOG (SIGME):
+    - HU 2.1.4 / HU 2.4.2: Tablero del estudiante emprendedor con módulo físico asignado (Issue #28 / WBS 2.4.2.1).
+    - HU 4.2: Conmutador en vivo 'Abrir/Cerrar Turno' con cronómetro en tiempo real (Issue #24 / WBS 4.2.1).
+    - HU 2.4.2: Registro de horas acumuladas y turnos completados (Issues #30, #31 / WBS 2.4.2.3).
+    - HU 4.1.2: Edición autónoma del perfil comercial visible en el catálogo público.
+  -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SIGME - Mi Panel de Emprendimiento</title>
@@ -302,6 +309,7 @@
   </main>
 
   <script src="shared-state.js"></script>
+  <script src="traceability.js"></script>
   <script>
     let isTurnOpen = false;
     let timerInterval = null;

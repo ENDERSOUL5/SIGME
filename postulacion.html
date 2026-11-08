@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!--
+    TRAZABILIDAD PRODUCT BACKLOG (SIGME):
+    - HU 2.1.1: Formulario para la petición de datos y documentos del MVP (Issue #5 / WBS 2.2.1.1).
+    - HU 2.1.2: Servicio de carga de archivos (PDF/JPG) con validación de peso y formato (Issue #6 / WBS 2.2.1.2).
+    - HU 2.1.3: Flujo de envío, radicado institucional y confirmación de recepción (Issue #8 / WBS 2.2.1.4).
+    - HU 2.2.1: Asignación de estado inicial 'En Revisión' y número de radicado (Issue #10 / WBS 2.2.2.2).
+  -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SIGME - Postulación de Emprendimientos</title>
@@ -272,6 +279,7 @@
   </main>
 
   <script src="shared-state.js"></script>
+  <script src="traceability.js"></script>
   <script>
     function checkConvocatoria() {
       const isOpen = SIGME_STATE.getConvocatoria();
