@@ -15,7 +15,7 @@
       <span class="app-brand__mark" aria-hidden="true">S</span>
       <div class="app-brand__text">
         <span class="app-brand__name">SIGME</span>
-        <span class="app-brand__subtitle">Gestión de movilidad estudiantil</span>
+        <span class="app-brand__subtitle">Gestión y Monitoreo de Emprendimientos</span>
       </div>
     </div>
     <div class="app-topbar__actions">
@@ -31,9 +31,9 @@
     <!-- Trazabilidad issue 5.3.1.4 (#35): encabezado del dashboard -->
     <section class="dashboard-head" aria-labelledby="dashboardTitle">
       <div>
-        <p class="dashboard-eyebrow">Oficina de Relaciones Internacionales</p>
+        <p class="dashboard-eyebrow">Centro de Innovación y Emprendimiento</p>
         <h1 class="dashboard-title" id="dashboardTitle">Dashboard de reportes</h1>
-        <p class="dashboard-subtitle">Consolidado de movilidad estudiantil · Periodo académico 2026-1</p>
+        <p class="dashboard-subtitle">Consolidado de emprendimiento estudiantil · Periodo académico 2026-1</p>
       </div>
       <div class="dashboard-meta">
         <span class="dashboard-meta__label">Última actualización</span>
@@ -269,14 +269,14 @@
           return csv;
         }
 
-        var text = 'SIGME - Reporte consolidado de movilidad estudiantil\n';
+        var text = 'SIGME - Reporte consolidado de emprendimiento estudiantil\n';
         text += 'Prototipo estatico: archivo simulado por el frontend.\n';
         text += 'Periodo academico: 2026-1\n';
         text += 'Fecha de corte: 07/11/2026\n\n';
         metrics.forEach(function (row) {
           text += row[0] + ': ' + row[1] + '\n';
         });
-        text += '\nOficina de Relaciones Internacionales\n';
+        text += '\nCentro de Innovación y Emprendimiento\n';
         return text;
       }
 

@@ -1,340 +1,339 @@
-/* Trazabilidad issue 3.1.1.1 (#13): estilos del componente de UI con barra de búsqueda y panel de filtros */
+/* ==========================================================================
+   SIGME - Sistema Institucional de Gestión de Módulos y Emprendimiento
+   Design System: Minimalista, Armónico & Editorial
+   Colores Principales: Crema (#F3EEE3), Ink Black (#111111)
+   Color Secundario / Acento: Burn Orange (#D9541E)
+   ========================================================================== */
 
 :root {
-  --color-bg: #f4f6fb;
-  --color-surface: #ffffff;
-  --color-border: #dbe1ee;
-  --color-primary: #1f5fbf;
-  --color-primary-dark: #174a96;
-  --color-text: #1b2436;
-  --color-muted: #66708a;
-  --radius: 12px;
-  --shadow: 0 10px 30px rgba(27, 36, 54, 0.08);
+  /* Paleta Principal */
+  --color-crema: #F3EEE3;
+  --color-crema-surface: #FAF7F2;
+  --color-crema-card: #FFFFFF;
+  --color-crema-muted: #E6DFD2;
+  --color-crema-dark: #D8D0C0;
+
+  --color-ink: #111111;
+  --color-ink-light: #2A2A2A;
+  --color-ink-muted: #5A5A5A;
+  --color-ink-subtle: #888888;
+
+  /* Color Secundario para Detalles Mínimos */
+  --color-burn-orange: #D9541E;
+  --color-burn-orange-hover: #BD4312;
+  --color-burn-orange-subtle: rgba(217, 84, 30, 0.08);
+  --color-burn-orange-border: rgba(217, 84, 30, 0.35);
+
+  /* Bordes & Superficies */
+  --color-border: rgba(17, 17, 17, 0.12);
+  --color-border-dark: #111111;
+  --color-border-focus: #D9541E;
+
+  /* Tipografía */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  /* Sombras ultra sutiles y naturales */
+  --shadow-subtle: 0 1px 3px rgba(17, 17, 17, 0.04);
+  --shadow-card: 0 4px 18px rgba(17, 17, 17, 0.05);
+  --shadow-hover: 0 8px 24px rgba(17, 17, 17, 0.08);
 }
 
-* {
+/* Reset y base */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  padding: 0;
+  background-color: var(--color-crema);
+  color: var(--color-ink);
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Trazabilidad issue 3.1.1.1 (#13): contenedor general del componente */
-.app-shell {
-  width: min(1200px, 100% - 2rem);
-  margin: 0 auto;
-  padding: 1.5rem 0 3rem;
+/* Contenedor centralizado */
+.app-container {
+  width: min(1160px, 100% - 2.5rem);
+  margin: 2rem auto 4rem;
 }
 
-/* Trazabilidad issue 3.1.1.1 (#13): encabezado del componente */
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+/* Tipografía de títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-ink);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 0;
 }
 
-.app-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+p {
+  color: var(--color-ink-muted);
+  margin-top: 0;
 }
 
-.app-brand__mark {
-  display: grid;
+/* Header & Topbar Institucional Minimalista */
+.brand-mark {
+  display: inline-grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.25rem;
+  width: 34px;
+  height: 34px;
+  background: var(--color-ink);
+  color: var(--color-crema);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(243, 238, 227, 0.2);
 }
 
-.app-brand__text {
-  display: flex;
-  flex-direction: column;
-}
-
-.app-brand__name {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.app-brand__subtitle {
-  font-size: 0.8rem;
-  color: var(--color-muted);
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): barra de búsqueda principal */
-.search-bar {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-}
-
-.search-bar__title {
-  margin: 0 0 1rem;
-  font-size: 1.4rem;
-}
-
-.search-bar__form {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #f8fafd;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.35rem 0.35rem 0.35rem 1rem;
-}
-
-.search-bar__icon {
-  color: var(--color-muted);
-  font-size: 1rem;
-}
-
-.search-bar__input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  background: transparent;
-  padding: 0.6rem 0.25rem;
-  font-size: 1rem;
-  color: var(--color-text);
-}
-
-.search-bar__input:focus {
-  outline: none;
-}
-
-.search-bar__form:focus-within {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.15);
-}
-
-.search-bar__submit {
-  border: 0;
-  border-radius: 999px;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-weight: 600;
-  padding: 0.6rem 1.4rem;
-  cursor: pointer;
-}
-
-.search-bar__submit:hover {
-  background-color: var(--color-primary-dark);
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): disposición gráfica de la barra de búsqueda y el panel de filtros */
-.search-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): panel lateral de filtros */
-.filters-panel {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
-  position: sticky;
-  top: 1rem;
-}
-
-.filters-panel__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.filters-panel__title {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.filters-panel__close {
-  display: none;
-  border: 0;
-  background: transparent;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--color-muted);
-  cursor: pointer;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): área reservada para los filtros de las issues #14 y #15 */
-.filters-panel__body {
-  border: 1px dashed var(--color-border);
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.filters-panel__placeholder {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--color-muted);
-  line-height: 1.5;
-}
-
-.filters-panel__actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): botones del componente */
+/* Botones Minimalistas */
 .btn {
-  flex: 1;
-  border-radius: 8px;
-  padding: 0.6rem 0.75rem;
-  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.86rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  white-space: nowrap;
 }
 
-.btn--ghost {
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text);
-}
-
+/* Botón principal: Ink Black */
 .btn--primary {
-  border: 1px solid var(--color-primary);
-  background-color: var(--color-primary);
-  color: #fff;
+  background: var(--color-ink);
+  color: var(--color-crema);
+  border-color: var(--color-ink);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-primary-dark);
+  background: var(--color-ink-light);
+  border-color: var(--color-ink-light);
+  color: #FFFFFF;
 }
 
-/* Trazabilidad issue 3.1.1.1 (#13): área de resultados del componente de búsqueda */
-.results-area {
-  background-color: var(--color-surface);
+/* Botón secundario con detalle Burn Orange */
+.btn--accent {
+  background: var(--color-burn-orange);
+  color: #FFFFFF;
+  border-color: var(--color-burn-orange);
+}
+
+.btn--accent:hover {
+  background: var(--color-burn-orange-hover);
+  border-color: var(--color-burn-orange-hover);
+}
+
+/* Botón Outline */
+.btn--outline {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.btn--outline:hover {
+  background: rgba(17, 17, 17, 0.05);
+}
+
+/* Botón sutil / Ghost */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-ink-muted);
+  border-color: var(--color-border);
+}
+
+.btn--ghost:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+  background: rgba(17, 17, 17, 0.03);
+}
+
+.btn--ghost-dark {
+  background: transparent;
+  color: var(--color-crema-muted);
+  border-color: rgba(243, 238, 227, 0.2);
+}
+
+.btn--ghost-dark:hover {
+  background: rgba(243, 238, 227, 0.1);
+  color: var(--color-crema);
+}
+
+/* Botón Peligro / Cerrar Turno */
+.btn--danger {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-border-dark);
+}
+
+.btn--danger:hover {
+  background: var(--color-ink);
+  color: var(--color-crema);
+}
+
+/* Tarjetas y Contenedores */
+.card-clean {
+  background: var(--color-crema-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
-  min-height: 320px;
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-subtle);
 }
 
-.results-area__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
+/* Formularios Minimalistas */
+.form-group {
+  margin-bottom: 1.25rem;
 }
 
-.results-area__title {
-  margin: 0;
-  font-size: 1.1rem;
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+  margin-bottom: 0.4rem;
 }
 
-.results-area__count {
-  font-size: 0.85rem;
-  color: var(--color-muted);
+.form-control {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.results-area__empty {
-  display: grid;
+.form-control:focus {
+  border-color: var(--color-burn-orange);
+  box-shadow: 0 0 0 2px var(--color-burn-orange-subtle);
+}
+
+/* Badges y Pastillas Minimalistas */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border);
+  background: var(--color-crema-surface);
+  color: var(--color-ink);
+}
+
+.tag--accent {
+  background: var(--color-burn-orange-subtle);
+  color: var(--color-burn-orange);
+  border-color: var(--color-burn-orange-border);
+}
+
+.tag--ink {
+  background: var(--color-ink);
+  color: var(--color-crema);
+  border-color: var(--color-ink);
+}
+
+/* Punto de estado minimalista (reemplaza emojis de estado) */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-ink-subtle);
+}
+
+.status-dot--active {
+  background: var(--color-burn-orange);
+  box-shadow: 0 0 0 2px var(--color-burn-orange-subtle);
+}
+
+.status-dot--ink {
+  background: var(--color-ink);
+}
+
+/* Tablas Minimalistas */
+.table-minimal {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.table-minimal th {
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+  border-bottom: 2px solid var(--color-border);
+  background: var(--color-crema-surface);
+}
+
+.table-minimal td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink);
+  vertical-align: middle;
+}
+
+.table-minimal tbody tr:hover {
+  background: var(--color-crema-surface);
+}
+
+/* Alertas Minimalistas */
+.notice {
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  border: 1px solid var(--color-border);
+  background: var(--color-crema-surface);
+  color: var(--color-ink);
+  margin-bottom: 1.25rem;
+}
+
+.notice--accent {
+  border-color: var(--color-burn-orange-border);
+  background: var(--color-burn-orange-subtle);
+  color: var(--color-ink);
+}
+
+.notice--accent strong {
+  color: var(--color-burn-orange);
+}
+
+/* Monograma elegante para emprendimientos */
+.monogram-badge {
+  display: inline-grid;
   place-items: center;
-  min-height: 220px;
-  border: 1px dashed var(--color-border);
-  border-radius: 10px;
-  color: var(--color-muted);
-  text-align: center;
-  padding: 1rem;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): botón de filtros visible solo en móvil */
-.filters-toggle {
-  display: none;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  font-weight: 600;
-  padding: 0.55rem 0.9rem;
-  cursor: pointer;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): accesibilidad */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Trazabilidad issue 3.1.1.1 (#13): comportamiento responsive del componente */
-@media (max-width: 900px) {
-  .search-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .filters-toggle {
-    display: inline-block;
-  }
-
-  .filters-panel {
-    position: static;
-    display: none;
-  }
-
-  .filters-panel.is-open {
-    display: block;
-  }
-
-  .filters-panel__close {
-    display: inline-block;
-  }
-}
-
-@media (max-width: 600px) {
-  .app-shell {
-    width: calc(100% - 1.25rem);
-    padding-top: 1rem;
-  }
-
-  .search-bar {
-    padding: 1rem;
-  }
-
-  .search-bar__form {
-    flex-wrap: wrap;
-    border-radius: 12px;
-    padding: 0.5rem;
-  }
-
-  .search-bar__input {
-    flex-basis: calc(100% - 1.75rem);
-  }
-
-  .search-bar__submit {
-    width: 100%;
-  }
-
-  .filters-panel__actions {
-    flex-direction: column;
-  }
+  width: 52px;
+  height: 52px;
+  background: var(--color-ink);
+  color: var(--color-crema);
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(243, 238, 227, 0.2);
 }

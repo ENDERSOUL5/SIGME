@@ -285,6 +285,57 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .flow-section {
+      background: #ffffff;
+      border: 2px solid #93c5fd;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 8px 24px rgba(31, 95, 191, 0.08);
+    }
+    .flow-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.35rem;
+      color: #174a96;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .flow-desc {
+      margin: 0 0 1.25rem;
+      color: var(--color-muted);
+      font-size: 0.92rem;
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .flow-card {
+      border: 1px solid var(--color-border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border-top: 4px solid var(--color-primary);
+    }
+    .flow-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--color-text);
+    }
+    .flow-steps {
+      margin: 0;
+      padding-left: 1.25rem;
+      font-size: 0.85rem;
+      color: #334155;
+      line-height: 1.6;
+      flex: 1;
+    }
+
   </style>
 </head>
 <body>
@@ -314,6 +365,72 @@
     </aside>
 
     <main>
+
+      <!-- SECCIÓN DE FLUJOS CONECTADOS E2E -->
+      <section class="flow-section" aria-labelledby="flowsTitle">
+        <h2 class="flow-title" id="flowsTitle">🚀 Flujos de Usuario Conectados (Prueba End-to-End)</h2>
+        <p class="flow-desc">
+          Recorre la experiencia completa de cada actor de SIGME haciendo clic en los botones de inicio de flujo. Las pantallas están encadenadas paso a paso.
+        </p>
+        <div class="flow-grid">
+          <div class="flow-card">
+            <h3>Flujo 1: Estudiante Emprendedor (Postulación y Seguimiento)</h3>
+            <ol class="flow-steps">
+              <li><strong>Login / Convocatoria:</strong> Verificación de estado y sincronización académica (HU 1.1, 1.3).</li>
+              <li><strong>Formulario MVP:</strong> Carga de datos del estudiante y propuesta (HU 2.1.2).</li>
+              <li><strong>Carga de Archivos:</strong> Validación de formato y peso (HU 2.1.2).</li>
+              <li><strong>Envío &amp; Confirmación:</strong> Simulación de envío y radicado (HU 2.1.2).</li>
+              <li><strong>Línea de Tiempo:</strong> Stepper de estado en tiempo real (HU 2.1.2).</li>
+              <li><strong>Observaciones:</strong> Panel de retroalimentación y rúbrica (HU 2.1.2).</li>
+            </ol>
+            <a class="btn btn--primary" href="1-2-1-1-login-convocatorias.html">Iniciar Flujo 1 &rarr;</a>
+          </div>
+
+          <div class="flow-card" style="border-top-color: #16a34a;">
+            <h3>Flujo 2: Administrador CIE (Evaluación y Asignación de Módulos)</h3>
+            <ol class="flow-steps">
+              <li><strong>Búsqueda &amp; Filtros:</strong> Exploración avanzada y filtros multinivel (HU 2.2.1).</li>
+              <li><strong>Rúbrica Institucional:</strong> Calificación ponderada y justificación obligatoria (HU 2.1).</li>
+              <li><strong>Mapa de la Zona:</strong> Asignación interactiva de módulos físicos (HU 3.1, 3.2).</li>
+              <li><strong>Notificación Automática:</strong> Correo institucional transaccional (HU 3.2).</li>
+            </ol>
+            <a class="btn btn--primary" style="background:#16a34a; border-color:#16a34a;" href="../index.html">Iniciar Flujo 2 &rarr;</a>
+          </div>
+
+          <div class="flow-card" style="border-top-color: #d97706;">
+            <h3>Flujo 3: Operatividad, Catálogo Público y Reportes</h3>
+            <ol class="flow-steps">
+              <li><strong>Switch de Turno:</strong> Alternar "Abrir/Cerrar Turno" en vivo (HU 4.2).</li>
+              <li><strong>Catálogo Público:</strong> Filtrado en tiempo real y priorización en grid (HU 4.3).</li>
+              <li><strong>Tablero de Horas:</strong> Horas acumuladas y edición de contacto (HU 2.1.4).</li>
+              <li><strong>Indicadores Gráficos:</strong> Consumo de horas frente a meta (HU 5.1).</li>
+              <li><strong>Dashboard &amp; Reporte PDF:</strong> Exportación para Rectoría (HU 5.3).</li>
+            </ol>
+            <a class="btn btn--primary" style="background:#d97706; border-color:#d97706;" href="24-4-2-1-catalogo-publico-turnos.html">Iniciar Flujo 3 &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MÓDULO 2.1: REGISTRO Y CONVOCATORIAS (NUEVO) -->
+      <section class="module" aria-labelledby="module-21">
+        <h2 class="module__title" id="module-21">
+          Autenticación y Control de Convocatorias
+          <span class="module__wbs">2.1 / 3.3.1</span>
+        </h2>
+        <div class="cards">
+          <article class="card">
+            <div class="card__meta">
+              <span class="badge badge--issue">HU 1.1 / 1.3</span>
+              <span class="badge badge--wbs">WBS 2.1.1</span>
+            </div>
+            <h3 class="card__title">Acceso Institucional y Bloqueo por Fechas de Convocatoria</h3>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="1-2-1-1-login-convocatorias.html">Ver vista</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="module" aria-labelledby="module-221">
         <h2 class="module__title" id="module-221">
           Petición y carga de documentos
@@ -446,7 +563,38 @@
         </div>
       </section>
 
-      <section class="module" aria-labelledby="module-323">
+      
+      <!-- MÓDULO 3.2: ASIGNACIÓN E INFRAESTRUCTURA FÍSICA (NUEVO) -->
+      <section class="module" aria-labelledby="module-32">
+        <h2 class="module__title" id="module-32">
+          Asignación e Infraestructura Física y Rúbricas
+          <span class="module__wbs">3.1.2 / 3.2</span>
+        </h2>
+        <div class="cards">
+          <article class="card">
+            <div class="card__meta">
+              <span class="badge badge--issue">HU 3.1 / 3.2</span>
+              <span class="badge badge--wbs">WBS 3.2.1 / 3.2.2</span>
+            </div>
+            <h3 class="card__title">Mapa Interactivo y Asignación de Módulos Físicos</h3>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="20-3-2-1-mapa-asignacion-modulos.html">Ver vista</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__meta">
+              <span class="badge badge--issue">HU 2.1</span>
+              <span class="badge badge--wbs">WBS 3.1.2</span>
+            </div>
+            <h3 class="card__title">Evaluación de Proyectos con Rúbrica Institucional</h3>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="22-3-1-2-evaluacion-rubrica-admin.html">Ver vista</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+<section class="module" aria-labelledby="module-323">
         <h2 class="module__title" id="module-323">
           Notificaciones por correo
           <span class="module__wbs">3.2.3</span>
@@ -510,7 +658,28 @@
         </div>
       </section>
 
-      <section class="module" aria-labelledby="module-531">
+      
+      <!-- MÓDULO 4.0: CATÁLOGO Y VISIBILIDAD COMERCIAL (NUEVO) -->
+      <section class="module" aria-labelledby="module-40">
+        <h2 class="module__title" id="module-40">
+          Catálogo y Visibilidad Comercial en Vivo
+          <span class="module__wbs">4.0</span>
+        </h2>
+        <div class="cards">
+          <article class="card">
+            <div class="card__meta">
+              <span class="badge badge--issue">HU 4.1 / 4.2 / 4.3</span>
+              <span class="badge badge--wbs">WBS 4.2.1 / 4.3.1</span>
+            </div>
+            <h3 class="card__title">Catálogo Público en Tiempo Real y Switch de Turno</h3>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="24-4-2-1-catalogo-publico-turnos.html">Ver vista</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+<section class="module" aria-labelledby="module-531">
         <h2 class="module__title" id="module-531">
           Reporte PDF
           <span class="module__wbs">5.3.1</span>
@@ -556,7 +725,7 @@
     </main>
 
     <footer class="site-footer">
-      SIGME &mdash; Prototipo de gestión de movilidad estudiantil. Índice de trazabilidad entre vistas e issues.
+      SIGME &mdash; Prototipo de gestión de emprendimiento estudiantil. Índice de trazabilidad entre vistas e issues.
     </footer>
   </div>
 </body>

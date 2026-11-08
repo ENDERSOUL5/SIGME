@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Mi Panel de Emprendimiento</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Topbar */
+    .topbar {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      padding: 0.9rem 2rem;
+      border-bottom: 2px solid var(--color-burn-orange);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand__name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--color-crema);
+      letter-spacing: 0.03em;
+    }
+
+    .brand__sub {
+      font-size: 0.76rem;
+      color: var(--color-crema-muted);
+    }
+
+    /* Hero Turn Card */
+    .hero-turn {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 2.25rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      box-shadow: var(--shadow-subtle);
+      border-top: 4px solid var(--color-burn-orange);
+    }
+
+    .hero-turn__info h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.65rem;
+    }
+
+    .hero-turn__info p {
+      margin: 0 0 0.85rem;
+      font-size: 0.92rem;
+    }
+
+    .turn-control-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 260px;
+      text-align: center;
+      background: var(--color-crema-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+    }
+
+    .timer-display {
+      font-size: 2.25rem;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: 0.05em;
+      color: var(--color-ink);
+      margin-bottom: 0.85rem;
+    }
+
+    .btn-turn {
+      width: 100%;
+      padding: 0.8rem 1.5rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-turn--open {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      border-color: var(--color-ink);
+    }
+
+    .btn-turn--open:hover {
+      background: var(--color-ink-light);
+    }
+
+    .btn-turn--close {
+      background: var(--color-burn-orange);
+      color: #FFFFFF;
+      border-color: var(--color-burn-orange);
+    }
+
+    .btn-turn--close:hover {
+      background: var(--color-burn-orange-hover);
+    }
+
+    /* Grid Stats */
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 1.35rem 1.5rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .stat-box__lbl {
+      font-size: 0.74rem;
+      color: var(--color-ink-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-box__val {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-ink);
+      margin: 0.25rem 0 0;
+    }
+
+    /* Layout 2 Columnas */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.75rem;
+    }
+
+    @media (max-width: 840px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <strong id="barUserName" class="brand__name">María Fernanda López</strong>
+        <div class="brand__sub">Estudiante Emprendedor Vinculado</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:0.6rem; align-items:center;">
+      <a class="btn btn--ghost-dark" href="catalogo.html" target="_blank">
+        Catálogo Público
+      </a>
+      <button class="btn btn--ghost-dark" onclick="SIGME_STATE.logout()">
+        Cerrar Sesión
+      </button>
+    </div>
+  </header>
+
+  <main class="app-container">
+
+    <!-- Hero Card: Switch de Turno y Módulo Asignado -->
+    <section class="hero-turn">
+      <div class="hero-turn__info">
+        <span class="tag tag--accent" id="badgeModulo" style="margin-bottom: 0.75rem;">
+          Módulo Asignado: E-03 (Paseo Central)
+        </span>
+        <h1 id="ventureTitle">EcoSnacks Saludables Campus</h1>
+        <p>Facultad de Ingeniería de Sistemas &middot; Alimentos Funcionales</p>
+        <div style="font-size:0.84rem; color:var(--color-ink-muted);">
+          Horario institucional asignado: Martes y Jueves (10:00 - 15:00)
+        </div>
+      </div>
+
+      <div class="turn-control-box">
+        <div class="timer-display" id="timerDisplay">00:00:00</div>
+        <button class="btn-turn btn-turn--open" id="btnToggleTurn" onclick="toggleTurn()">
+          <span class="status-dot" id="btnTurnDot"></span>
+          <span id="btnTurnText">Abrir Turno</span>
+        </button>
+        <span style="font-size:0.78rem; color:var(--color-ink-muted); margin-top:0.75rem; line-height:1.4;" id="turnNotice">
+          Tu negocio se encuentra actualmente CERRADO.
+        </span>
+      </div>
+    </section>
+
+    <!-- Indicadores Operativos -->
+    <section class="grid-stats">
+      <div class="stat-box">
+        <div class="stat-box__lbl">Horas Acumuladas Este Mes</div>
+        <div class="stat-box__val" id="valHours">48 h</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box__lbl">Turnos Completados</div>
+        <div class="stat-box__val">16</div>
+      </div>
+    </section>
+
+    <div class="grid-2col">
+
+      <!-- Columna 1: Perfil Comercial -->
+      <section class="card-clean">
+        <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Perfil Comercial en el Catálogo Público</h2>
+        <p style="margin:0 0 1.25rem; font-size:0.86rem;">
+          Actualiza los datos de contacto y la información visible para los compradores del campus.
+        </p>
+
+        <form id="profileForm" onsubmit="saveCommercialProfile(event)">
+          <div class="form-group">
+            <label>Descripción Comercial del Emprendimiento</label>
+            <textarea class="form-control" id="profileDesc" rows="3">Barras energéticas a base de quinua, frutos secos y miel agroecológica local sin azúcares añadidos.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp de Contacto y Pedidos</label>
+            <input class="form-control" type="text" id="profilePhone" value="573001234567">
+          </div>
+
+          <div class="form-group">
+            <label>Usuario de Instagram</label>
+            <input class="form-control" type="text" id="profileIg" value="ecosnacks_campus">
+          </div>
+
+          <button class="btn btn--primary" type="submit" style="width:100%; margin-top:0.5rem;">
+            Guardar Cambios del Perfil
+          </button>
+        </form>
+      </section>
+
+      <!-- Columna 2: Historial de Turnos Recientes -->
+      <section class="card-clean">
+        <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Historial de Turnos Recientes</h2>
+        <p style="margin:0 0 1.25rem; font-size:0.86rem;">
+          Registro de jornadas validadas en el módulo físico.
+        </p>
+
+        <table class="table-minimal">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Horas</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>06/11/2026</td>
+              <td><strong>4.5 h</strong></td>
+              <td><span class="tag tag--accent">Validado</span></td>
+            </tr>
+            <tr>
+              <td>04/11/2026</td>
+              <td><strong>4.0 h</strong></td>
+              <td><span class="tag tag--accent">Validado</span></td>
+            </tr>
+            <tr>
+              <td>02/11/2026</td>
+              <td><strong>3.5 h</strong></td>
+              <td><span class="tag tag--accent">Validado</span></td>
+            </tr>
+            <tr>
+              <td>30/10/2026</td>
+              <td><strong>4.0 h</strong></td>
+              <td><span class="tag tag--accent">Validado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="shared-state.js"></script>
+  <script>
+    let isTurnOpen = false;
+    let timerInterval = null;
+    let elapsedSeconds = 0;
+    let currentUser = null;
+
+    function initStudent() {
+      currentUser = SIGME_STATE.getCurrentUser();
+      if (!currentUser || currentUser.role !== 'student') {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('barUserName').textContent = currentUser.name;
+      document.getElementById('ventureTitle').textContent = currentUser.ventureName;
+      document.getElementById('badgeModulo').textContent = `Módulo Asignado: ${currentUser.moduleAssigned || 'E-03'} (Paseo Central)`;
+      document.getElementById('profileDesc').value = currentUser.description || '';
+      document.getElementById('profilePhone').value = currentUser.phone || '';
+      document.getElementById('profileIg').value = currentUser.ig || '';
+
+      // Verificar si en el catálogo ya está abierto
+      const ventures = SIGME_STATE.getVentures();
+      const myVenture = ventures.find(v => v.name.toLowerCase() === currentUser.ventureName.toLowerCase());
+      if (myVenture && myVenture.isOpen) {
+        setTurnState(true);
+      }
+    }
+
+    function toggleTurn() {
+      setTurnState(!isTurnOpen);
+    }
+
+    function setTurnState(open) {
+      isTurnOpen = open;
+      const btn = document.getElementById('btnToggleTurn');
+      const text = document.getElementById('btnTurnText');
+      const dot = document.getElementById('btnTurnDot');
+      const notice = document.getElementById('turnNotice');
+
+      // Actualizar en el estado compartido de ventures
+      const ventures = SIGME_STATE.getVentures();
+      let myVenture = ventures.find(v => v.name.toLowerCase() === currentUser.ventureName.toLowerCase());
+      if (myVenture) {
+        myVenture.isOpen = open;
+        SIGME_STATE.saveVentures(ventures);
+      }
+
+      if (open) {
+        btn.className = 'btn-turn btn-turn--close';
+        text.textContent = 'Cerrar Turno';
+        dot.className = 'status-dot';
+        dot.style.background = '#FFFFFF';
+        notice.textContent = 'Estás en turno. Tu negocio aparece como abierto en el Catálogo Público.';
+        notice.style.color = 'var(--color-burn-orange)';
+        startTimer();
+      } else {
+        btn.className = 'btn-turn btn-turn--open';
+        text.textContent = 'Abrir Turno';
+        dot.className = 'status-dot status-dot--active';
+        dot.style.background = '';
+        notice.textContent = 'Tu negocio se encuentra actualmente CERRADO.';
+        notice.style.color = 'var(--color-ink-muted)';
+        stopTimer();
+      }
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        elapsedSeconds++;
+        const h = String(Math.floor(elapsedSeconds / 3600)).padStart(2, '0');
+        const m = String(Math.floor((elapsedSeconds % 3600) / 60)).padStart(2, '0');
+        const s = String(elapsedSeconds % 60).padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = `${h}:${m}:${s}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      if (elapsedSeconds > 0) {
+        const minutes = Math.floor(elapsedSeconds / 60);
+        alert(`Turno concluido. Has operado ${minutes} min. El tiempo ha sido registrado en tu historial.`);
+      }
+      elapsedSeconds = 0;
+      document.getElementById('timerDisplay').textContent = '00:00:00';
+    }
+
+    function saveCommercialProfile(e) {
+      e.preventDefault();
+      const desc = document.getElementById('profileDesc').value;
+      const phone = document.getElementById('profilePhone').value;
+      const ig = document.getElementById('profileIg').value;
+
+      currentUser.description = desc;
+      currentUser.phone = phone;
+      currentUser.ig = ig;
+      SIGME_STATE.setCurrentUser(currentUser);
+
+      const ventures = SIGME_STATE.getVentures();
+      let v = ventures.find(x => x.name.toLowerCase() === currentUser.ventureName.toLowerCase());
+      if (v) {
+        v.desc = desc;
+        v.phone = phone;
+        v.ig = ig;
+        SIGME_STATE.saveVentures(ventures);
+      }
+
+      alert('Perfil comercial actualizado. Los datos ya son visibles en el Catálogo Público.');
+    }
+
+    initStudent();
+  </script>
+</body>
+</html>

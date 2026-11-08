@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Postulación de Emprendimientos</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Topbar */
+    .topbar {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      padding: 0.9rem 2rem;
+      border-bottom: 2px solid var(--color-burn-orange);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand__name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--color-crema);
+      letter-spacing: 0.03em;
+    }
+
+    .brand__sub {
+      font-size: 0.76rem;
+      color: var(--color-crema-muted);
+    }
+
+    .container-form {
+      width: min(800px, 100% - 2.5rem);
+      margin: 2.5rem auto 4rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Subsecciones del Formulario */
+    .form-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-ink);
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .form-section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    /* Dropzone Minimalista */
+    .dropzone-clean {
+      border: 1px dashed var(--color-ink-muted);
+      border-radius: var(--radius-sm);
+      padding: 2.25rem 1.5rem;
+      text-align: center;
+      background: var(--color-crema-surface);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .dropzone-clean:hover {
+      border-color: var(--color-burn-orange);
+      background: var(--color-burn-orange-subtle);
+    }
+
+    .dropzone-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .dropzone-hint {
+      font-size: 0.78rem;
+      color: var(--color-ink-muted);
+    }
+
+    /* Alerta de Convocatoria Cerrada */
+    .closed-box {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-top: 4px solid var(--color-ink);
+      border-radius: var(--radius-md);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .closed-box h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .closed-box p {
+      max-width: 52ch;
+      margin: 0 auto 2rem;
+      font-size: 0.92rem;
+    }
+
+    /* Card de Éxito */
+    .success-card {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-top: 4px solid var(--color-burn-orange);
+      border-radius: var(--radius-md);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="brand__name">SIGME</div>
+        <div class="brand__sub">Registro y Postulación de Proyectos</div>
+      </div>
+    </a>
+    <div>
+      <a class="btn btn--ghost-dark" href="index.html">&larr; Volver al Portal</a>
+    </div>
+  </header>
+
+  <main class="container-form">
+
+    <!-- Caso 1: Convocatoria Cerrada -->
+    <div class="closed-box" id="boxClosed" style="display:none;">
+      <span class="tag" style="margin-bottom: 1rem;">Periodo Cerrado</span>
+      <h2>Convocatorias Inactivas</h2>
+      <p>
+        El proceso de recepción de proyectos y Producto Mínimo Viable (MVP) para la Zona de Emprendimiento se encuentra cerrado actualmente por calendario institucional.
+      </p>
+      <a class="btn btn--primary" href="index.html">Volver al Portal Principal</a>
+    </div>
+
+    <!-- Caso 2: Formulario de Postulación Activo -->
+    <section class="card-clean" id="boxForm">
+      <div style="margin-bottom: 1.75rem;">
+        <span class="tag tag--accent" style="margin-bottom: 0.75rem;">Convocatoria Activa</span>
+        <h1 style="font-size: 1.5rem; margin-bottom: 0.35rem;">Postulación de Emprendimiento (MVP)</h1>
+        <p style="font-size: 0.9rem; margin: 0;">
+          Diligencia la información técnica de tu propuesta para evaluación por el comité de emprendimiento.
+        </p>
+      </div>
+
+      <form id="postulaForm" onsubmit="handlePostulacion(event)">
+
+        <div class="form-section-title">1. Datos del Estudiante Responsable</div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Nombres y Apellidos</label>
+            <input class="form-control" type="text" id="pStudentName" value="Andrés Felipe Gómez" required>
+          </div>
+          <div class="form-group">
+            <label>Correo Electrónico Institucional</label>
+            <input class="form-control" type="email" id="pStudentEmail" value="andres.gomez@universidad.edu.co" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Facultad o Programa Académico</label>
+          <select class="form-control" id="pFaculty" required>
+            <option value="Ingeniería">Facultad de Ingeniería</option>
+            <option value="Ciencias Económicas">Ciencias Económicas y Administrativas</option>
+            <option value="Diseño Industrial">Diseño, Creación y Comunicación</option>
+            <option value="Ciencias Agrarias">Ciencias Agrarias y Agroecología</option>
+            <option value="Ciencias de la Salud">Ciencias de la Salud</option>
+          </select>
+        </div>
+
+        <div class="form-section-title">2. Información del Emprendimiento</div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Nombre de la Marca o Negocio</label>
+            <input class="form-control" type="text" id="pName" placeholder="Ej. BioSnacks, TechLab..." required>
+          </div>
+          <div class="form-group">
+            <label>Categoría Comercial</label>
+            <select class="form-control" id="pCat" required>
+              <option value="Alimentos Funcionales">Alimentos y Gastronomía</option>
+              <option value="Tecnología y Software">Tecnología e Innovación</option>
+              <option value="Diseño y Sostenibilidad">Diseño y Sostenibilidad</option>
+              <option value="Cuidado Personal">Cuidado Personal y Cosmética</option>
+              <option value="Servicios Universitarios">Servicios Universitarios</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción del Producto Mínimo Viable (MVP)</label>
+          <textarea class="form-control" id="pDesc" rows="3"
+            placeholder="Describe las características principales del producto, validación de clientes y formato de atención presencial..." required></textarea>
+        </div>
+
+        <div class="form-section-title">3. Documentación y Evidencias del MVP</div>
+
+        <div class="dropzone-clean" onclick="document.getElementById('fileMock').click()">
+          <div class="dropzone-title">Seleccionar o arrastrar ficha técnica del MVP</div>
+          <div class="dropzone-hint">Formatos válidos: PDF, JPG, PNG (Tamaño máximo: 5 MB)</div>
+          <input type="file" id="fileMock" style="display:none;" onchange="fileSelected(this)">
+          <div id="fileSelectedName" style="margin-top:0.6rem; font-size:0.84rem; font-weight:700; color:var(--color-burn-orange);"></div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <button class="btn btn--primary" type="submit" style="width: 100%; padding: 0.85rem;">
+            Enviar Postulación al Comité CIE &rarr;
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- Caso 3: Éxito y Radicado -->
+    <section class="success-card" id="boxSuccess" style="display:none;">
+      <span class="tag tag--accent" style="margin-bottom: 1rem;">Registro Confirmado</span>
+      <h2 style="font-size: 1.6rem; margin-bottom: 0.35rem;">Postulación Recibida Correctamente</h2>
+      <p style="margin: 0 auto 2rem; max-width: 52ch; font-size: 0.92rem;">
+        La propuesta ha quedado almacenada institucionalmente en estado <strong>En Revisión</strong> para el comité evaluador.
+      </p>
+
+      <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.5rem; max-width:440px; margin:0 auto 2.5rem; text-align:left; font-size:0.88rem;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.65rem; border-bottom:1px solid var(--color-border); padding-bottom:0.5rem;">
+          <span style="color:var(--color-ink-muted);">Número de Radicado:</span>
+          <strong id="resRadicado" style="color:var(--color-ink);">SIGME-2026-0255</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.65rem; border-bottom:1px solid var(--color-border); padding-bottom:0.5rem;">
+          <span style="color:var(--color-ink-muted);">Proyecto:</span>
+          <strong id="resName">Nombre</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--color-ink-muted);">Estado Inicial:</span>
+          <span class="tag">En Revisión</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; justify-content:center;">
+        <a class="btn btn--primary" href="index.html">Volver al Inicio</a>
+        <a class="btn btn--outline" href="catalogo.html">Ver Catálogo Público</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="shared-state.js"></script>
+  <script>
+    function checkConvocatoria() {
+      const isOpen = SIGME_STATE.getConvocatoria();
+      if (!isOpen) {
+        document.getElementById('boxClosed').style.display = 'block';
+        document.getElementById('boxForm').style.display = 'none';
+      } else {
+        document.getElementById('boxClosed').style.display = 'none';
+        document.getElementById('boxForm').style.display = 'block';
+      }
+    }
+
+    function fileSelected(input) {
+      if (input.files.length > 0) {
+        document.getElementById('fileSelectedName').textContent = 'Archivo adjunto: ' + input.files[0].name;
+      }
+    }
+
+    function handlePostulacion(e) {
+      e.preventDefault();
+      const studentName = document.getElementById('pStudentName').value.trim();
+      const studentEmail = document.getElementById('pStudentEmail').value.trim();
+      const faculty = document.getElementById('pFaculty').value;
+      const projName = document.getElementById('pName').value.trim();
+      const cat = document.getElementById('pCat').value;
+      const desc = document.getElementById('pDesc').value.trim();
+
+      const radicadoNum = 'SIGME-2026-0' + Math.floor(250 + Math.random() * 50);
+
+      // Crear nuevo proyecto
+      const proyectos = SIGME_STATE.getProyectos();
+      const nuevo = {
+        radicado: radicadoNum,
+        name: projName,
+        student: studentName,
+        email: studentEmail,
+        faculty: faculty,
+        category: cat,
+        date: new Date().toLocaleDateString('es-CO'),
+        status: 'En Revisión',
+        score: null,
+        comments: null,
+        module: null
+      };
+
+      proyectos.unshift(nuevo);
+      SIGME_STATE.saveProyectos(proyectos);
+
+      // Registrar usuario estudiante en revisión
+      const users = SIGME_STATE.getUsers();
+      users.push({
+        email: studentEmail,
+        password: '123',
+        role: 'student',
+        name: studentName,
+        faculty: faculty,
+        ventureName: projName,
+        ventureCat: cat,
+        moduleAssigned: null,
+        status: 'En Revisión',
+        phone: '573000000000',
+        ig: 'nuevo_emprendimiento',
+        hoursWorked: 0,
+        description: desc
+      });
+      localStorage.setItem('sigme_users', JSON.stringify(users));
+
+      // Mostrar pantalla de confirmación
+      document.getElementById('boxForm').style.display = 'none';
+      document.getElementById('boxSuccess').style.display = 'block';
+      document.getElementById('resRadicado').textContent = radicadoNum;
+      document.getElementById('resName').textContent = projName;
+    }
+
+    checkConvocatoria();
+  </script>
+</body>
+</html>

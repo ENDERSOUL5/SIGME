@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Acceso Institucional y Convocatorias</title>
+  <!-- Trazabilidad Épica 1 (HU 1.1, 1.2, 1.3 | WBS 2.1.1, 2.1.2, 3.3.1) -->
+  <link rel="stylesheet" href="../css/1-2-1-1-login-convocatorias.css">
+</head>
+<body>
+  <div class="login-shell">
+
+    <!-- Encabezado Institucional SIGME -->
+    <header class="login-header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">S</span>
+        <div class="brand__text">
+          <span class="brand__name">SIGME</span>
+          <span class="brand__subtitle">Gestión y Monitoreo de Emprendimientos</span>
+        </div>
+      </div>
+      <nav class="login-nav">
+        <a class="btn btn--ghost" href="../index.html">Búsqueda Admin</a>
+        <a class="btn btn--ghost" href="index.html">Índice de Vistas</a>
+      </nav>
+    </header>
+
+    <!-- Banner de Estado de Convocatoria (HU 1.3 / WBS 3.3.1) -->
+    <aside class="banner-convocatoria banner-convocatoria--open" id="convocatoriaBanner">
+      <div class="banner-content">
+        <span class="banner-icon" id="bannerIcon">📢</span>
+        <div class="banner-text">
+          <h3 id="bannerTitle">Convocatoria 2026-2 Abierta</h3>
+          <p id="bannerDesc">El periodo de recepción de proyectos y Producto Mínimo Viable (MVP) está activo hasta el 30 de Noviembre.</p>
+        </div>
+      </div>
+      <div class="toggle-container">
+        <span>Simular cierre:</span>
+        <label class="toggle-switch" title="Alternar convocatoria abierta / cerrada">
+          <input type="checkbox" id="toggleConvocatoria">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </aside>
+
+    <div class="login-grid">
+
+      <!-- Tarjeta 1: Acceso Estudiante Emprendedor (HU 1.1, 1.2 / WBS 2.1.1, 2.1.2) -->
+      <section class="card" aria-labelledby="estudianteLoginTitle">
+        <span class="issue-badge">HU 1.1 / 1.2 · WBS 2.1.1</span>
+        <h2 class="card__title" id="estudianteLoginTitle">Portal del Estudiante Emprendedor</h2>
+        <p class="card__description">Ingresa con tu correo institucional. Tus datos académicos se sincronizan de forma automática desde la base de datos de la Universidad.</p>
+
+        <form id="studentLoginForm" novalidate>
+          <div class="field">
+            <label class="field__label" for="studentEmail">Correo Institucional</label>
+            <input class="field__input" type="email" id="studentEmail" placeholder="ejemplo@universidad.edu.co" value="maria.lopez@universidad.edu.co" required>
+            <span class="field__help">Debe terminar en @universidad.edu.co</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="studentPassword">Contraseña</label>
+            <input class="field__input" type="password" id="studentPassword" value="••••••••" required>
+          </div>
+
+          <!-- Previsualización de sincronización automática institucional (HU 1.1) -->
+          <div class="sync-preview" id="syncPreview">
+            <div class="sync-preview__title">Sincronización Institucional Activa</div>
+            <div class="sync-row">
+              <span class="sync-label">Estudiante:</span>
+              <span class="sync-val" id="syncName">María Fernanda López</span>
+            </div>
+            <div class="sync-row">
+              <span class="sync-label">Facultad:</span>
+              <span class="sync-val" id="syncFaculty">Ingeniería de Sistemas</span>
+            </div>
+            <div class="sync-row">
+              <span class="sync-label">Estado Académico:</span>
+              <span class="sync-val" style="color: var(--color-success)">Activo Regular</span>
+            </div>
+          </div>
+
+          <!-- Mensaje de bloqueo por convocatoria cerrada (HU 1.3) -->
+          <div id="closedNotice" style="display:none; margin: 1rem 0; padding: 0.9rem; background: var(--color-danger-bg); color: var(--color-danger); border-radius: 8px; font-weight: 600; font-size: 0.9rem;">
+            ⚠️ Las convocatorias para la Zona de Emprendimiento se encuentran cerradas actualmente.
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <button class="btn btn--primary" type="button" id="btnStudentPostular">
+              Iniciar Postulación de MVP &rarr;
+            </button>
+            <button class="btn btn--ghost" type="button" id="btnStudentTurno">
+              Ir a Mi Módulo y Catálogo Público (Abrir Turno)
+            </button>
+            <button class="btn btn--ghost" type="button" id="btnStudentDashboard">
+              Consultar Mi Tablero de Horas
+            </button>
+          </div>
+        </form>
+
+        <div class="demo-credentials">
+          <strong>Cuentas demo para probar:</strong>
+          <ul>
+            <li onclick="setStudent('maria.lopez@universidad.edu.co', 'María Fernanda López', 'Ingeniería de Sistemas')">maria.lopez@universidad.edu.co (Activa)</li>
+            <li onclick="setStudent('carlos.ramirez@universidad.edu.co', 'Carlos Andrés Ramírez', 'Ciencias Económicas')">carlos.ramirez@universidad.edu.co (Activo)</li>
+            <li onclick="setStudent('inactivo@universidad.edu.co', 'Estudiante No Vigente', 'Inactivo', false)">inactivo@universidad.edu.co (Simular Inactivo / Bloqueo)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Tarjeta 2: Acceso Administrativo (CIE / Dirección) -->
+      <section class="card" aria-labelledby="adminLoginTitle">
+        <span class="issue-badge">Épica 2 & 3 · WBS 3.0</span>
+        <h2 class="card__title" id="adminLoginTitle">Administración Zona de Emprendimiento</h2>
+        <p class="card__description">Centro de Innovación y Emprendimiento (CIE). Gestión de convocatorias, evaluación de rúbricas y asignación de módulos físicos.</p>
+
+        <form id="adminLoginForm">
+          <div class="field">
+            <label class="field__label" for="adminEmail">Correo Administrativo</label>
+            <input class="field__input" type="email" id="adminEmail" value="coordinacion.cie@universidad.edu.co" readonly>
+          </div>
+          <div class="field">
+            <label class="field__label" for="adminPass">Clave de Acceso</label>
+            <input class="field__input" type="password" id="adminPass" value="••••••••" readonly>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <a class="btn btn--primary" href="../index.html">
+              Ingresar al Panel de Búsqueda y Filtros &rarr;
+            </a>
+            <a class="btn btn--ghost" href="22-3-1-2-evaluacion-rubrica-admin.html">
+              Evaluar Proyectos con Rúbrica Institucional
+            </a>
+            <a class="btn btn--ghost" href="20-3-2-1-mapa-asignacion-modulos.html">
+              Mapa de Módulos Físicos de la Zona
+            </a>
+            <a class="btn btn--ghost" href="35-5-3-1-4-exportar-pdf.html">
+              Dashboard de Métricas y Reportes PDF
+            </a>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    const toggleConvocatoria = document.getElementById('toggleConvocatoria');
+    const banner = document.getElementById('convocatoriaBanner');
+    const bannerIcon = document.getElementById('bannerIcon');
+    const bannerTitle = document.getElementById('bannerTitle');
+    const bannerDesc = document.getElementById('bannerDesc');
+    const closedNotice = document.getElementById('closedNotice');
+    const btnPostular = document.getElementById('btnStudentPostular');
+    const syncName = document.getElementById('syncName');
+    const syncFaculty = document.getElementById('syncFaculty');
+
+    let isConvocatoriaOpen = true;
+    let isStudentActive = true;
+
+    toggleConvocatoria.addEventListener('change', function() {
+      isConvocatoriaOpen = !this.checked;
+      if (isConvocatoriaOpen) {
+        banner.className = 'banner-convocatoria banner-convocatoria--open';
+        bannerIcon.textContent = '📢';
+        bannerTitle.textContent = 'Convocatoria 2026-2 Abierta';
+        bannerDesc.textContent = 'El periodo de recepción de proyectos y Producto Mínimo Viable (MVP) está activo hasta el 30 de Noviembre.';
+        closedNotice.style.display = 'none';
+        btnPostular.disabled = false;
+        btnPostular.style.opacity = '1';
+        btnPostular.style.cursor = 'pointer';
+      } else {
+        banner.className = 'banner-convocatoria banner-convocatoria--closed';
+        bannerIcon.textContent = '🚫';
+        bannerTitle.textContent = 'Convocatoria Cerrada';
+        bannerDesc.textContent = 'Las fechas límites de registro han culminado según el calendario de la Dirección Universitaria.';
+        closedNotice.style.display = 'block';
+        btnPostular.disabled = true;
+        btnPostular.style.opacity = '0.5';
+        btnPostular.style.cursor = 'not-allowed';
+      }
+      localStorage.setItem('sigme_convocatoria_open', isConvocatoriaOpen);
+    });
+
+    function setStudent(email, name, faculty, active = true) {
+      document.getElementById('studentEmail').value = email;
+      syncName.textContent = name;
+      syncFaculty.textContent = faculty;
+      isStudentActive = active;
+      const statusEl = document.querySelector('.sync-row:last-child .sync-val');
+      if (active) {
+        statusEl.textContent = 'Activo Regular';
+        statusEl.style.color = 'var(--color-success)';
+      } else {
+        statusEl.textContent = 'Estudiante Inactivo / No Matriculado';
+        statusEl.style.color = 'var(--color-danger)';
+      }
+    }
+
+    btnPostular.addEventListener('click', function() {
+      if (!isConvocatoriaOpen) {
+        alert('Las convocatorias para la Zona de Emprendimiento se encuentran cerradas actualmente.');
+        return;
+      }
+      if (!isStudentActive) {
+        alert('El estudiante no cuenta con un perfil institucional activo en la Universidad.');
+        return;
+      }
+      // Guardar sesión demo en localStorage para los flujos
+      localStorage.setItem('sigme_user', JSON.stringify({
+        email: document.getElementById('studentEmail').value,
+        name: syncName.textContent,
+        faculty: syncFaculty.textContent
+      }));
+      window.location.href = '5-2-2-1-1-formulario-peticion-documentos.html';
+    });
+
+    document.getElementById('btnStudentTurno').addEventListener('click', function() {
+      window.location.href = '24-4-2-1-catalogo-publico-turnos.html';
+    });
+
+    document.getElementById('btnStudentDashboard').addEventListener('click', function() {
+      window.location.href = '28-2-4-2-1-tablero-estadisticas-estudiante.html';
+    });
+  </script>
+</body>
+</html>
+

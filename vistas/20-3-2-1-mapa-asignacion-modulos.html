@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Asignación de Módulos Físicos</title>
+  <!-- Trazabilidad Épica 3 (HU 3.1, 3.2, 3.3 | WBS 3.2.1, 3.2.2) -->
+  <link rel="stylesheet" href="../css/20-3-2-1-mapa-asignacion-modulos.css">
+</head>
+<body>
+  <div class="map-shell">
+
+    <!-- Encabezado Institucional -->
+    <header class="map-header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">S</span>
+        <div class="brand__text">
+          <span class="brand__name">SIGME</span>
+          <span class="brand__subtitle">Centro de Innovación y Emprendimiento &middot; Zona Campus</span>
+        </div>
+      </div>
+      <div>
+        <a class="btn btn--ghost" href="../index.html">&larr; Búsqueda de Postulaciones</a>
+        <a class="btn btn--ghost" href="19-3-2-3-2-plantilla-correo.html">Ver Notificación por Correo</a>
+      </div>
+    </header>
+
+    <!-- Resumen de Métricas de Ocupación (HU 3.1 / HU 5.2) -->
+    <section class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #eff6ff; color: #2563eb;">🏢</div>
+        <div>
+          <div class="stat-card__val" id="statTotal">10</div>
+          <div class="stat-card__lbl">Módulos en Zona</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #f0fdf4; color: #16a34a;">🟢</div>
+        <div>
+          <div class="stat-card__val" id="statLibres" style="color: #16a34a;">4</div>
+          <div class="stat-card__lbl">Módulos Disponibles</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #eff6ff; color: #1d4ed8;">🔵</div>
+        <div>
+          <div class="stat-card__val" id="statOcupados" style="color: #1d4ed8;">5</div>
+          <div class="stat-card__lbl">Módulos Asignados</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background: #f8fafc; color: #64748b;">📊</div>
+        <div>
+          <div class="stat-card__val" id="statTasa">50%</div>
+          <div class="stat-card__lbl">Tasa de Ocupación</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Layout Principal: Mapa Interactivo + Panel de Asignación Directa -->
+    <div class="layout-grid">
+
+      <!-- Mapa de Módulos de la Zona -->
+      <section class="campus-zone" aria-labelledby="zoneTitle">
+        <div class="zone-header">
+          <div>
+            <h2 id="zoneTitle" style="margin: 0 0 0.25rem; font-size: 1.25rem;">Distribución Física de la Zona de Emprendimiento</h2>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-muted);">Haz clic en un módulo libre para vincular el proyecto seleccionado.</p>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> Disponible</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span> Ocupado</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #94a3b8;"></span> Mantenimiento</div>
+          </div>
+        </div>
+
+        <!-- Mensaje de feedback de asignación -->
+        <div id="actionAlert" style="display: none; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 600;"></div>
+
+        <!-- Grilla de Módulos -->
+        <div class="grid-modulos" id="modulosGrid">
+          <!-- Renderizado dinámico vía JS -->
+        </div>
+      </section>
+
+      <!-- Panel Lateral: Proyectos Aprobados Pendientes y Detalle -->
+      <aside class="sidebar-panel">
+
+        <div class="panel-card">
+          <h3>
+            <span>Proyectos Aprobados</span>
+            <span class="badge-approved" id="countPending">3 pendientes</span>
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--color-muted); margin-top: -0.5rem; margin-bottom: 1rem;">
+            Selecciona un proyecto para asignarle un módulo físico:
+          </p>
+
+          <div id="pendingProjectsList">
+            <!-- Proyectos aprobados -->
+          </div>
+        </div>
+
+        <div class="panel-card" id="detailCard" style="display: none;">
+          <h3 id="detailTitle">Detalle de Asignación</h3>
+          <div id="detailContent" style="font-size: 0.88rem; color: var(--color-text);"></div>
+          <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+            <button class="btn btn--primary" id="btnConfirmAssign" style="flex: 1; display: none;">Confirmar Asignación</button>
+            <button class="btn btn--ghost" id="btnReleaseModule" style="flex: 1; display: none; color: var(--color-danger); border-color: #fca5a5;">Liberar Módulo</button>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+  </div>
+
+  <script>
+    // Datos simulados de módulos físicos (HU 3.1)
+    let modulos = [
+      { id: 'E-01', status: 'ocupado', project: 'EcoSnacks Saludables', student: 'Carlos Ramírez', date: '01/09/2026' },
+      { id: 'E-02', status: 'ocupado', project: 'Café de Origen U', student: 'Laura Sofía Martínez', date: '05/09/2026' },
+      { id: 'E-03', status: 'ocupado', project: 'Postulación Aprobada #0142', student: 'María Fernanda López', date: '26/09/2026' },
+      { id: 'E-04', status: 'disponible', project: null, student: null, date: null },
+      { id: 'E-05', status: 'ocupado', project: 'Moda Upcycling Campus', student: 'Valentina Torres', date: '10/09/2026' },
+      { id: 'E-06', status: 'disponible', project: null, student: null, date: null },
+      { id: 'E-07', status: 'ocupado', project: 'Impresión 3D Tech', student: 'Diego Pardo', date: '12/09/2026' },
+      { id: 'E-08', status: 'disponible', project: null, student: null, date: null },
+      { id: 'E-09', status: 'mantenimiento', project: null, student: null, date: null },
+      { id: 'E-10', status: 'disponible', project: null, student: null, date: null },
+    ];
+
+    // Proyectos aprobados pendientes de asignación (HU 3.2)
+    let pendingProjects = [
+      { id: 'P-101', name: 'BioCosmética Natural', student: 'Daniela Méndez', faculty: 'Química', approvedDate: '28/09/2026' },
+      { id: 'P-102', name: 'App Tutorías Peer-to-Peer', student: 'Felipe Herrera', faculty: 'Ingeniería', approvedDate: '02/10/2026' },
+      { id: 'P-103', name: 'Snacks Veganos Deshidratados', student: 'Paula Sánchez', faculty: 'Nutrición', approvedDate: '05/10/2026' }
+    ];
+
+    let selectedProject = null;
+    let selectedModulo = null;
+
+    function renderModulos() {
+      const grid = document.getElementById('modulosGrid');
+      grid.innerHTML = '';
+
+      let ocupados = 0;
+      let libres = 0;
+
+      modulos.forEach(m => {
+        if (m.status === 'ocupado') ocupados++;
+        if (m.status === 'disponible') libres++;
+
+        const card = document.createElement('div');
+        card.className = `modulo-card modulo-card--${m.status} ${selectedModulo && selectedModulo.id === m.id ? 'is-selected' : ''}`;
+        card.onclick = () => selectModulo(m);
+
+        let statusText = m.status === 'disponible' ? 'Libre' : (m.status === 'ocupado' ? 'Ocupado' : 'Mantenimiento');
+        let projText = m.project ? m.project : 'Sin asignar';
+
+        card.innerHTML = `
+          <div class="modulo-code">Módulo ${m.id}</div>
+          <span class="modulo-status status--${m.status}">${statusText}</span>
+          <div class="modulo-project" title="${projText}">${projText}</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('statTotal').textContent = modulos.length;
+      document.getElementById('statLibres').textContent = libres;
+      document.getElementById('statOcupados').textContent = ocupados;
+      document.getElementById('statTasa').textContent = Math.round((ocupados / modulos.length) * 100) + '%';
+    }
+
+    function renderPending() {
+      const list = document.getElementById('pendingProjectsList');
+      list.innerHTML = '';
+      document.getElementById('countPending').textContent = `${pendingProjects.length} pendientes`;
+
+      if (pendingProjects.length === 0) {
+        list.innerHTML = '<p style="font-size:0.85rem; color:#64748b;">No hay proyectos pendientes por ubicar.</p>';
+        return;
+      }
+
+      pendingProjects.forEach(p => {
+        const item = document.createElement('div');
+        item.className = `project-item ${selectedProject && selectedProject.id === p.id ? 'is-active' : ''}`;
+        item.onclick = () => selectProject(p);
+        item.innerHTML = `
+          <div class="project-title">${p.name}</div>
+          <div class="project-meta">${p.student} &middot; ${p.faculty}</div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function selectProject(proj) {
+      selectedProject = proj;
+      showAlert(`Proyecto "${proj.name}" seleccionado. Ahora elige un módulo LIBRE en el mapa.`, 'info');
+      renderPending();
+    }
+
+    function selectModulo(mod) {
+      selectedModulo = mod;
+      renderModulos();
+
+      const detailCard = document.getElementById('detailCard');
+      const detailTitle = document.getElementById('detailTitle');
+      const detailContent = document.getElementById('detailContent');
+      const btnConfirm = document.getElementById('btnConfirmAssign');
+      const btnRelease = document.getElementById('btnReleaseModule');
+
+      detailCard.style.display = 'block';
+      detailTitle.textContent = `Módulo ${mod.id} (${mod.status.toUpperCase()})`;
+
+      if (mod.status === 'disponible') {
+        if (selectedProject) {
+          detailContent.innerHTML = `
+            <p><strong>Listo para asignar a:</strong></p>
+            <p style="color:var(--color-primary); font-weight:600;">${selectedProject.name}</p>
+            <p>Emprendedor: ${selectedProject.student} (${selectedProject.faculty})</p>
+          `;
+          btnConfirm.style.display = 'block';
+          btnRelease.style.display = 'none';
+        } else {
+          detailContent.innerHTML = `<p style="color:var(--color-muted);">Módulo libre. Selecciona primero un proyecto de la lista de la derecha para asociarlo.</p>`;
+          btnConfirm.style.display = 'none';
+          btnRelease.style.display = 'none';
+        }
+      } else if (mod.status === 'ocupado') {
+        // Criterio de aceptación HU 3.2: intentar asignar a uno ocupado bloquea y muestra error
+        if (selectedProject) {
+          showAlert(`Error: El módulo ${mod.id} ya se encuentra ocupado por "${mod.project}". Elige un módulo libre.`, 'danger');
+        }
+        detailContent.innerHTML = `
+          <p><strong>Emprendimiento asignado:</strong> ${mod.project}</p>
+          <p><strong>Responsable:</strong> ${mod.student}</p>
+          <p><strong>Fecha de vinculación:</strong> ${mod.date}</p>
+        `;
+        btnConfirm.style.display = 'none';
+        btnRelease.style.display = 'block';
+      } else {
+        detailContent.innerHTML = `<p style="color:var(--color-muted);">Módulo en mantenimiento por reparaciones técnicas.</p>`;
+        btnConfirm.style.display = 'none';
+        btnRelease.style.display = 'none';
+      }
+    }
+
+    document.getElementById('btnConfirmAssign').addEventListener('click', () => {
+      if (!selectedProject || !selectedModulo || selectedModulo.status !== 'disponible') return;
+
+      selectedModulo.status = 'ocupado';
+      selectedModulo.project = selectedProject.name;
+      selectedModulo.student = selectedProject.student;
+      selectedModulo.date = new Date().toLocaleDateString('es-CO');
+
+      // Remover de pendientes
+      pendingProjects = pendingProjects.filter(p => p.id !== selectedProject.id);
+
+      showAlert(`¡Éxito! Módulo ${selectedModulo.id} asignado a "${selectedProject.name}". Se ha preparado la notificación por correo al estudiante.`, 'success');
+
+      selectedProject = null;
+      renderModulos();
+      renderPending();
+      selectModulo(selectedModulo);
+    });
+
+    document.getElementById('btnReleaseModule').addEventListener('click', () => {
+      if (!selectedModulo || selectedModulo.status !== 'ocupado') return;
+      if (confirm(`¿Liberar el módulo ${selectedModulo.id} ocupado por "${selectedModulo.project}"?`)) {
+        selectedModulo.status = 'disponible';
+        selectedModulo.project = null;
+        selectedModulo.student = null;
+        selectedModulo.date = null;
+        showAlert(`Módulo ${selectedModulo.id} liberado exitosamente. Ahora está disponible.`, 'info');
+        renderModulos();
+        selectModulo(selectedModulo);
+      }
+    });
+
+    function showAlert(msg, type) {
+      const el = document.getElementById('actionAlert');
+      el.style.display = 'block';
+      el.textContent = msg;
+      if (type === 'success') {
+        el.style.background = '#dcfce7';
+        el.style.color = '#15803d';
+        el.style.border = '1px solid #86efac';
+      } else if (type === 'danger') {
+        el.style.background = '#fee2e2';
+        el.style.color = '#b91c1c';
+        el.style.border = '1px solid #fca5a5';
+      } else {
+        el.style.background = '#e0f2fe';
+        el.style.color = '#0369a1';
+        el.style.border = '1px solid #7dd3fc';
+      }
+    }
+
+    // Inicializar
+    renderModulos();
+    renderPending();
+  </script>
+</body>
+</html>
+

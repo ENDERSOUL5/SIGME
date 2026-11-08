@@ -3,114 +3,418 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGME - Búsqueda de postulaciones</title>
-  <!-- Trazabilidad issue 3.1.1.1 (#13): hoja de estilos del componente de UI -->
+  <title>SIGME - Portal de Emprendimiento Universitario</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Topbar */
+    .topbar {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      padding: 0.9rem 2rem;
+      border-bottom: 2px solid var(--color-burn-orange);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand__name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      color: var(--color-crema);
+    }
+
+    .brand__sub {
+      font-size: 0.76rem;
+      color: var(--color-crema-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    /* Grid Principal */
+    .grid-portal {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 860px) {
+      .grid-portal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tabs Login */
+    .tab-login {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-login-btn {
+      flex: 1;
+      padding: 0.75rem 0.5rem;
+      border: none;
+      background: transparent;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.18s ease;
+    }
+
+    .tab-login-btn:hover {
+      color: var(--color-ink);
+    }
+
+    .tab-login-btn.active {
+      color: var(--color-ink);
+      border-bottom-color: var(--color-burn-orange);
+    }
+
+    /* Acceso de prueba manual */
+    .quick-tests {
+      background: var(--color-crema-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.15rem;
+      margin-top: 1.5rem;
+    }
+
+    .quick-tests h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.74rem;
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .quick-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .quick-btn-item {
+      text-align: left;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xs);
+      padding: 0.55rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+    }
+
+    .quick-btn-item:hover {
+      border-color: var(--color-burn-orange);
+      background: var(--color-burn-orange-subtle);
+    }
+
+    .quick-btn-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Banner Catálogo */
+    .banner-catalog {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      border-radius: var(--radius-md);
+      padding: 2.25rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      border-left: 4px solid var(--color-burn-orange);
+    }
+
+    .banner-catalog h3 {
+      color: var(--color-crema);
+      margin: 0 0 0.35rem;
+      font-size: 1.35rem;
+    }
+
+    .banner-catalog p {
+      color: var(--color-crema-muted);
+      margin: 0;
+      font-size: 0.92rem;
+      max-width: 58ch;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Trazabilidad issue 3.1.1.1 (#13): contenedor general del componente de UI -->
-  <div class="app-shell">
-
-    <!-- Trazabilidad issue 3.1.1.1 (#13): encabezado de la pantalla de búsqueda -->
-    <header class="app-header">
-      <div class="app-brand">
-        <span class="app-brand__mark" aria-hidden="true">S</span>
-        <div class="app-brand__text">
-          <span class="app-brand__name">SIGME</span>
-          <span class="app-brand__subtitle">Gestión de movilidad estudiantil</span>
-        </div>
+  <!-- Topbar Institucional -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="brand__name">SIGME</div>
+        <div class="brand__sub">Centro de Innovación y Emprendimiento</div>
       </div>
-      <button
-        type="button"
-        class="filters-toggle"
-        id="filtersToggle"
-        aria-controls="filtersPanel"
-        aria-expanded="false"
-      >
-        Filtros
-      </button>
-    </header>
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn--ghost-dark" href="catalogo.html">
+        Ver Catálogo de Negocios
+      </a>
+      <a class="btn btn--accent" href="postulacion.html" id="topBtnPostular">
+        Postular Proyecto
+      </a>
+    </div>
+  </header>
 
-    <!-- Trazabilidad issue 3.1.1.1 (#13): barra de búsqueda principal -->
-    <section class="search-bar" aria-labelledby="searchBarTitle">
-      <h1 class="search-bar__title" id="searchBarTitle">Buscar postulaciones</h1>
-      <form class="search-bar__form" role="search" action="#" method="get">
-        <label class="sr-only" for="searchInput">Término de búsqueda</label>
-        <span class="search-bar__icon" aria-hidden="true">&#128269;</span>
-        <input
-          class="search-bar__input"
-          id="searchInput"
-          name="q"
-          type="search"
-          placeholder="Busca por nombre, documento o programa académico"
-          autocomplete="off"
-        >
-        <button class="search-bar__submit" type="submit">Buscar</button>
-      </form>
-    </section>
+  <main class="app-container">
 
-    <!-- Trazabilidad issue 3.1.1.1 (#13): disposición gráfica barra de búsqueda + panel de filtros -->
-    <div class="search-layout">
+    <div class="grid-portal">
 
-      <!-- Trazabilidad issue 3.1.1.1 (#13): panel lateral de filtros (superior en móvil) -->
-      <aside class="filters-panel" id="filtersPanel" aria-labelledby="filtersPanelTitle">
-        <div class="filters-panel__header">
-          <h2 class="filters-panel__title" id="filtersPanelTitle">Filtros</h2>
-          <button type="button" class="filters-panel__close" id="filtersClose" aria-label="Cerrar filtros">
-            &times;
+      <!-- Columna 1: Inicio de Sesión -->
+      <section class="card-clean" aria-labelledby="loginTitle">
+        <h2 id="loginTitle" style="font-size: 1.35rem; margin-bottom: 0.35rem;">Acceso a la Plataforma</h2>
+        <p style="font-size: 0.88rem; margin-bottom: 1.25rem;">
+          Ingresa tus credenciales institucionales para gestionar tu módulo o panel directivo.
+        </p>
+
+        <div class="tab-login">
+          <button class="tab-login-btn active" id="tabStudent" onclick="switchLoginRole('student')">
+            Estudiante Vinculado
+          </button>
+          <button class="tab-login-btn" id="tabAdmin" onclick="switchLoginRole('admin')">
+            Administrador CIE
           </button>
         </div>
 
-        <!-- Trazabilidad issue 3.1.1.1 (#13): área reservada para los controles de filtrado (issues #14 y #15) -->
-        <div class="filters-panel__body">
-          <p class="filters-panel__placeholder">
-            Espacio reservado para los filtros de estado y de rango de fechas,
-            que se implementarán en las issues #14 y #15.
-          </p>
+        <div class="notice" id="loginAlert" style="display:none; border-color: rgba(17, 17, 17, 0.4);"></div>
+        <div class="notice notice--accent" id="reviewNotice" style="display:none;"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="emailInput">Correo Electrónico Institucional</label>
+            <input class="form-control" type="email" id="emailInput" placeholder="usuario@universidad.edu.co" required>
+          </div>
+
+          <div class="form-group">
+            <label for="passInput">Contraseña</label>
+            <input class="form-control" type="password" id="passInput" value="123" required>
+          </div>
+
+          <button class="btn btn--primary" type="submit" style="width: 100%; margin-top: 0.5rem;" id="btnLoginSubmit">
+            Ingresar a la Plataforma &rarr;
+          </button>
+        </form>
+
+        <!-- Accesos Rápidos para Prueba Manual -->
+        <div class="quick-tests">
+          <h4>Accesos directos de prueba manual:</h4>
+          <div class="quick-btns">
+            <button class="quick-btn-item" onclick="quickFill('admin@universidad.edu.co', 'admin', 'admin')">
+              <span class="quick-btn-label">
+                <span class="status-dot status-dot--ink"></span>
+                <strong>Administrador CIE</strong> &middot; Panel General
+              </span>
+              <span class="tag">Admin</span>
+            </button>
+            <button class="quick-btn-item" onclick="quickFill('maria.lopez@universidad.edu.co', '123', 'student')">
+              <span class="quick-btn-label">
+                <span class="status-dot status-dot--active"></span>
+                <strong>Estudiante Aprobado:</strong> María López
+              </span>
+              <span class="tag tag--accent">Módulo E-03</span>
+            </button>
+            <button class="quick-btn-item" onclick="quickFill('carlos.ramirez@universidad.edu.co', '123', 'student')">
+              <span class="quick-btn-label">
+                <span class="status-dot"></span>
+                <strong>Estudiante en Revisión:</strong> Carlos Ramírez
+              </span>
+              <span class="tag">Pendiente</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna 2: Registro de Postulaciones según Convocatoria -->
+      <section class="card-clean" aria-labelledby="postulaTitle">
+        <div id="convocatoriaBadgeContainer" style="margin-bottom: 0.85rem;"></div>
+        <h2 id="postulaTitle" style="font-size: 1.35rem; margin-bottom: 0.35rem;">Postulación de Emprendimientos</h2>
+        <p id="convocatoriaDesc" style="font-size: 0.88rem; margin-bottom: 1.25rem;"></p>
+
+        <div style="background: var(--color-crema-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.15rem; margin-bottom: 1.5rem;">
+          <h4 style="margin: 0 0 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink);">
+            Condiciones de Participación:
+          </h4>
+          <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.84rem; color: var(--color-ink-muted); line-height: 1.6;">
+            <li>Estudiantes activos de pregrado o posgrado en cualquier facultad.</li>
+            <li>Disponer de un Producto Mínimo Viable (MVP) testeado con clientes.</li>
+            <li>Compromiso de cumplimiento de turnos presenciales en módulos asignados.</li>
+          </ul>
         </div>
 
-        <!-- Trazabilidad issue 3.1.1.1 (#13): acciones del panel de filtros -->
-        <div class="filters-panel__actions">
-          <button type="button" class="btn btn--ghost">Limpiar</button>
-          <button type="button" class="btn btn--primary">Aplicar filtros</button>
+        <div id="postulacionActionBox">
+          <!-- Render dinámico según estado de convocatoria -->
         </div>
-      </aside>
-
-      <!-- Trazabilidad issue 3.1.1.1 (#13): área de resultados del componente de búsqueda -->
-      <main class="results-area" aria-labelledby="resultsTitle">
-        <div class="results-area__header">
-          <h2 class="results-area__title" id="resultsTitle">Resultados</h2>
-          <span class="results-area__count">0 postulaciones</span>
-        </div>
-        <div class="results-area__empty">
-          <p>Usa la barra de búsqueda o el panel de filtros para comenzar.</p>
-        </div>
-      </main>
+      </section>
 
     </div>
-  </div>
 
-  <!-- Trazabilidad issue 3.1.1.1 (#13): JS mínimo para mostrar/ocultar el panel de filtros en móvil -->
+    <!-- Banner directo al Catálogo Público -->
+    <section class="banner-catalog">
+      <div>
+        <h3>Catálogo Comercial de la Zona de Emprendimiento</h3>
+        <p>
+          Explora los emprendimientos estudiantiles activos en tiempo real en los módulos físicos de la universidad, revisa sus canales de contacto y catálogos de producto.
+        </p>
+      </div>
+      <a class="btn btn--accent" style="padding: 0.75rem 1.5rem;" href="catalogo.html">
+        Explorar Catálogo Público &rarr;
+      </a>
+    </section>
+
+  </main>
+
+  <script src="shared-state.js"></script>
   <script>
-    (function () {
-      var toggle = document.getElementById('filtersToggle');
-      var close = document.getElementById('filtersClose');
-      var panel = document.getElementById('filtersPanel');
+    let currentRole = 'student';
 
-      function setOpen(open) {
-        panel.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', String(open));
+    function switchLoginRole(role) {
+      currentRole = role;
+      document.getElementById('tabStudent').classList.toggle('active', role === 'student');
+      document.getElementById('tabAdmin').classList.toggle('active', role === 'admin');
+      document.getElementById('loginAlert').style.display = 'none';
+      document.getElementById('reviewNotice').style.display = 'none';
+
+      if (role === 'admin') {
+        document.getElementById('emailInput').value = 'admin@universidad.edu.co';
+        document.getElementById('passInput').value = 'admin';
+      } else {
+        document.getElementById('emailInput').value = 'maria.lopez@universidad.edu.co';
+        document.getElementById('passInput').value = '123';
+      }
+    }
+
+    function quickFill(email, pass, role) {
+      switchLoginRole(role);
+      document.getElementById('emailInput').value = email;
+      document.getElementById('passInput').value = pass;
+      document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+    }
+
+    function handleLogin(event) {
+      if (event) event.preventDefault();
+      const email = document.getElementById('emailInput').value.trim();
+      const pass = document.getElementById('passInput').value.trim();
+      const alertBox = document.getElementById('loginAlert');
+      const reviewBox = document.getElementById('reviewNotice');
+
+      alertBox.style.display = 'none';
+      reviewBox.style.display = 'none';
+
+      const users = SIGME_STATE.getUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        alertBox.textContent = 'El correo institucional no figura en el registro del sistema. Si la convocatoria se encuentra abierta, puedes presentar la postulación de tu proyecto.';
+        alertBox.style.display = 'block';
+        return;
       }
 
-      toggle.addEventListener('click', function () {
-        setOpen(!panel.classList.contains('is-open'));
-      });
+      if (user.password !== pass) {
+        alertBox.textContent = 'Contraseña incorrecta. Por favor verifica tus credenciales de acceso.';
+        alertBox.style.display = 'block';
+        return;
+      }
 
-      close.addEventListener('click', function () {
-        setOpen(false);
-      });
-    })();
+      // Si es Administrador
+      if (user.role === 'admin') {
+        SIGME_STATE.setCurrentUser(user);
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // Si es Estudiante: Regla de negocio estricta
+      // Solo el estudiante cuyo proyecto ya fue aprobado (vinculado) puede acceder a su panel de gestión.
+      if (user.status === 'Aprobado') {
+        SIGME_STATE.setCurrentUser(user);
+        window.location.href = 'estudiante.html';
+      } else {
+        // Estudiante en revisión o rechazado
+        reviewBox.innerHTML = `
+          <strong>Estado de Postulación:</strong> Tu proyecto <em>"${user.ventureName}"</em> se encuentra registrado como <strong>${user.status}</strong>.<br>
+          El panel de gestión y control de turnos únicamente se habilita tras la aprobación formal y asignación de módulo físico por parte del CIE.
+        `;
+        reviewBox.style.display = 'block';
+      }
+    }
+
+    function renderConvocatoriaSection() {
+      const isOpen = SIGME_STATE.getConvocatoria();
+      const badgeBox = document.getElementById('convocatoriaBadgeContainer');
+      const desc = document.getElementById('convocatoriaDesc');
+      const actionBox = document.getElementById('postulacionActionBox');
+      const topBtn = document.getElementById('topBtnPostular');
+
+      if (isOpen) {
+        badgeBox.innerHTML = `
+          <span class="tag tag--accent">
+            <span class="status-dot status-dot--active"></span> Convocatoria Abierta
+          </span>
+        `;
+        desc.textContent = 'El periodo de recepción de propuestas y Productos Mínimos Viables (MVP) se encuentra actualmente activo.';
+        actionBox.innerHTML = `
+          <a class="btn btn--primary" style="width: 100%;" href="postulacion.html">
+            Postular Proyecto (MVP) &rarr;
+          </a>
+        `;
+        topBtn.style.display = 'inline-flex';
+      } else {
+        badgeBox.innerHTML = `
+          <span class="tag">
+            <span class="status-dot"></span> Convocatoria Cerrada
+          </span>
+        `;
+        desc.textContent = 'El periodo de recepción de proyectos nuevos se encuentra cerrado según el calendario académico institucional.';
+        actionBox.innerHTML = `
+          <button class="btn btn--ghost" style="width: 100%; cursor: not-allowed; opacity: 0.65;" disabled>
+            Recepción Deshabilitada
+          </button>
+          <p style="font-size:0.78rem; color:var(--color-ink-muted); margin-top:0.5rem; text-align:center;">
+            El administrador mantiene cerradas las inscripciones para la cohorte actual.
+          </p>
+        `;
+        topBtn.style.display = 'none';
+      }
+    }
+
+    // Inicializar
+    switchLoginRole('student');
+    renderConvocatoriaSection();
   </script>
 </body>
 </html>

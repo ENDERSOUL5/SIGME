@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Evaluación de Proyectos con Rúbrica</title>
+  <!-- Trazabilidad Épica 2 (HU 2.1 | WBS 3.1.2, 3.1.3) -->
+  <link rel="stylesheet" href="../css/22-3-1-2-evaluacion-rubrica-admin.css">
+</head>
+<body>
+  <div class="eval-shell">
+
+    <!-- Encabezado Institucional -->
+    <header class="eval-header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">S</span>
+        <div class="brand__text">
+          <span class="brand__name">SIGME</span>
+          <span class="brand__subtitle">Comité de Evaluación &middot; Centro de Innovación y Emprendimiento</span>
+        </div>
+      </div>
+      <div>
+        <a class="btn btn--ghost" href="../index.html">&larr; Volver al Listado</a>
+        <a class="btn btn--ghost" href="20-3-2-1-mapa-asignacion-modulos.html">Mapa de Módulos &rarr;</a>
+      </div>
+    </header>
+
+    <div class="eval-grid">
+
+      <!-- Columna 1: Información del Proyecto y Documentos del MVP -->
+      <section class="card" aria-labelledby="projTitle">
+        <div class="postulacion-meta">
+          <span class="badge-review">Estado Actual: En Revisión</span>
+          <h2 id="projTitle" style="margin: 0 0 0.35rem; font-size: 1.3rem;">EcoSnacks Saludables Campus</h2>
+          <p style="margin: 0; color: var(--color-muted); font-size: 0.9rem;">Radicado: <strong>SIGME-2026-0142</strong> &middot; Postulado: 20/09/2026</p>
+        </div>
+
+        <div style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+          <p><strong>Estudiante Líder:</strong> María Fernanda López</p>
+          <p><strong>Facultad:</strong> Ingeniería de Sistemas (Sincronizado)</p>
+          <p><strong>Categoría:</strong> Alimentos Funcionales / Sostenibilidad</p>
+          <p><strong>Descripción del MVP:</strong> Barras de cereal y frutos secos agroecológicos empacadas en material compostable, formuladas con reducción calórica y alto aporte proteico para la comunidad universitaria.</p>
+        </div>
+
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Documentación Adjunta del MVP</h3>
+        <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem; font-size: 0.88rem;">
+          <li style="padding: 0.6rem 0.8rem; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 6px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>📄 Ficha_Tecnica_MVP_EcoSnacks.pdf (2.4 MB)</span>
+            <a href="#" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Previsualizar</a>
+          </li>
+          <li style="padding: 0.6rem 0.8rem; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 6px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>📷 Prototipo_Empaque_Biodegradable.png (1.8 MB)</span>
+            <a href="#" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Ver Foto</a>
+          </li>
+          <li style="padding: 0.6rem 0.8rem; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+            <span>📊 Validacion_Mercado_Encuesta.pdf (890 KB)</span>
+            <a href="#" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Previsualizar</a>
+          </li>
+        </ul>
+
+        <div style="padding: 1rem; background: #eef4fd; border-radius: 8px; border-left: 4px solid var(--color-primary); font-size: 0.85rem;">
+          <strong>Nota institucional:</strong> Los proyectos aprobados pasan automáticamente a la lista de espera para la asignación de módulo físico en la Zona de Emprendimiento.
+        </div>
+      </section>
+
+      <!-- Columna 2: Rúbrica de Evaluación y Decisión (HU 2.1) -->
+      <section class="card" aria-labelledby="rubricTitle">
+        <h2 id="rubricTitle" style="margin: 0 0 0.5rem; font-size: 1.3rem;">Rúbrica Institucional de Evaluación</h2>
+        <p style="margin: 0 0 1.25rem; font-size: 0.88rem; color: var(--color-muted);">Califica cada criterio según el estándar del Centro de Innovación y Emprendimiento.</p>
+
+        <!-- Criterio 1 -->
+        <div class="rubric-item">
+          <div class="rubric-header">
+            <span class="rubric-title">1. Propuesta de Valor y Solución</span>
+            <span class="rubric-weight">Peso: 30%</span>
+          </div>
+          <select class="rubric-select" id="crit1" onchange="calcTotal()">
+            <option value="10">Excelente (10 pts) - Claramente diferenciada e innovadora</option>
+            <option value="7" selected>Bueno (7 pts) - Solución viable con diferenciador moderado</option>
+            <option value="4">Aceptable (4 pts) - Propuesta estándar sin factor disruptivo</option>
+            <option value="1">Deficiente (1 pt) - No responde a una necesidad del campus</option>
+          </select>
+        </div>
+
+        <!-- Criterio 2 -->
+        <div class="rubric-item">
+          <div class="rubric-header">
+            <span class="rubric-title">2. Validación del MVP y Tracción</span>
+            <span class="rubric-weight">Peso: 40%</span>
+          </div>
+          <select class="rubric-select" id="crit2" onchange="calcTotal()">
+            <option value="10">Excelente (10 pts) - Muestra prototipo testeado con clientes reales</option>
+            <option value="8" selected>Bueno (8 pts) - Prototipo funcional y encuesta cuantitativa</option>
+            <option value="5">Aceptable (5 pts) - Concepto visual pero sin ventas ni pruebas</option>
+            <option value="2">Deficiente (2 pts) - Solo idea en papel sin prototipo</option>
+          </select>
+        </div>
+
+        <!-- Criterio 3 -->
+        <div class="rubric-item">
+          <div class="rubric-header">
+            <span class="rubric-title">3. Viabilidad Operativa en Módulo Físico</span>
+            <span class="rubric-weight">Peso: 30%</span>
+          </div>
+          <select class="rubric-select" id="crit3" onchange="calcTotal()">
+            <option value="10">Excelente (10 pts) - Cumple normas sanitarias/seguridad y disponibilidad horaria</option>
+            <option value="8" selected>Bueno (8 pts) - Factible de operar en horarios regulares de campus</option>
+            <option value="4">Aceptable (4 pts) - Requiere adaptaciones físicas adicionales</option>
+            <option value="1">Deficiente (1 pt) - No compatible con la infraestructura de módulos</option>
+          </select>
+        </div>
+
+        <!-- Puntaje Consolidado -->
+        <div class="score-display">
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-muted); text-transform: uppercase;">Puntaje Ponderado</div>
+            <div style="font-size: 0.85rem; color: var(--color-text);" id="scoreStatus">Cumple umbral mínimo de aprobación (70/100)</div>
+          </div>
+          <div class="score-val" id="totalScore">77 / 100</div>
+        </div>
+
+        <!-- Justificación / Observaciones (Requisito estricto HU 2.1) -->
+        <label for="evalComments" style="display:block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem;">
+          Observaciones y Justificación de la Decisión <span style="color:var(--color-danger)">*</span>
+        </label>
+        <textarea class="textarea-field" id="evalComments" placeholder="Escribe el dictamen del comité evaluador o las razones específicas en caso de requerir ajustes o rechazo...">El proyecto presenta un MVP alimentario bien estructurado y validación positiva de aceptación en campus. Cumple con los requerimientos sanitarios para operar en el módulo físico.</textarea>
+
+        <!-- Botones de Decisión (HU 2.1) -->
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <button class="btn btn--primary" type="button" id="btnAprobar" style="flex: 1.2;">
+            ✓ Aprobar y Pasar a Asignación de Módulo
+          </button>
+          <button class="btn btn--danger" type="button" id="btnRechazar" style="flex: 1;">
+            ✗ Rechazar / Solicitar Ajustes
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    function calcTotal() {
+      const c1 = parseInt(document.getElementById('crit1').value) * 3; // 30%
+      const c2 = parseInt(document.getElementById('crit2').value) * 4; // 40%
+      const c3 = parseInt(document.getElementById('crit3').value) * 3; // 30%
+      const total = c1 + c2 + c3;
+
+      document.getElementById('totalScore').textContent = `${total} / 100`;
+
+      const statusEl = document.getElementById('scoreStatus');
+      if (total >= 70) {
+        statusEl.textContent = 'Cumple umbral mínimo de aprobación (≥ 70 pts)';
+        statusEl.style.color = 'var(--color-success)';
+      } else {
+        statusEl.textContent = 'Por debajo del umbral de aprobación (< 70 pts)';
+        statusEl.style.color = 'var(--color-danger)';
+      }
+    }
+
+    document.getElementById('btnAprobar').addEventListener('click', () => {
+      const comments = document.getElementById('evalComments').value.trim();
+      if (!comments) {
+        alert('Por favor ingresa un comentario o justificación para sustentar la decisión del comité.');
+        return;
+      }
+      alert('¡Proyecto Aprobado con éxito! Se ha actualizado el estado de la postulación y se redirige al panel de asignación de módulos físicos.');
+      localStorage.setItem('sigme_last_evaluation', JSON.stringify({
+        radicado: 'SIGME-2026-0142',
+        decision: 'Aprobado',
+        score: document.getElementById('totalScore').textContent,
+        comments: comments
+      }));
+      window.location.href = '20-3-2-1-mapa-asignacion-modulos.html';
+    });
+
+    document.getElementById('btnRechazar').addEventListener('click', () => {
+      const comments = document.getElementById('evalComments').value.trim();
+      if (!comments) {
+        // Criterio de aceptación HU 2.1: Dado que el administrador rechaza un proyecto, cuando guarda la decisión, el sistema debe requerir que se ingrese un comentario o justificación del rechazo.
+        alert('Criterio obligatorio: Para rechazar o requerir ajustes en un proyecto, debes ingresar una justificación detallada.');
+        document.getElementById('evalComments').focus();
+        return;
+      }
+      alert('Decisión registrada: Proyecto con observaciones. Se notifica al estudiante.');
+      localStorage.setItem('sigme_last_evaluation', JSON.stringify({
+        radicado: 'SIGME-2026-0142',
+        decision: 'Rechazado',
+        score: document.getElementById('totalScore').textContent,
+        comments: comments
+      }));
+      window.location.href = '11-2-2-2-3-observaciones-retroalimentacion.html';
+    });
+
+    calcTotal();
+  </script>
+</body>
+</html>
+

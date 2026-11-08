@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Panel de Administración</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Topbar */
+    .topbar {
+      background: var(--color-ink);
+      color: var(--color-crema);
+      padding: 0.9rem 2rem;
+      border-bottom: 2px solid var(--color-burn-orange);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .topbar__title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--color-crema);
+      letter-spacing: 0.03em;
+    }
+
+    .topbar__sub {
+      font-size: 0.76rem;
+      color: var(--color-crema-muted);
+    }
+
+    .topbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Pestañas de Navegación */
+    .nav-tabs {
+      background: var(--color-crema-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 2rem;
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .nav-tab-btn {
+      padding: 0.9rem 0.35rem;
+      border: none;
+      background: transparent;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--color-ink);
+    }
+
+    .nav-tab-btn.active {
+      color: var(--color-ink);
+      border-bottom-color: var(--color-burn-orange);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Header de Secciones */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.35rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      margin: 0 0 0.25rem;
+      font-size: 1.25rem;
+    }
+
+    .section-sub {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--color-ink-muted);
+    }
+
+    /* Switch de Convocatorias Minimalista */
+    .switch-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-crema-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--color-crema-muted);
+      border: 1px solid var(--color-border);
+      transition: 0.2s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--color-ink);
+      transition: 0.2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--color-burn-orange-subtle);
+      border-color: var(--color-burn-orange);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      background-color: var(--color-burn-orange);
+    }
+
+    /* Mapa de módulos físicos */
+    .grid-modulos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .modulo-item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: #FFFFFF;
+    }
+
+    .modulo-item:hover {
+      border-color: var(--color-ink);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .modulo-item.disponible {
+      background: var(--color-crema-surface);
+      border-color: var(--color-border);
+    }
+
+    .modulo-item.ocupado {
+      background: #FFFFFF;
+      border-left: 3px solid var(--color-burn-orange);
+    }
+
+    .modulo-item.mantenimiento {
+      background: var(--color-crema-muted);
+      opacity: 0.6;
+    }
+
+    .modulo-item.selected {
+      outline: 2px solid var(--color-burn-orange);
+      border-color: var(--color-burn-orange);
+    }
+
+    /* Modal Rúbrica */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(17, 17, 17, 0.7);
+      backdrop-filter: blur(2px);
+      display: none;
+      place-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      max-width: 620px;
+      width: 100%;
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Administrativa -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="topbar__title">SIGME &middot; Panel Directivo</div>
+        <div class="topbar__sub">Centro de Innovación y Emprendimiento (CIE)</div>
+      </div>
+    </div>
+    <div class="topbar__actions">
+      <a class="btn btn--ghost-dark" href="catalogo.html" target="_blank">
+        Catálogo Público
+      </a>
+      <button class="btn btn--ghost-dark" onclick="SIGME_STATE.logout()">
+        Cerrar Sesión
+      </button>
+    </div>
+  </header>
+
+  <!-- Pestañas de Navegación del Administrador -->
+  <nav class="nav-tabs">
+    <button class="nav-tab-btn active" onclick="showTab('tab-postulaciones')">
+      Postulaciones y Evaluación
+    </button>
+    <button class="nav-tab-btn" onclick="showTab('tab-modulos')">
+      Infraestructura y Módulos
+    </button>
+    <button class="nav-tab-btn" onclick="showTab('tab-convocatorias')">
+      Control de Convocatorias
+    </button>
+    <button class="nav-tab-btn" onclick="showTab('tab-reportes')">
+      Métricas y Reportes
+    </button>
+  </nav>
+
+  <main class="app-container">
+
+    <!-- 1. PESTAÑA: POSTULACIONES Y EVALUACIÓN -->
+    <section class="tab-content active" id="tab-postulaciones">
+      <div class="card-clean">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Registro de Proyectos Postulados</h2>
+            <p class="section-sub">Revisa las propuestas estudiantiles y dictamina su viabilidad con la rúbrica institucional.</p>
+          </div>
+          <div>
+            <select class="form-control" id="filterStatus" onchange="filterProjects()" style="width: auto;">
+              <option value="all">Todos los estados</option>
+              <option value="En Revisión">En Revisión</option>
+              <option value="Aprobado">Aprobados</option>
+              <option value="Rechazado">Rechazados</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="table-minimal">
+            <thead>
+              <tr>
+                <th>Radicado</th>
+                <th>Proyecto y Categoría</th>
+                <th>Estudiante y Facultad</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PESTAÑA: INFRAESTRUCTURA Y MÓDULOS FÍSICOS -->
+    <section class="tab-content" id="tab-modulos">
+      <div class="card-clean">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Distribución de Módulos Físicos</h2>
+            <p class="section-sub">Asigna espacios comerciales a los proyectos que cuenten con aprobación del comité.</p>
+          </div>
+          <div style="display:flex; gap:1.25rem; font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+            <span style="color:var(--color-ink);"><span class="status-dot"></span> Libres: <span id="statLibres">4</span></span>
+            <span style="color:var(--color-burn-orange);"><span class="status-dot status-dot--active"></span> Ocupados: <span id="statOcupados">5</span></span>
+            <span style="color:var(--color-ink-muted);">Ocupación: <span id="statTasa">50%</span></span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1.1fr; gap:1.75rem;">
+          <div>
+            <div class="grid-modulos" id="modulosGrid">
+              <!-- Render de módulos -->
+            </div>
+          </div>
+
+          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.25rem;">
+            <h3 style="margin:0 0 0.5rem; font-size:1rem;" id="moduloDetailTitle">Selecciona un Módulo</h3>
+            <div id="moduloDetailContent" style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1rem; line-height:1.5;">
+              Haz clic en cualquier cuadrante para inspeccionar su ocupación o vincular un emprendimiento aprobado.
+            </div>
+            <div id="moduloDetailActions"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PESTAÑA: CONTROL DE CONVOCATORIAS -->
+    <section class="tab-content" id="tab-convocatorias">
+      <div class="card-clean">
+        <h2 class="section-title" style="margin-bottom:0.35rem;">Control del Periodo de Convocatoria</h2>
+        <p class="section-sub" style="margin-bottom:1.5rem;">
+          Habilita o suspende la recepción pública de nuevas propuestas y fichas de MVP en el portal general.
+        </p>
+
+        <div class="switch-box">
+          <div>
+            <h3 style="margin:0 0 0.25rem; font-size:1rem;" id="convocatoriaStatusTitle">Convocatoria Abierta</h3>
+            <p style="margin:0; font-size:0.84rem; color:var(--color-ink-muted);" id="convocatoriaStatusDesc">
+              Los estudiantes pueden registrarse y cargar archivos de MVP en el portal institucional.
+            </p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="convocatoriaToggle" onchange="toggleConvocatoriaState(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+          <div class="form-group">
+            <label>Fecha de Apertura</label>
+            <input type="date" value="2026-09-01" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Fecha de Cierre</label>
+            <input type="date" value="2026-11-30" class="form-control">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PESTAÑA: MÉTRICAS Y REPORTES -->
+    <section class="tab-content" id="tab-reportes">
+      <div class="card-clean">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Consolidado Operativo Institucional</h2>
+            <p class="section-sub">Informe de utilización y horas acumuladas en módulos físicos.</p>
+          </div>
+          <button class="btn btn--primary" onclick="window.print()">
+            Exportar Reporte a PDF
+          </button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin-bottom:2rem;">
+          <div style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
+            <div style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Proyectos Activos</div>
+            <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">4</div>
+          </div>
+          <div style="padding:1.25rem; background:var(--color-burn-orange-subtle); border:1px solid var(--color-burn-orange-border); border-radius:var(--radius-sm);">
+            <div style="font-size:0.74rem; color:var(--color-burn-orange); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Horas Acumuladas en Campus</div>
+            <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">186 h</div>
+          </div>
+          <div style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
+            <div style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Tasa de Ocupación</div>
+            <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">50%</div>
+          </div>
+        </div>
+
+        <h3 style="font-size:1rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.85rem; color:var(--color-ink);">
+          Horas Operadas por Emprendimiento
+        </h3>
+        <div style="overflow-x: auto;">
+          <table class="table-minimal">
+            <thead>
+              <tr>
+                <th>Emprendimiento</th>
+                <th>Módulo</th>
+                <th>Horas Operadas</th>
+                <th>Turnos Realizados</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>EcoSnacks Saludables Campus</strong></td>
+                <td>E-03</td>
+                <td>48 h</td>
+                <td>16 turnos</td>
+                <td><span class="tag tag--accent">Activo</span></td>
+              </tr>
+              <tr>
+                <td><strong>BioCosmética Natural U</strong></td>
+                <td>E-02</td>
+                <td>54 h</td>
+                <td>18 turnos</td>
+                <td><span class="tag tag--accent">Activo</span></td>
+              </tr>
+              <tr>
+                <td><strong>Moda Upcycling Universitaria</strong></td>
+                <td>E-05</td>
+                <td>35 h</td>
+                <td>12 turnos</td>
+                <td><span class="tag tag--accent">Activo</span></td>
+              </tr>
+              <tr>
+                <td><strong>Impresión 3D Tech Labs</strong></td>
+                <td>E-07</td>
+                <td>49 h</td>
+                <td>15 turnos</td>
+                <td><span class="tag tag--accent">Activo</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de Rúbrica de Evaluación -->
+  <div class="modal-overlay" id="evalModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+        <h3 style="margin:0; font-size:1.2rem;">Rúbrica Institucional de Evaluación</h3>
+        <button onclick="closeEvalModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
+      </div>
+
+      <div style="padding:0.75rem 1rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); margin-bottom:1.25rem; font-size:0.88rem;">
+        <strong id="evalProjName">Proyecto</strong> &middot; <span id="evalStudentName" style="color:var(--color-ink-muted);">Estudiante</span>
+      </div>
+
+      <div class="form-group">
+        <label>1. Propuesta de Valor (30%)</label>
+        <select class="form-control" id="c1">
+          <option value="10">Excelente (10 pts) - Innovador con diferenciador claro</option>
+          <option value="7">Bueno (7 pts) - Propuesta viable</option>
+          <option value="4">Aceptable (4 pts) - Estándar sin factor diferencial</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>2. Validación de MVP (40%)</label>
+        <select class="form-control" id="c2">
+          <option value="10">Excelente (10 pts) - Prototipo testeado con ventas reales</option>
+          <option value="8">Bueno (8 pts) - Prototipo funcional probado</option>
+          <option value="4">Aceptable (4 pts) - Concepto visual sin tracción</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>3. Viabilidad en Módulo Físico (30%)</label>
+        <select class="form-control" id="c3">
+          <option value="10">Excelente (10 pts) - Cumple normas y horario completo</option>
+          <option value="7">Bueno (7 pts) - Adaptable al espacio</option>
+          <option value="3">Deficiente (3 pts) - Requiere infraestructura adicional</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Justificación del Dictamen (* Obligatorio)</label>
+        <textarea id="evalComments" rows="3" class="form-control" placeholder="Escribe la justificación institucional para la decisión..."></textarea>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; margin-top:1.5rem;">
+        <button class="btn btn--accent" style="flex:1;" onclick="submitDecision('Aprobado')">
+          Aprobar Proyecto
+        </button>
+        <button class="btn btn--outline" style="flex:1;" onclick="submitDecision('Rechazado')">
+          Rechazar Proyecto
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared-state.js"></script>
+  <script>
+    let activeRadicado = null;
+    let selectedModuloId = null;
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+
+      if (tabId === 'tab-modulos') renderModulosTab();
+      if (tabId === 'tab-postulaciones') renderProjectsTable();
+    }
+
+    // --- 1. POSTULACIONES ---
+    function renderProjectsTable() {
+      const proyectos = SIGME_STATE.getProyectos();
+      const statusFilter = document.getElementById('filterStatus').value;
+      const tbody = document.getElementById('projectsTableBody');
+      tbody.innerHTML = '';
+
+      const filtered = proyectos.filter(p => statusFilter === 'all' || p.status === statusFilter);
+
+      filtered.forEach(p => {
+        const tr = document.createElement('tr');
+        let tagClass = p.status === 'Aprobado' ? 'tag--accent' : (p.status === 'En Revisión' ? '' : 'tag--ink');
+        
+        tr.innerHTML = `
+          <td><strong>${p.radicado}</strong></td>
+          <td><strong>${p.name}</strong><br><small style="color:var(--color-ink-muted);">${p.category}</small></td>
+          <td>${p.student}<br><small style="color:var(--color-ink-muted);">${p.faculty}</small></td>
+          <td>${p.date}</td>
+          <td><span class="tag ${tagClass}">${p.status}</span></td>
+          <td>
+            ${p.status === 'En Revisión' 
+              ? `<button class="btn btn--primary" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="openEvalModal('${p.radicado}')">Evaluar Rúbrica</button>`
+              : (p.status === 'Aprobado' && !p.module 
+                  ? `<button class="btn btn--accent" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="goToAssign('${p.radicado}')">Asignar Módulo</button>`
+                  : `<span style="font-size:0.8rem; color:var(--color-ink-muted);">${p.module ? 'Asignado: ' + p.module : 'Evaluado'}</span>`
+                )
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterProjects() { renderProjectsTable(); }
+
+    function openEvalModal(radicado) {
+      activeRadicado = radicado;
+      const p = SIGME_STATE.getProyectos().find(x => x.radicado === radicado);
+      document.getElementById('evalProjName').textContent = p.name;
+      document.getElementById('evalStudentName').textContent = p.student;
+      document.getElementById('evalComments').value = 'Cumple satisfactoriamente con la validación de MVP y viabilidad en módulo.';
+      document.getElementById('evalModal').style.display = 'grid';
+    }
+
+    function closeEvalModal() {
+      document.getElementById('evalModal').style.display = 'none';
+      activeRadicado = null;
+    }
+
+    function submitDecision(decision) {
+      const comments = document.getElementById('evalComments').value.trim();
+      if (!comments) {
+        alert('Debes ingresar una justificación para sustentar la decisión del comité.');
+        return;
+      }
+
+      const proyectos = SIGME_STATE.getProyectos();
+      const p = proyectos.find(x => x.radicado === activeRadicado);
+      p.status = decision;
+      p.comments = comments;
+      SIGME_STATE.saveProyectos(proyectos);
+
+      // Si se aprueba, habilitar al estudiante para iniciar sesión
+      if (decision === 'Aprobado') {
+        const users = SIGME_STATE.getUsers();
+        const u = users.find(x => x.email.toLowerCase() === p.email.toLowerCase());
+        if (u) {
+          u.status = 'Aprobado';
+          localStorage.setItem('sigme_users', JSON.stringify(users));
+        }
+      }
+
+      alert(`Proyecto ${p.name} marcado como ${decision}.`);
+      closeEvalModal();
+      renderProjectsTable();
+    }
+
+    function goToAssign(radicado) {
+      showTab('tab-modulos');
+      document.querySelectorAll('.nav-tab-btn')[1].classList.add('active');
+      document.querySelectorAll('.nav-tab-btn')[0].classList.remove('active');
+    }
+
+    // --- 2. MÓDULOS FÍSICOS ---
+    function renderModulosTab() {
+      const modulos = SIGME_STATE.getModulos();
+      const grid = document.getElementById('modulosGrid');
+      grid.innerHTML = '';
+
+      let libres = 0, ocupados = 0;
+
+      modulos.forEach(m => {
+        if (m.status === 'disponible') libres++;
+        if (m.status === 'ocupado') ocupados++;
+
+        const div = document.createElement('div');
+        div.className = `modulo-item ${m.status} ${selectedModuloId === m.id ? 'selected' : ''}`;
+        div.onclick = () => selectModulo(m.id);
+        div.innerHTML = `
+          <strong style="font-size:1.05rem; display:block; color:var(--color-ink);">${m.id}</strong>
+          <span style="font-size:0.7rem; text-transform:uppercase; font-weight:700; letter-spacing:0.04em; color:var(--color-ink-muted);">${m.status}</span>
+          <div style="font-size:0.75rem; color:var(--color-ink-muted); margin-top:0.35rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            ${m.project || 'Disponible'}
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+
+      document.getElementById('statLibres').textContent = libres;
+      document.getElementById('statOcupados').textContent = ocupados;
+      document.getElementById('statTasa').textContent = Math.round((ocupados / modulos.length) * 100) + '%';
+    }
+
+    function selectModulo(id) {
+      selectedModuloId = id;
+      renderModulosTab();
+
+      const mod = SIGME_STATE.getModulos().find(m => m.id === id);
+      const title = document.getElementById('moduloDetailTitle');
+      const content = document.getElementById('moduloDetailContent');
+      const actions = document.getElementById('moduloDetailActions');
+
+      title.textContent = `Módulo ${mod.id} (${mod.status.toUpperCase()})`;
+
+      if (mod.status === 'disponible') {
+        const aprobadosSinModulo = SIGME_STATE.getProyectos().filter(p => p.status === 'Aprobado' && !p.module);
+        if (aprobadosSinModulo.length > 0) {
+          let options = aprobadosSinModulo.map(p => `<option value="${p.radicado}">${p.name} (${p.student})</option>`).join('');
+          content.innerHTML = `
+            <p><strong>Módulo libre.</strong> Selecciona el emprendimiento aprobado a vincular:</p>
+            <select id="selectAssignProj" class="form-control" style="margin-bottom:1rem;">
+              ${options}
+            </select>
+          `;
+          actions.innerHTML = `
+            <button class="btn btn--accent" style="width:100%;" onclick="confirmAssign('${mod.id}')">
+              Vincular Emprendimiento al Módulo
+            </button>
+          `;
+        } else {
+          content.innerHTML = '<p>El módulo está libre. No hay proyectos aprobados pendientes de asignación de módulo físico.</p>';
+          actions.innerHTML = '';
+        }
+      } else if (mod.status === 'ocupado') {
+        content.innerHTML = `
+          <p><strong>Emprendimiento:</strong> ${mod.project}</p>
+          <p><strong>Estudiante Responsable:</strong> ${mod.student}</p>
+        `;
+        actions.innerHTML = `
+          <button class="btn btn--danger" style="width:100%;" onclick="releaseModulo('${mod.id}')">
+            Liberar Módulo Físico
+          </button>
+        `;
+      } else {
+        content.innerHTML = '<p>Módulo temporalmente en mantenimiento técnico.</p>';
+        actions.innerHTML = '';
+      }
+    }
+
+    function confirmAssign(moduloId) {
+      const radicado = document.getElementById('selectAssignProj').value;
+      const proyectos = SIGME_STATE.getProyectos();
+      const p = proyectos.find(x => x.radicado === radicado);
+      const modulos = SIGME_STATE.getModulos();
+      const m = modulos.find(x => x.id === moduloId);
+
+      m.status = 'ocupado';
+      m.project = p.name;
+      m.student = p.student;
+      p.module = moduloId;
+
+      const ventures = SIGME_STATE.getVentures();
+      let v = ventures.find(x => x.name.toLowerCase() === p.name.toLowerCase());
+      if (!v) {
+        const words = (p.name || 'EM').split(' ');
+        const monogram = (words[0][0] + (words[1] ? words[1][0] : words[0][1] || '')).toUpperCase();
+        ventures.push({
+          id: 'v-' + moduloId.toLowerCase(),
+          name: p.name,
+          category: p.category,
+          student: p.student,
+          module: 'Módulo ' + moduloId,
+          isOpen: false,
+          monogram: monogram,
+          phone: '573001234567',
+          ig: 'emprendimiento_u',
+          desc: 'Emprendimiento aprobado por el Centro de Innovación y Emprendimiento.'
+        });
+        SIGME_STATE.saveVentures(ventures);
+      }
+
+      SIGME_STATE.saveModulos(modulos);
+      SIGME_STATE.saveProyectos(proyectos);
+
+      alert(`Módulo ${moduloId} asignado exitosamente a ${p.name}.`);
+      selectModulo(moduloId);
+    }
+
+    function releaseModulo(moduloId) {
+      if (!confirm(`¿Confirmas la liberación del módulo ${moduloId}?`)) return;
+      const modulos = SIGME_STATE.getModulos();
+      const m = modulos.find(x => x.id === moduloId);
+      
+      const proyectos = SIGME_STATE.getProyectos();
+      const p = proyectos.find(x => x.name === m.project);
+      if (p) p.module = null;
+
+      m.status = 'disponible';
+      m.project = null;
+      m.student = null;
+
+      SIGME_STATE.saveModulos(modulos);
+      SIGME_STATE.saveProyectos(proyectos);
+      alert(`Módulo ${moduloId} liberado.`);
+      selectModulo(moduloId);
+    }
+
+    // --- 3. CONVOCATORIAS ---
+    function initConvocatoriaSwitch() {
+      const isOpen = SIGME_STATE.getConvocatoria();
+      document.getElementById('convocatoriaToggle').checked = isOpen;
+      updateConvocatoriaLabels(isOpen);
+    }
+
+    function toggleConvocatoriaState(checked) {
+      SIGME_STATE.setConvocatoria(checked);
+      updateConvocatoriaLabels(checked);
+      alert(`Convocatorias ${checked ? 'ABIERTAS' : 'CERRADAS'}. El estado ha sido actualizado para el portal general.`);
+    }
+
+    function updateConvocatoriaLabels(isOpen) {
+      const title = document.getElementById('convocatoriaStatusTitle');
+      const desc = document.getElementById('convocatoriaStatusDesc');
+      if (isOpen) {
+        title.textContent = 'Convocatoria Abierta';
+        title.style.color = 'var(--color-ink)';
+        desc.textContent = 'Los estudiantes pueden postular proyectos y registrar documentos de su MVP en el portal.';
+      } else {
+        title.textContent = 'Convocatoria Cerrada';
+        title.style.color = 'var(--color-burn-orange)';
+        desc.textContent = 'El formulario de postulación de MVP se encuentra bloqueado para nuevos registros.';
+      }
+    }
+
+    // Inicializar panel
+    renderProjectsTable();
+    initConvocatoriaSwitch();
+  </script>
+</body>
+</html>

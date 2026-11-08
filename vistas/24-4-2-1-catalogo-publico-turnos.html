@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Catálogo Público y Turno en Vivo</title>
+  <!-- Trazabilidad Épica 4 (HU 4.1, 4.2, 4.3 | WBS 4.1.1, 4.2.1, 4.3.1, 4.3.2) -->
+  <link rel="stylesheet" href="../css/24-4-2-1-catalogo-publico-turnos.css">
+</head>
+<body>
+  <div class="catalog-shell">
+
+    <!-- BARRA DEL ESTUDIANTE EMPRENDEDOR: Switch Operativo de Turno (HU 4.2 / WBS 4.2.1) -->
+    <aside class="student-bar" aria-label="Control de turno del emprendedor">
+      <div class="student-bar__info">
+        <div class="student-bar__avatar">ML</div>
+        <div class="student-bar__text">
+          <h4 id="userBarName">María Fernanda López &middot; EcoSnacks Saludables</h4>
+          <p id="userBarModule">Módulo Físico Asignado: <strong>E-03 (Paseo Central)</strong></p>
+        </div>
+      </div>
+      <div class="student-bar__controls">
+        <div class="timer-box" id="timerBox">00:00:00</div>
+        <button class="switch-turno-btn switch-turno-btn--abrir" id="btnSwitchTurno" type="button">
+          <span id="switchIcon">🟢</span>
+          <span id="switchLabel">Abrir Turno</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ENCABEZADO DEL CATÁLOGO PÚBLICO (HU 4.3 / WBS 4.3.1) -->
+    <header class="catalog-header">
+      <div class="brand-section">
+        <h1>Zona de Emprendimiento Universitario</h1>
+        <p>Explora los productos y servicios de los estudiantes emprendedores del campus en tiempo real.</p>
+      </div>
+      <div class="catalog-actions">
+        <a class="btn" href="28-2-4-2-1-tablero-estadisticas-estudiante.html">
+          📊 Mi Tablero de Horas
+        </a>
+        <a class="btn" href="../index.html">
+          ⚙️ Acceso Administrativo
+        </a>
+      </div>
+    </header>
+
+    <!-- BARRA DE FILTROS EN TIEMPO REAL (HU 4.3 / WBS 4.3.2) -->
+    <section class="filter-bar" aria-label="Filtros del catálogo">
+      <div class="filter-tabs">
+        <button class="tab-btn is-active" data-filter="all" id="tabAll">Todos (<span id="countAll">6</span>)</button>
+        <button class="tab-btn" data-filter="open" id="tabOpen" style="color: #059669; font-weight:700;">🟢 Abiertos Ahora (<span id="countOpen">1</span>)</button>
+        <button class="tab-btn" data-filter="closed" id="tabClosed">Cerrados (<span id="countClosed">5</span>)</button>
+      </div>
+
+      <div class="search-box">
+        <span aria-hidden="true">🔍</span>
+        <input type="search" id="inputSearchCatalog" placeholder="Buscar por producto, negocio o módulo...">
+      </div>
+    </section>
+
+    <!-- GRID DINÁMICO DE TARJETAS DE EMPRENDIMIENTO (HU 4.3 / WBS 4.3.1) -->
+    <main class="catalog-grid" id="catalogGrid">
+      <!-- Generado dinámicamente -->
+    </main>
+
+  </div>
+
+  <script>
+    // Datos de emprendimientos en la Zona Física (HU 4.1 y 4.3)
+    let ventures = [
+      {
+        id: 'v-03',
+        title: 'EcoSnacks Saludables',
+        category: 'Alimentos Funcionales',
+        desc: 'Barras energéticas a base de quinua, frutos secos y miel agroecológica local sin azúcares añadidos.',
+        module: 'Módulo E-03',
+        isOpen: false, // Controlado por el switch del usuario
+        isMine: true,
+        icon: '🥗',
+        phone: '573001234567',
+        ig: 'ecosnacks_u'
+      },
+      {
+        id: 'v-01',
+        title: 'Café de Origen U',
+        category: 'Bebidas y Gastronomía',
+        desc: 'Café especial cultivado por familias campesinas asociadas a estudiantes de agronomía.',
+        module: 'Módulo E-01',
+        isOpen: true,
+        isMine: false,
+        icon: '☕',
+        phone: '573119876543',
+        ig: 'cafedeorigen_campus'
+      },
+      {
+        id: 'v-02',
+        title: 'Moda Upcycling Campus',
+        category: 'Diseño y Sostenibilidad',
+        desc: 'Prendas denim y accesorios rediseñados a partir de residuos textiles universitarios.',
+        module: 'Módulo E-05',
+        isOpen: false,
+        isMine: false,
+        icon: '👕',
+        phone: '573204567890',
+        ig: 'upcycling_u'
+      },
+      {
+        id: 'v-04',
+        title: 'Impresión 3D Tech Labs',
+        category: 'Tecnología y Prototipado',
+        desc: 'Servicio express de prototipado rápido para maquetas de arquitectura e ingeniería.',
+        module: 'Módulo E-07',
+        isOpen: false,
+        isMine: false,
+        icon: '🖨️',
+        phone: '573153334455',
+        ig: 'techprint_lab'
+      },
+      {
+        id: 'v-05',
+        title: 'BioCosmética Natural',
+        category: 'Cuidado Personal',
+        desc: 'Jabones artesanales y bálsamos botánicos elaborados con extractos del jardín botánico.',
+        module: 'Módulo E-02',
+        isOpen: false,
+        isMine: false,
+        icon: '🌿',
+        phone: '573127778899',
+        ig: 'biocosmetica_campus'
+      },
+      {
+        id: 'v-06',
+        title: 'App Tutorías Peer-to-Peer',
+        category: 'Servicios Educativos',
+        desc: 'Plataforma y asesoría presencial para cálculo, física y programación entre pares.',
+        module: 'Módulo E-06',
+        isOpen: false,
+        isMine: false,
+        icon: '📚',
+        phone: '573016667788',
+        ig: 'tutorias_p2p'
+      }
+    ];
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // Recuperar datos de sesión si existen
+    const savedUser = JSON.parse(localStorage.getItem('sigme_user') || '{}');
+    if (savedUser.name) {
+      document.getElementById('userBarName').innerHTML = `${savedUser.name} &middot; EcoSnacks Saludables`;
+    }
+
+    const btnSwitch = document.getElementById('btnSwitchTurno');
+    const timerBox = document.getElementById('timerBox');
+    const switchIcon = document.getElementById('switchIcon');
+    const switchLabel = document.getElementById('switchLabel');
+
+    // Lógica del Switch Abrir/Cerrar Turno (HU 4.2)
+    btnSwitch.addEventListener('click', () => {
+      const myVenture = ventures.find(v => v.isMine);
+      myVenture.isOpen = !myVenture.isOpen;
+
+      if (myVenture.isOpen) {
+        // Abrir turno
+        btnSwitch.className = 'switch-turno-btn switch-turno-btn--cerrar';
+        switchIcon.textContent = '🔴';
+        switchLabel.textContent = 'Cerrar Turno';
+        startTimer();
+      } else {
+        // Cerrar turno
+        btnSwitch.className = 'switch-turno-btn switch-turno-btn--abrir';
+        switchIcon.textContent = '🟢';
+        switchLabel.textContent = 'Abrir Turno';
+        stopTimer();
+      }
+
+      renderCatalog();
+    });
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        let hrs = String(Math.floor(secondsElapsed / 3600)).padStart(2, '0');
+        let mins = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(2, '0');
+        let secs = String(secondsElapsed % 60).padStart(2, '0');
+        timerBox.textContent = `${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      alert(`Turno cerrado. Has operado un total de ${Math.floor(secondsElapsed / 60)} min en tu módulo. Tus horas han sido sumadas a tu Tablero de Estadísticas.`);
+      secondsElapsed = 0;
+      timerBox.textContent = '00:00:00';
+    }
+
+    // Filtros
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is-active'));
+        this.classList.add('is-active');
+        currentFilter = this.getAttribute('data-filter');
+        renderCatalog();
+      });
+    });
+
+    document.getElementById('inputSearchCatalog').addEventListener('input', function(e) {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderCatalog();
+    });
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = '';
+
+      // Ordenar: ABIERTOS PRIMERO (Criterio de Aceptación HU 4.3)
+      let sorted = [...ventures].sort((a, b) => {
+        if (a.isOpen === b.isOpen) return 0;
+        return a.isOpen ? -1 : 1;
+      });
+
+      // Filtrar
+      let filtered = sorted.filter(v => {
+        if (currentFilter === 'open' && !v.isOpen) return false;
+        if (currentFilter === 'closed' && v.isOpen) return false;
+        if (searchQuery) {
+          const matchTitle = v.title.toLowerCase().includes(searchQuery);
+          const matchDesc = v.desc.toLowerCase().includes(searchQuery);
+          const matchMod = v.module.toLowerCase().includes(searchQuery);
+          const matchCat = v.category.toLowerCase().includes(searchQuery);
+          return matchTitle || matchDesc || matchMod || matchCat;
+        }
+        return true;
+      });
+
+      // Contadores
+      const openCount = ventures.filter(v => v.isOpen).length;
+      document.getElementById('countAll').textContent = ventures.length;
+      document.getElementById('countOpen').textContent = openCount;
+      document.getElementById('countClosed').textContent = ventures.length - openCount;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 3rem; color: #64748b;">No se encontraron emprendimientos con los criterios seleccionados.</div>';
+        return;
+      }
+
+      filtered.forEach(v => {
+        const card = document.createElement('article');
+        card.className = `venture-card ${v.isOpen ? 'venture-card--open' : 'venture-card--closed'}`;
+
+        card.innerHTML = `
+          <div class="venture-card__image-wrap">
+            <span aria-hidden="true">${v.icon}</span>
+            <div class="badge-status ${v.isOpen ? 'badge-status--open' : 'badge-status--closed'}">
+              ${v.isOpen ? '🟢 Abierto Ahora' : '⚪ Cerrado'}
+            </div>
+            <div class="badge-module">${v.module}</div>
+          </div>
+          <div class="venture-card__body">
+            <span class="venture-card__cat">${v.category}</span>
+            <h3 class="venture-card__title">${v.title}</h3>
+            <p class="venture-card__desc">${v.desc}</p>
+            <div class="venture-card__footer">
+              <span style="font-size:0.75rem; color:#64748b;">${v.isMine ? '⭐ Tu Emprendimiento' : 'Contacto directo:'}</span>
+              <div class="contact-links">
+                <a class="btn-contact btn-contact--wa" href="https://wa.me/${v.phone}" target="_blank" rel="noopener">
+                  💬 WhatsApp
+                </a>
+                <a class="btn-contact btn-contact--ig" href="https://instagram.com/${v.ig}" target="_blank" rel="noopener">
+                  📷 Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    renderCatalog();
+  </script>
+</body>
+</html>
+
