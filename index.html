@@ -265,6 +265,11 @@
               <span class="tag">Pendiente</span>
             </button>
           </div>
+          <div style="margin-top: 0.85rem; text-align: center; border-top: 1px dashed var(--color-border); padding-top: 0.65rem;">
+            <button type="button" onclick="if(confirm('¿Deseas reiniciar todos los registros locales a su estado inicial de prueba?')){ SIGME_STATE.resetAll(false); window.location.reload(); }" style="background: none; border: none; font-size: 0.76rem; color: var(--color-ink-muted); text-decoration: underline; cursor: pointer;">
+              Restablecer registros demo a valores iniciales
+            </button>
+          </div>
         </div>
       </section>
 

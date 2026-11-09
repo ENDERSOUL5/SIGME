@@ -278,6 +278,9 @@
       </div>
     </div>
     <div class="topbar__actions">
+      <button class="btn btn--ghost-dark" onclick="openResetModal()" title="Reiniciar datos de demostración">
+        Restablecer Datos Demo
+      </button>
       <a class="btn btn--ghost-dark" href="catalogo.html" target="_blank">
         Catálogo Público
       </a>
@@ -316,13 +319,16 @@
             <h2 class="section-title">Registro de Proyectos Postulados</h2>
             <p class="section-sub">Revisa las propuestas estudiantiles y dictamina su viabilidad con la rúbrica institucional.</p>
           </div>
-          <div>
+          <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
             <select class="form-control" id="filterStatus" onchange="filterProjects()" style="width: auto;">
               <option value="all">Todos los estados</option>
               <option value="En Revisión">En Revisión</option>
               <option value="Aprobado">Aprobados</option>
               <option value="Rechazado">Rechazados</option>
             </select>
+            <button class="btn btn--outline" onclick="openResetModal()" style="font-size:0.82rem; padding:0.45rem 0.85rem;" title="Restablecer proyectos a su estado de prueba inicial">
+              Restablecer Registros
+            </button>
           </div>
         </div>
 
@@ -767,6 +773,48 @@
     </div>
   </div>
 
+  <!-- Modal de Restablecimiento de Registros Demo -->
+  <div class="modal-overlay" id="resetModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+        <h3 style="margin:0; font-size:1.15rem;">Restablecer Datos de Demostración</h3>
+        <button onclick="closeResetModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
+      </div>
+
+      <p style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1.25rem; line-height:1.5;">
+        El prototipo almacena los registros localmente en el navegador (<strong>localStorage</strong>). Si deseas volver a realizar pruebas de evaluación o reiniciar el estado de los módulos y convocatorias, selecciona una opción:
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
+        <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
+          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-ink);">1. Reiniciar Solo Postulaciones de Proyectos</strong>
+          <p style="font-size:0.8rem; color:var(--color-ink-muted); margin:0 0 0.85rem; line-height:1.4;">
+            Restaura las propuestas estudiantiles para evaluar (deja a Carlos Ramírez y Felipe Herrera en estado 'En Revisión') y limpia las rúbricas evaluadas, sin alterar convocatorias ni cierres.
+          </p>
+          <button class="btn btn--outline" onclick="executeReset('proyectos')" style="width:100%; font-size:0.82rem;">
+            Reiniciar Solo Postulaciones
+          </button>
+        </div>
+
+        <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
+          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-burn-orange);">2. Restablecer TODO el Sistema (Fábrica)</strong>
+          <p style="font-size:0.8rem; color:var(--color-ink-muted); margin:0 0 0.85rem; line-height:1.4;">
+            Restaura todo el almacenamiento: postulaciones iniciales, asignación de módulos E-01 a E-10, calendario de festivos/cierres, convocatoria activa y catálogos originales.
+          </p>
+          <button class="btn btn--accent" onclick="executeReset('all')" style="width:100%; font-size:0.82rem;">
+            Restablecer Todo el Sistema
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn btn--ghost" onclick="closeResetModal()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="shared-state.js"></script>
   <script src="traceability.js"></script>
   <script>
@@ -1180,6 +1228,30 @@
 
     function closeNotifModal() {
       document.getElementById('notifModal').style.display = 'none';
+    }
+
+    // --- RESTABLECIMIENTO DE DATOS DEMO ---
+    function openResetModal() {
+      document.getElementById('resetModal').style.display = 'grid';
+    }
+
+    function closeResetModal() {
+      document.getElementById('resetModal').style.display = 'none';
+    }
+
+    function executeReset(type) {
+      if (type === 'proyectos') {
+        SIGME_STATE.resetProyectosOnly();
+        closeResetModal();
+        renderProjectsTable();
+        renderModulosTab();
+        alert('Se han restablecido las postulaciones de proyectos al estado inicial de revisión.');
+      } else if (type === 'all') {
+        SIGME_STATE.resetAll(true);
+        closeResetModal();
+        alert('Se ha restablecido todo el sistema a los valores iniciales de fábrica.');
+        window.location.reload();
+      }
     }
 
     // Inicializar panel

@@ -520,6 +520,31 @@
       if (!localStorage.getItem('sigme_notifications')) {
         localStorage.setItem('sigme_notifications', JSON.stringify(INITIAL_NOTIFICATIONS));
       }
+    },
+
+    // --- RESTABLECIMIENTO DE REGISTROS DE PRUEBA ---
+    resetAll: function (keepAuth = true) {
+      const currentUser = this.getCurrentUser();
+      localStorage.removeItem('sigme_convocatoria_data');
+      localStorage.removeItem('sigme_convocatoria');
+      localStorage.removeItem('sigme_users');
+      localStorage.removeItem('sigme_modulos');
+      localStorage.removeItem('sigme_ventures');
+      localStorage.removeItem('sigme_proyectos');
+      localStorage.removeItem('sigme_cierres');
+      localStorage.removeItem('sigme_notifications');
+      localStorage.removeItem('sigme_current_user');
+      this.initIfEmpty();
+      if (keepAuth && currentUser) {
+        this.setCurrentUser(currentUser);
+      }
+    },
+
+    resetProyectosOnly: function () {
+      localStorage.setItem('sigme_proyectos', JSON.stringify(INITIAL_PROYECTOS));
+      localStorage.setItem('sigme_users', JSON.stringify(INITIAL_USERS));
+      localStorage.setItem('sigme_modulos', JSON.stringify(INITIAL_MODULOS));
+      localStorage.setItem('sigme_ventures', JSON.stringify(INITIAL_VENTURES));
     }
   };
 

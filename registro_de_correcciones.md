@@ -88,6 +88,16 @@ Se eliminaron por completo todos los emojis de la plataforma, tanto en el códig
     3. *Alertas de Mantenimiento de Infraestructura* (reparaciones locativas, contingencias).
   - Persistencia reactiva en el estado compartido (`shared-state.js`).
 
+### D. Mecanismo de Restablecimiento de Registros de Demostración (`shared-state.js`, `admin.html`, `index.html`)
+- **Motivo de la implementación**: Durante las pruebas y evaluaciones docentes, al evaluar todos los proyectos o registrar múltiples cierres, el evaluador se quedaba sin registros en estado inicial para repetir las pruebas en el navegador (`localStorage`).
+- **Control en `admin.html`**:
+  - Se agregó el botón **"Restablecer Registros"** en la cabecera de la tabla de proyectos (junto al filtro de estados) y el botón **"Restablecer Datos Demo"** en la barra superior.
+  - Al presionarlo se despliega un modal institucional con dos modalidades:
+    1. *Reiniciar Solo Postulaciones de Proyectos*: Vuelve a poner a los estudiantes en estado 'En Revisión' y limpia las rúbricas para repetir la evaluación sin alterar las convocatorias ni los cierres.
+    2. *Restablecer TODO el Sistema (Fábrica)*: Restablece todo el `localStorage` a los datos demo iniciales (postulaciones, módulos E-01 a E-10, convocatorias, festivos y catálogos).
+- **Control en `index.html`**:
+  - Enlace al pie del bloque de accesos rápidos para reiniciar los datos de fábrica antes de comenzar una demostración en vivo.
+
 ---
 
 ## 5. Verificación de Cumplimiento Técnico y Estético
