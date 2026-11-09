@@ -225,6 +225,14 @@ p {
   box-shadow: 0 0 0 2px var(--color-burn-orange-subtle);
 }
 
+.form-control[readonly] {
+  background-color: var(--color-crema-surface);
+  border-color: var(--color-border);
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+  user-select: none;
+}
+
 /* Badges y Pastillas Minimalistas */
 .tag {
   display: inline-flex;

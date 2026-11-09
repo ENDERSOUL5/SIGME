@@ -94,9 +94,16 @@
         {
           id: 'HU 3.3.1',
           wbs: 'WBS 3.3.1 (Issue #3)',
-          title: 'Interruptor Maestro de Convocatorias',
-          desc: 'Control directo para habilitar o suspender la recepción de nuevas postulaciones para toda la universidad.',
-          component: 'Switch #convocatoriaToggle y propagación en SIGME_STATE.'
+          title: 'Apertura y Parámetros de Convocatorias',
+          desc: 'Captura estructurada de cohorte, fechas límite de postulación y evaluación, cupos disponibles, líneas temáticas y switch maestro de apertura.',
+          component: 'Pestaña Apertura de Convocatorias, formulario #formConvocatoria e historial de cohortes.'
+        },
+        {
+          id: 'HU 2.2',
+          wbs: 'WBS 2.2 (Issue #2.2)',
+          title: 'Gestión de Excepciones de Disponibilidad (Festivos y Cierres)',
+          desc: 'Registro de días festivos oficiales y cierres de campus con despacho automático de notificaciones a emprendedores asignados por Correo y WhatsApp.',
+          component: 'Pestaña Disponibilidad y Cierres, formulario #formCierre y tabla de excepciones activas.'
         },
         {
           id: 'HU 5.1 & HU 5.3',
@@ -111,11 +118,25 @@
       pageName: 'Panel del Estudiante Emprendedor Vinculado',
       stories: [
         {
-          id: 'HU 2.1.4 / HU 2.4.2',
+          id: 'HU 2.1.4',
           wbs: 'WBS 2.4.2.1 (Issue #28)',
-          title: 'Tablero Operativo del Estudiante',
-          desc: 'Identificación institucional del emprendedor y módulo físico asignado por la universidad.',
-          component: 'Encabezado principal y tarjeta #badgeModulo.'
+          title: 'Perfil de Usuario con Datos Bloqueados y Contacto Dinámico',
+          desc: 'Visualización de datos personales bloqueados (nombre, facultad, código estudiantil) sincronizados con Registro Académico, y edición habilitada únicamente para teléfono, WhatsApp e Instagram.',
+          component: 'Sección 1 (Campos readonly bloqueados) y Sección 2 (Datos dinámicos de contacto #profileForm).'
+        },
+        {
+          id: 'HU 2.1.4',
+          wbs: 'WBS 2.4.2.1',
+          title: 'Preferencias de Notificación del Emprendedor',
+          desc: 'Configuración personalizada de canales para recibir avisos del CIE: Correo Institucional, WhatsApp y alertas de mantenimiento.',
+          component: 'Tarjeta de Preferencias de Notificación y formulario #notifPrefForm.'
+        },
+        {
+          id: 'HU 2.2',
+          wbs: 'WBS 2.2',
+          title: 'Recepción de Avisos de Festivos y Cierres de Campus',
+          desc: 'Visualización de avisos de días festivos y cierres programados para garantizar que no se computen penalizaciones por inactividad.',
+          component: 'Banner superior #bannerCierresContainer y bandeja de circulares #notifStudentList.'
         },
         {
           id: 'HU 4.2',
@@ -130,13 +151,6 @@
           title: 'Consolidado de Horas Operadas y Turnos',
           desc: 'Métricas limpias de horas acumuladas en el mes y total de turnos completados en módulo físico.',
           component: 'Caja de estadística #valHours y tabla de historial reciente.'
-        },
-        {
-          id: 'HU 4.1.2',
-          wbs: 'WBS 4.1.2',
-          title: 'Edición Autónoma del Perfil Comercial',
-          desc: 'Actualización en tiempo real de descripción de producto, WhatsApp y usuario de Instagram.',
-          component: 'Formulario comercial #profileForm con persistencia reactiva.'
         }
       ]
     },

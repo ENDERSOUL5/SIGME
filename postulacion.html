@@ -171,9 +171,9 @@
     <!-- Caso 2: Formulario de Postulación Activo -->
     <section class="card-clean" id="boxForm">
       <div style="margin-bottom: 1.75rem;">
-        <span class="tag tag--accent" style="margin-bottom: 0.75rem;">Convocatoria Activa</span>
-        <h1 style="font-size: 1.5rem; margin-bottom: 0.35rem;">Postulación de Emprendimiento (MVP)</h1>
-        <p style="font-size: 0.9rem; margin: 0;">
+        <span class="tag tag--accent" id="convHeaderBadge" style="margin-bottom: 0.75rem;">Convocatoria Activa</span>
+        <h1 id="postulaMainTitle" style="font-size: 1.5rem; margin-bottom: 0.35rem;">Postulación de Emprendimiento (MVP)</h1>
+        <p id="postulaMainSub" style="font-size: 0.9rem; margin: 0;">
           Diligencia la información técnica de tu propuesta para evaluación por el comité de emprendimiento.
         </p>
       </div>
@@ -282,13 +282,19 @@
   <script src="traceability.js"></script>
   <script>
     function checkConvocatoria() {
-      const isOpen = SIGME_STATE.getConvocatoria();
+      const convData = SIGME_STATE.getConvocatoriaData();
+      const isOpen = convData.isOpen;
       if (!isOpen) {
         document.getElementById('boxClosed').style.display = 'block';
         document.getElementById('boxForm').style.display = 'none';
       } else {
         document.getElementById('boxClosed').style.display = 'none';
         document.getElementById('boxForm').style.display = 'block';
+        if (convData.title) {
+          document.getElementById('postulaMainTitle').textContent = `Postulación: ${convData.title}`;
+        }
+        document.getElementById('convHeaderBadge').textContent = `Cohorte ${convData.code || '2026-2'} · ${convData.availableSlots || 6} Cupos`;
+        document.getElementById('postulaMainSub').textContent = `Diligencia la información técnica de tu propuesta para evaluación por el comité del CIE. Plazo de cierre: ${convData.endDate || '30/11/2026'}.`;
       }
     }
 

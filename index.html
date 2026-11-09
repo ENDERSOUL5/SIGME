@@ -383,19 +383,31 @@
     }
 
     function renderConvocatoriaSection() {
-      const isOpen = SIGME_STATE.getConvocatoria();
+      const convData = SIGME_STATE.getConvocatoriaData();
+      const isOpen = convData.isOpen;
       const badgeBox = document.getElementById('convocatoriaBadgeContainer');
+      const postulaTitle = document.getElementById('postulaTitle');
       const desc = document.getElementById('convocatoriaDesc');
       const actionBox = document.getElementById('postulacionActionBox');
       const topBtn = document.getElementById('topBtnPostular');
 
+      if (postulaTitle && convData.title) {
+        postulaTitle.textContent = convData.title;
+      }
+
       if (isOpen) {
         badgeBox.innerHTML = `
           <span class="tag tag--accent">
-            <span class="status-dot status-dot--active"></span> Convocatoria Abierta
+            <span class="status-dot status-dot--active"></span> Convocatoria Abierta &middot; ${convData.code || '2026-2'}
+          </span>
+          <span class="tag" style="margin-left: 0.4rem;">${convData.availableSlots || 6} Cupos Disponibles</span>
+        `;
+        desc.innerHTML = `
+          ${convData.description || 'El periodo de recepción de propuestas se encuentra activo.'}<br>
+          <span style="font-size:0.8rem; color:var(--color-burn-orange); font-weight:600; margin-top:0.35rem; display:inline-block;">
+            Cierre de inscripciones: ${convData.endDate || '30/11/2026'} &middot; Resultados de comité: ${convData.evalDate || '05/12/2026'}
           </span>
         `;
-        desc.textContent = 'El periodo de recepción de propuestas y Productos Mínimos Viables (MVP) se encuentra actualmente activo.';
         actionBox.innerHTML = `
           <a class="btn btn--primary" style="width: 100%;" href="postulacion.html">
             Postular Proyecto (MVP) &rarr;
@@ -405,16 +417,16 @@
       } else {
         badgeBox.innerHTML = `
           <span class="tag">
-            <span class="status-dot"></span> Convocatoria Cerrada
+            <span class="status-dot"></span> Convocatoria Cerrada &middot; ${convData.code || '2026-2'}
           </span>
         `;
         desc.textContent = 'El periodo de recepción de proyectos nuevos se encuentra cerrado según el calendario académico institucional.';
         actionBox.innerHTML = `
           <button class="btn btn--ghost" style="width: 100%; cursor: not-allowed; opacity: 0.65;" disabled>
-            Recepción Deshabilitada
+            Recepción Deshabilitada Temporalmente
           </button>
           <p style="font-size:0.78rem; color:var(--color-ink-muted); margin-top:0.5rem; text-align:center;">
-            El administrador mantiene cerradas las inscripciones para la cohorte actual.
+            El Centro de Innovación y Emprendimiento mantiene cerradas las inscripciones para la cohorte actual.
           </p>
         `;
         topBtn.style.display = 'none';

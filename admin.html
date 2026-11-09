@@ -4,9 +4,10 @@
   <!--
     TRAZABILIDAD PRODUCT BACKLOG (SIGME):
     - HU 2.1 / HU 3.1.2: Evaluación de proyectos mediante rúbrica institucional y justificación obligatoria (Issue #22 / WBS 3.1.2).
-    - HU 2.2: Consulta y filtrado de postulaciones por estado y orden cronológico (Issues #14, #15, #17 / WBS 3.1.1).
+    - HU 2.2: Gestión de excepciones de disponibilidad (festivos o cierres) con notificación a los interesados (WBS 2.2 / Issue #2.2).
+    - HU 2.2 (WBS 3.1.1): Consulta y filtrado de postulaciones por estado y orden cronológico (Issues #14, #15, #17).
     - HU 3.1 & 3.2: Mapa de infraestructura física, control de módulos disponibles/ocupados y asignación (Issue #20 / WBS 3.2.1).
-    - HU 3.3.1: Control y apertura/cierre de convocatorias en tiempo real (Issue #3 / WBS 3.3.1).
+    - HU 3.3.1: Captura de datos y control de apertura/cierre de convocatorias institucionales (Issue #3 / WBS 3.3.1).
     - HU 5.1 & 5.3: Cuadro de mando de operatividad, ranking de horas y exportación de reportes a PDF (Issues #32, #35, #36 / WBS 5.3.1).
   -->
   <meta charset="UTF-8">
@@ -57,7 +58,7 @@
       border-bottom: 1px solid var(--color-border);
       padding: 0 2rem;
       display: flex;
-      gap: 1.5rem;
+      gap: 1.25rem;
       overflow-x: auto;
     }
 
@@ -65,9 +66,9 @@
       padding: 0.9rem 0.35rem;
       border: none;
       background: transparent;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--color-ink-muted);
       cursor: pointer;
@@ -218,7 +219,26 @@
       border-color: var(--color-burn-orange);
     }
 
-    /* Modal Rúbrica */
+    /* Layout Grids */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2col, .grid-3col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Modal Rúbrica / Notificación */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -276,7 +296,10 @@
       Infraestructura y Módulos
     </button>
     <button class="nav-tab-btn" onclick="showTab('tab-convocatorias')">
-      Control de Convocatorias
+      Apertura de Convocatorias
+    </button>
+    <button class="nav-tab-btn" onclick="showTab('tab-disponibilidad')">
+      Disponibilidad y Cierres (HU 2.2)
     </button>
     <button class="nav-tab-btn" onclick="showTab('tab-reportes')">
       Métricas y Reportes
@@ -356,19 +379,22 @@
       </div>
     </section>
 
-    <!-- 3. PESTAÑA: CONTROL DE CONVOCATORIAS -->
+    <!-- 3. PESTAÑA: APERTURA Y CONTROL DE CONVOCATORIAS (MEJORADA) -->
     <section class="tab-content" id="tab-convocatorias">
-      <div class="card-clean">
-        <h2 class="section-title" style="margin-bottom:0.35rem;">Control del Periodo de Convocatoria</h2>
-        <p class="section-sub" style="margin-bottom:1.5rem;">
-          Habilita o suspende la recepción pública de nuevas propuestas y fichas de MVP en el portal general.
-        </p>
+      <div class="card-clean" style="margin-bottom: 1.5rem;">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Parámetros de Apertura de la Convocatoria Actual</h2>
+            <p class="section-sub">Configura las fechas límite, cupos disponibles y requisitos para la cohorte institucional.</p>
+          </div>
+          <span class="tag tag--accent" id="badgeConvocatoriaState">Activa en el Campus</span>
+        </div>
 
         <div class="switch-box">
           <div>
             <h3 style="margin:0 0 0.25rem; font-size:1rem;" id="convocatoriaStatusTitle">Convocatoria Abierta</h3>
             <p style="margin:0; font-size:0.84rem; color:var(--color-ink-muted);" id="convocatoriaStatusDesc">
-              Los estudiantes pueden registrarse y cargar archivos de MVP en el portal institucional.
+              Los estudiantes pueden postular propuestas y cargar soportes de su MVP en el portal general.
             </p>
           </div>
           <label class="toggle-switch">
@@ -377,20 +403,209 @@
           </label>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-          <div class="form-group">
-            <label>Fecha de Apertura</label>
-            <input type="date" value="2026-09-01" class="form-control">
+        <form id="formConvocatoria" onsubmit="saveConvocatoriaParams(event)">
+          <div class="grid-3col">
+            <div class="form-group">
+              <label>Nombre Oficial de la Convocatoria</label>
+              <input type="text" id="convTitle" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Código de Cohorte</label>
+              <input type="text" id="convCode" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Periodo Semestral</label>
+              <input type="text" id="convSemester" class="form-control" placeholder="Ej. 2026-2" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Fecha de Cierre</label>
-            <input type="date" value="2026-11-30" class="form-control">
+
+          <div class="grid-3col">
+            <div class="form-group">
+              <label>Fecha de Apertura</label>
+              <input type="date" id="convStartDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Fecha Límite de Cierre</label>
+              <input type="date" id="convEndDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Fecha de Resultados de Comité</label>
+              <input type="date" id="convEvalDate" class="form-control" required>
+            </div>
           </div>
+
+          <div class="grid-2col">
+            <div class="form-group">
+              <label>Cupos de Módulos Físicos a Asignar</label>
+              <input type="number" id="convSlots" min="1" max="10" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Líneas Temáticas Priorizadas</label>
+              <input type="text" id="convCategories" class="form-control" placeholder="Separadas por comas" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Descripción y Objeto de la Convocatoria</label>
+            <textarea id="convDesc" rows="3" class="form-control" required></textarea>
+          </div>
+
+          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.15rem; margin-bottom:1.25rem;">
+            <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
+              Criterios Institucionales Exigidos para la Cohorte
+            </label>
+            <ul style="margin:0; padding-left:1.25rem; font-size:0.84rem; color:var(--color-ink-muted); line-height:1.6;" id="convReqList">
+              <!-- Render dinámico -->
+            </ul>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+            <button class="btn btn--primary" type="submit">
+              Guardar y Sincronizar Convocatoria con el Portal
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Historial de Convocatorias Anteriores -->
+      <div class="card-clean">
+        <h3 style="font-size:1.1rem; margin-bottom:0.35rem;">Historial de Cohortes de Emprendimiento</h3>
+        <p style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1.25rem;">
+          Registro de convocatorias culminadas y trazabilidad histórica institucional.
+        </p>
+
+        <div style="overflow-x: auto;">
+          <table class="table-minimal">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre de la Cohorte</th>
+                <th>Periodo de Vigencia</th>
+                <th>Postulaciones</th>
+                <th>Cupos Asignados</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="cohortHistoryTableBody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <!-- 4. PESTAÑA: MÉTRICAS Y REPORTES -->
+    <!-- 4. PESTAÑA: GESTIÓN DE DISPONIBILIDAD (FESTIVOS Y CIERRES - HU 2.2) -->
+    <section class="tab-content" id="tab-disponibilidad">
+      <div class="card-clean" style="margin-bottom:1.5rem;">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Programación de Excepciones de Disponibilidad (HU 2.2)</h2>
+            <p class="section-sub">
+              Configura días festivos oficiales, cierres del campus o mantenimientos técnicos. El sistema suspende el control de operatividad y notifica automáticamente a los emprendimientos activos para no registrar sanciones.
+            </p>
+          </div>
+          <span class="tag tag--accent">Sincronización de Notificaciones Activa</span>
+        </div>
+
+        <form id="formCierre" onsubmit="handleCrearCierre(event)">
+          <div class="grid-2col">
+            <div class="form-group">
+              <label>Título o Motivo del Cierre</label>
+              <input type="text" id="cierreTitle" class="form-control" placeholder="Ej. Festivo Nacional: Día de Todos los Santos" required>
+            </div>
+            <div class="form-group">
+              <label>Tipo de Excepción</label>
+              <select id="cierreType" class="form-control" required>
+                <option value="festivo">Festivo Oficial Nacional</option>
+                <option value="mantenimiento">Mantenimiento Preventivo de Módulos</option>
+                <option value="receso">Receso Académico / Vacaciones</option>
+                <option value="evento">Evento Institucional del Campus</option>
+                <option value="emergencia">Emergencia Climática o Sanitaria</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-3col">
+            <div class="form-group">
+              <label>Fecha de Inicio</label>
+              <input type="date" id="cierreDateStart" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Fecha de Finalización</label>
+              <input type="date" id="cierreDateEnd" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Alcance de Módulos</label>
+              <select id="cierreScope" class="form-control" required>
+                <option value="all">Todos los módulos de la Zona (E-01 a E-10)</option>
+                <option value="impares">Módulos Plazoleta Norte (E-01, E-03, E-05)</option>
+                <option value="pares">Módulos Plazoleta Sur (E-02, E-04, E-06, E-08)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Justificación Institucional / Instrucciones para Emprendedores</label>
+            <textarea id="cierreReason" rows="2" class="form-control" placeholder="Explica la causa del cierre y las directrices para la no operación..." required></textarea>
+          </div>
+
+          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1rem 1.25rem; margin-bottom:1.5rem;">
+            <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
+              Canales de Despacho de Notificación a Emprendedores Asignados:
+            </label>
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap; font-size:0.86rem;">
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                <input type="checkbox" id="chkNotifEmail" checked>
+                <span>Correo Institucional Oficial</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                <input type="checkbox" id="chkNotifWhatsapp" checked>
+                <span>Línea de WhatsApp de los Emprendedores</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn--accent" type="submit">
+              Registrar Cierre y Notificar a Emprendedores &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tabla de Cierres Activos -->
+      <div class="card-clean">
+        <div class="section-header">
+          <div>
+            <h3 style="margin:0 0 0.25rem; font-size:1.1rem;">Calendario de Cierres y Festivos Registrados</h3>
+            <p style="margin:0; font-size:0.86rem; color:var(--color-ink-muted);">
+              Días en los cuales la Zona de Emprendimiento no operará presencialmente.
+            </p>
+          </div>
+          <span style="font-size:0.8rem; color:var(--color-ink-muted);">Total Excepciones: <strong id="countCierres">2</strong></span>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="table-minimal">
+            <thead>
+              <tr>
+                <th>Evento / Cierre</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Alcance</th>
+                <th>Notificación Enviada</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cierresTableBody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PESTAÑA: MÉTRICAS Y REPORTES -->
     <section class="tab-content" id="tab-reportes">
       <div class="card-clean">
         <div class="section-header">
@@ -524,6 +739,34 @@
     </div>
   </div>
 
+  <!-- Modal de Confirmación de Despacho de Notificación (HU 2.2) -->
+  <div class="modal-overlay" id="notifModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+        <h3 style="margin:0; font-size:1.15rem;" id="notifModalTitle">Notificación de Cierre Emitida</h3>
+        <button onclick="closeNotifModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer;">&times;</button>
+      </div>
+
+      <div class="notice notice--accent" style="margin-bottom:1.25rem;">
+        <strong id="notifModalHeadline">Aviso enviado exitosamente</strong>
+        <div id="notifModalDetail" style="font-size:0.84rem; margin-top:0.35rem; color:var(--color-ink-muted);"></div>
+      </div>
+
+      <h4 style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin:0 0 0.5rem; color:var(--color-ink);">
+        Destinatarios Vinculados Notificados:
+      </h4>
+      <div id="notifRecipientList" style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.5rem;">
+        <!-- Render dinámico -->
+      </div>
+
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn btn--primary" onclick="closeNotifModal()">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="shared-state.js"></script>
   <script src="traceability.js"></script>
   <script>
@@ -538,6 +781,8 @@
 
       if (tabId === 'tab-modulos') renderModulosTab();
       if (tabId === 'tab-postulaciones') renderProjectsTable();
+      if (tabId === 'tab-convocatorias') loadConvocatoriaForm();
+      if (tabId === 'tab-disponibilidad') renderCierresTable();
     }
 
     // --- 1. POSTULACIONES ---
@@ -602,7 +847,6 @@
       p.comments = comments;
       SIGME_STATE.saveProyectos(proyectos);
 
-      // Si se aprueba, habilitar al estudiante para iniciar sesión
       if (decision === 'Aprobado') {
         const users = SIGME_STATE.getUsers();
         const u = users.find(x => x.email.toLowerCase() === p.email.toLowerCase());
@@ -757,11 +1001,41 @@
       selectModulo(moduloId);
     }
 
-    // --- 3. CONVOCATORIAS ---
-    function initConvocatoriaSwitch() {
-      const isOpen = SIGME_STATE.getConvocatoria();
-      document.getElementById('convocatoriaToggle').checked = isOpen;
-      updateConvocatoriaLabels(isOpen);
+    // --- 3. CONVOCATORIAS (CAPTURA DETALLADA) ---
+    function loadConvocatoriaForm() {
+      const data = SIGME_STATE.getConvocatoriaData();
+      document.getElementById('convocatoriaToggle').checked = data.isOpen;
+      document.getElementById('convTitle').value = data.title || '';
+      document.getElementById('convCode').value = data.code || '';
+      document.getElementById('convSemester').value = data.semester || '2026-2';
+      document.getElementById('convStartDate').value = data.startDate || '2026-09-01';
+      document.getElementById('convEndDate').value = data.endDate || '2026-11-30';
+      document.getElementById('convEvalDate').value = data.evalDate || '2026-12-05';
+      document.getElementById('convSlots').value = data.availableSlots || 6;
+      document.getElementById('convCategories').value = (data.categories || []).join(', ');
+      document.getElementById('convDesc').value = data.description || '';
+
+      updateConvocatoriaLabels(data.isOpen);
+
+      // Render requisitos
+      const reqList = document.getElementById('convReqList');
+      reqList.innerHTML = (data.requirements || []).map(r => `<li>${r}</li>`).join('');
+
+      // Render historial de cohortes
+      const tbody = document.getElementById('cohortHistoryTableBody');
+      tbody.innerHTML = '';
+      (data.cohortHistory || []).forEach(h => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${h.code}</strong></td>
+          <td>${h.title}</td>
+          <td>${h.dateRange}</td>
+          <td>${h.applications} recibidas</td>
+          <td>${h.assigned} de ${h.slots}</td>
+          <td><span class="tag">${h.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function toggleConvocatoriaState(checked) {
@@ -773,20 +1047,145 @@
     function updateConvocatoriaLabels(isOpen) {
       const title = document.getElementById('convocatoriaStatusTitle');
       const desc = document.getElementById('convocatoriaStatusDesc');
+      const badge = document.getElementById('badgeConvocatoriaState');
       if (isOpen) {
         title.textContent = 'Convocatoria Abierta';
         title.style.color = 'var(--color-ink)';
         desc.textContent = 'Los estudiantes pueden postular proyectos y registrar documentos de su MVP en el portal.';
+        badge.textContent = 'Activa en el Campus';
+        badge.className = 'tag tag--accent';
       } else {
         title.textContent = 'Convocatoria Cerrada';
         title.style.color = 'var(--color-burn-orange)';
         desc.textContent = 'El formulario de postulación de MVP se encuentra bloqueado para nuevos registros.';
+        badge.textContent = 'Pausada / Cerrada';
+        badge.className = 'tag';
       }
+    }
+
+    function saveConvocatoriaParams(e) {
+      e.preventDefault();
+      const data = SIGME_STATE.getConvocatoriaData();
+      data.title = document.getElementById('convTitle').value.trim();
+      data.code = document.getElementById('convCode').value.trim();
+      data.semester = document.getElementById('convSemester').value.trim();
+      data.startDate = document.getElementById('convStartDate').value;
+      data.endDate = document.getElementById('convEndDate').value;
+      data.evalDate = document.getElementById('convEvalDate').value;
+      data.availableSlots = parseInt(document.getElementById('convSlots').value, 10) || 6;
+      data.categories = document.getElementById('convCategories').value.split(',').map(c => c.trim()).filter(Boolean);
+      data.description = document.getElementById('convDesc').value.trim();
+
+      SIGME_STATE.saveConvocatoriaData(data);
+      alert('Parámetros de la convocatoria guardados exitosamente. Los datos se han sincronizado con el portal institucional.');
+      loadConvocatoriaForm();
+    }
+
+    // --- 4. GESTIÓN DE DISPONIBILIDAD (FESTIVOS Y CIERRES - HU 2.2) ---
+    function renderCierresTable() {
+      const cierres = SIGME_STATE.getCierres();
+      document.getElementById('countCierres').textContent = cierres.length;
+      const tbody = document.getElementById('cierresTableBody');
+      tbody.innerHTML = '';
+
+      if (cierres.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--color-ink-muted); padding:2rem;">No hay cierres ni festivos programados actualmente.</td></tr>';
+        return;
+      }
+
+      cierres.forEach(c => {
+        const tr = document.createElement('tr');
+        const channels = (c.notifiedChannels || []).join(', ');
+        tr.innerHTML = `
+          <td><strong>${c.title}</strong><br><small style="color:var(--color-ink-muted);">${c.reason}</small></td>
+          <td><span class="tag tag--accent">${c.typeLabel || c.type}</span></td>
+          <td>${c.dateStart} ${c.dateEnd !== c.dateStart ? 'al ' + c.dateEnd : ''}</td>
+          <td><small>${c.scopeLabel || c.scope}</small></td>
+          <td><span style="font-size:0.75rem; color:var(--color-ink-muted);">${c.notifiedAt}<br>(${channels})</span></td>
+          <td>
+            <button class="btn btn--danger" style="padding:0.3rem 0.65rem; font-size:0.75rem;" onclick="eliminarCierre('${c.id}')">
+              Cancelar
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleCrearCierre(e) {
+      e.preventDefault();
+      const title = document.getElementById('cierreTitle').value.trim();
+      const type = document.getElementById('cierreType').value;
+      const typeLabel = document.getElementById('cierreType').options[document.getElementById('cierreType').selectedIndex].text;
+      const dateStart = document.getElementById('cierreDateStart').value;
+      const dateEnd = document.getElementById('cierreDateEnd').value;
+      const scope = document.getElementById('cierreScope').value;
+      const scopeLabel = document.getElementById('cierreScope').options[document.getElementById('cierreScope').selectedIndex].text;
+      const reason = document.getElementById('cierreReason').value.trim();
+
+      const channels = [];
+      if (document.getElementById('chkNotifEmail').checked) channels.push('Correo Institucional');
+      if (document.getElementById('chkNotifWhatsapp').checked) channels.push('WhatsApp');
+
+      if (channels.length === 0) {
+        alert('Debes seleccionar al menos un canal para notificar a los emprendedores interesados.');
+        return;
+      }
+
+      const nuevoCierre = {
+        title: title,
+        type: type,
+        typeLabel: typeLabel,
+        dateStart: dateStart,
+        dateEnd: dateEnd,
+        scope: scope,
+        scopeLabel: scopeLabel,
+        reason: reason,
+        notifiedChannels: channels
+      };
+
+      SIGME_STATE.addCierre(nuevoCierre);
+
+      // Mostrar modal de confirmación con destinatarios notificados
+      const modulosOcupados = SIGME_STATE.getModulos().filter(m => m.status === 'ocupado');
+      const listContainer = document.getElementById('notifRecipientList');
+      listContainer.innerHTML = '';
+
+      modulosOcupados.forEach(m => {
+        const item = document.createElement('div');
+        item.style.fontSize = '0.84rem';
+        item.style.padding = '0.35rem 0.6rem';
+        item.style.background = 'var(--color-crema-surface)';
+        item.style.border = '1px solid var(--color-border)';
+        item.style.borderRadius = 'var(--radius-xs)';
+        item.innerHTML = `<strong>${m.project}</strong> (${m.id}) &middot; ${m.student} <span style="float:right; color:var(--color-burn-orange); font-size:0.75rem;">Notificado por ${channels.join(' y ')}</span>`;
+        listContainer.appendChild(item);
+      });
+
+      document.getElementById('notifModalHeadline').textContent = `Cierre programado para el ${dateStart}`;
+      document.getElementById('notifModalDetail').textContent = `Se ha notificado formalmente a los ${modulosOcupados.length} emprendimientos asignados. Durante esta jornada no se computarán faltas de operatividad.`;
+      document.getElementById('notifModal').style.display = 'grid';
+
+      // Reset form
+      document.getElementById('cierreTitle').value = '';
+      document.getElementById('cierreReason').value = '';
+      renderCierresTable();
+    }
+
+    function eliminarCierre(id) {
+      if (!confirm('¿Deseas cancelar esta excepción de disponibilidad?')) return;
+      SIGME_STATE.deleteCierre(id);
+      renderCierresTable();
+    }
+
+    function closeNotifModal() {
+      document.getElementById('notifModal').style.display = 'none';
     }
 
     // Inicializar panel
     renderProjectsTable();
-    initConvocatoriaSwitch();
+    loadConvocatoriaForm();
+    renderCierresTable();
   </script>
 </body>
 </html>

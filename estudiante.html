@@ -3,10 +3,11 @@
 <head>
   <!--
     TRAZABILIDAD PRODUCT BACKLOG (SIGME):
-    - HU 2.1.4 / HU 2.4.2: Tablero del estudiante emprendedor con módulo físico asignado (Issue #28 / WBS 2.4.2.1).
-    - HU 4.2: Conmutador en vivo 'Abrir/Cerrar Turno' con cronómetro en tiempo real (Issue #24 / WBS 4.2.1).
-    - HU 2.4.2: Registro de horas acumuladas y turnos completados (Issues #30, #31 / WBS 2.4.2.3).
-    - HU 4.1.2: Edición autónoma del perfil comercial visible en el catálogo público.
+    - HU 2.1.4: Perfil de usuario con visualización de datos personales bloqueados (nombre y facultad sincronizados) y edición de contacto dinámico (Issue #28 / WBS 2.4.2).
+    - HU 2.1.4: Preferencias de notificación del estudiante (correo institucional, WhatsApp).
+    - HU 2.2: Recepción y visualización de notificaciones de excepciones de disponibilidad (festivos y cierres de campus).
+    - HU 4.2: Conmutador en vivo 'Abrir/Cerrar Turno' con cronómetro digital en tiempo real (Issue #24 / WBS 4.2.1).
+    - HU 2.4.2: Registro y consolidado de horas acumuladas y turnos completados (Issues #30, #31 / WBS 2.4.2.3).
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -166,10 +167,57 @@
       gap: 1.75rem;
     }
 
-    @media (max-width: 840px) {
+    @media (max-width: 860px) {
       .grid-2col {
         grid-template-columns: 1fr;
       }
+    }
+
+    /* Estilo para avisos institucionales de cierres */
+    .cierre-banner {
+      background: var(--color-burn-orange-subtle);
+      border: 1px solid var(--color-burn-orange-border);
+      border-left: 4px solid var(--color-burn-orange);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cierre-banner__title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      margin: 0 0 0.25rem;
+    }
+
+    .cierre-banner__desc {
+      font-size: 0.84rem;
+      color: var(--color-ink-muted);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .section-subtitle {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-ink);
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-subtitle:first-of-type {
+      margin-top: 0;
     }
   </style>
 </head>
@@ -196,6 +244,11 @@
 
   <main class="app-container">
 
+    <!-- Banner Dinámico de Cierres y Festivos Próximos (HU 2.2) -->
+    <div id="bannerCierresContainer">
+      <!-- Inyección dinámica si hay cierres programados -->
+    </div>
+
     <!-- Hero Card: Switch de Turno y Módulo Asignado -->
     <section class="hero-turn">
       <div class="hero-turn__info">
@@ -203,7 +256,7 @@
           Módulo Asignado: E-03 (Paseo Central)
         </span>
         <h1 id="ventureTitle">EcoSnacks Saludables Campus</h1>
-        <p>Facultad de Ingeniería de Sistemas &middot; Alimentos Funcionales</p>
+        <p id="ventureFacultySub">Facultad de Ingeniería de Sistemas &middot; Alimentos Funcionales</p>
         <div style="font-size:0.84rem; color:var(--color-ink-muted);">
           Horario institucional asignado: Martes y Jueves (10:00 - 15:00)
         </div>
@@ -235,74 +288,189 @@
 
     <div class="grid-2col">
 
-      <!-- Columna 1: Perfil Comercial -->
-      <section class="card-clean">
-        <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Perfil Comercial en el Catálogo Público</h2>
-        <p style="margin:0 0 1.25rem; font-size:0.86rem;">
-          Actualiza los datos de contacto y la información visible para los compradores del campus.
-        </p>
+      <!-- Columna 1: Perfil de Usuario (Datos Bloqueados vs Dinámicos) y Preferencias de Notificación -->
+      <div>
 
-        <form id="profileForm" onsubmit="saveCommercialProfile(event)">
-          <div class="form-group">
-            <label>Descripción Comercial del Emprendimiento</label>
-            <textarea class="form-control" id="profileDesc" rows="3">Barras energéticas a base de quinua, frutos secos y miel agroecológica local sin azúcares añadidos.</textarea>
+        <!-- Tarjeta de Perfil de Usuario -->
+        <section class="card-clean" style="margin-bottom: 1.5rem;">
+          <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Perfil Institucional y Comercial</h2>
+          <p style="margin:0 0 1.25rem; font-size:0.86rem; color:var(--color-ink-muted);">
+            Información académica sincronizada y datos comerciales visibles en el catálogo.
+          </p>
+
+          <form id="profileForm" onsubmit="handleSaveContactProfile(event)">
+
+            <!-- Subsección 1: Datos Personales Bloqueados (Sincronizados con la Universidad) -->
+            <div class="section-subtitle">
+              <span>1. Datos Académicos Sincronizados</span>
+              <span class="tag" style="font-size:0.68rem;">Bloqueado por Universidad</span>
+            </div>
+
+            <div class="form-group">
+              <label>Nombres y Apellidos del Estudiante</label>
+              <input class="form-control" type="text" id="lockedName" readonly>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div class="form-group">
+                <label>Código Estudiantil</label>
+                <input class="form-control" type="text" id="lockedCode" readonly>
+              </div>
+              <div class="form-group">
+                <label>Facultad y Programa</label>
+                <input class="form-control" type="text" id="lockedFaculty" readonly>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Correo Electrónico Institucional</label>
+              <input class="form-control" type="email" id="lockedEmail" readonly>
+            </div>
+
+            <p style="font-size:0.76rem; color:var(--color-ink-muted); margin-bottom:1.5rem; line-height:1.4;">
+              Estos datos son suministrados por Registro Académico y no pueden modificarse desde esta plataforma.
+            </p>
+
+            <!-- Subsección 2: Datos de Contacto Dinámicos (Edición Habilitada) -->
+            <div class="section-subtitle">
+              <span>2. Datos de Contacto y Catálogo Comercial</span>
+              <span class="tag tag--accent" style="font-size:0.68rem;">Edición Habilitada</span>
+            </div>
+
+            <div class="form-group">
+              <label>Descripción Comercial del Emprendimiento (Catálogo Público)</label>
+              <textarea class="form-control" id="profileDesc" rows="3" required></textarea>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div class="form-group">
+                <label>Teléfono Móvil de Contacto</label>
+                <input class="form-control" type="text" id="profilePhone" required>
+              </div>
+              <div class="form-group">
+                <label>Línea WhatsApp para Pedidos</label>
+                <input class="form-control" type="text" id="profileWhatsapp" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Usuario de Instagram del Emprendimiento</label>
+              <input class="form-control" type="text" id="profileIg" required>
+            </div>
+
+            <button class="btn btn--primary" type="submit" style="width:100%; margin-top:0.35rem;">
+              Guardar Cambios de Contacto Comercial
+            </button>
+          </form>
+        </section>
+
+        <!-- Tarjeta de Preferencias de Notificación -->
+        <section class="card-clean">
+          <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Preferencias de Notificación (HU 2.1.4)</h2>
+          <p style="margin:0 0 1.25rem; font-size:0.86rem; color:var(--color-ink-muted);">
+            Configura los canales oficiales por los cuales deseas recibir circulares, avisos de festivos y alertas del CIE.
+          </p>
+
+          <form id="notifPrefForm" onsubmit="handleSaveNotifPreferences(event)">
+            <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.25rem;">
+              <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.86rem; cursor:pointer;">
+                <input type="checkbox" id="prefEmail" style="margin-top:0.2rem;">
+                <div>
+                  <strong>Notificaciones por Correo Institucional</strong>
+                  <div style="font-size:0.78rem; color:var(--color-ink-muted);">
+                    Recibe citaciones de comité, dictámenes oficiales de rúbrica y circulares formales de convocatoria.
+                  </div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.86rem; cursor:pointer;">
+                <input type="checkbox" id="prefWhatsapp" style="margin-top:0.2rem;">
+                <div>
+                  <strong>Alertas Rápidas por WhatsApp</strong>
+                  <div style="font-size:0.78rem; color:var(--color-ink-muted);">
+                    Avisos inmediatos de días festivos, cierres programados de campus y recordatorio de apertura de turnos.
+                  </div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.86rem; cursor:pointer;">
+                <input type="checkbox" id="prefMaintenance" style="margin-top:0.2rem;">
+                <div>
+                  <strong>Alertas de Mantenimiento de Infraestructura</strong>
+                  <div style="font-size:0.78rem; color:var(--color-ink-muted);">
+                    Reportes de cortes eléctricos, fumigación o reparaciones locativas en los módulos físicos.
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <button class="btn btn--outline" type="submit" style="width:100%;">
+              Actualizar Preferencias de Notificación
+            </button>
+          </form>
+        </section>
+
+      </div>
+
+      <!-- Columna 2: Bandeja de Avisos Institucionales (Festivos/Cierres) e Historial de Turnos -->
+      <div>
+
+        <!-- Tarjeta de Circulares y Notificaciones del CIE (HU 2.2) -->
+        <section class="card-clean" style="margin-bottom: 1.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.85rem;">
+            <div>
+              <h2 style="margin:0 0 0.25rem; font-size:1.15rem;">Avisos y Cierres Programados (CIE)</h2>
+              <p style="margin:0; font-size:0.84rem; color:var(--color-ink-muted);">Circulares emitidas por la administración sobre disponibilidad de la Zona.</p>
+            </div>
+            <span class="tag tag--accent" id="notifBadgeCount">2 avisos</span>
           </div>
 
-          <div class="form-group">
-            <label>WhatsApp de Contacto y Pedidos</label>
-            <input class="form-control" type="text" id="profilePhone" value="573001234567">
+          <div id="notifStudentList" style="display:flex; flex-direction:column; gap:0.75rem;">
+            <!-- Render dinámico de notificaciones recibidas -->
           </div>
+        </section>
 
-          <div class="form-group">
-            <label>Usuario de Instagram</label>
-            <input class="form-control" type="text" id="profileIg" value="ecosnacks_campus">
-          </div>
+        <!-- Tarjeta de Historial de Turnos Recientes -->
+        <section class="card-clean">
+          <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Historial de Turnos Recientes</h2>
+          <p style="margin:0 0 1.25rem; font-size:0.86rem; color:var(--color-ink-muted);">
+            Registro de jornadas presenciales validadas en el módulo físico.
+          </p>
 
-          <button class="btn btn--primary" type="submit" style="width:100%; margin-top:0.5rem;">
-            Guardar Cambios del Perfil
-          </button>
-        </form>
-      </section>
+          <table class="table-minimal">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Horas</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>06/11/2026</td>
+                <td><strong>4.5 h</strong></td>
+                <td><span class="tag tag--accent">Validado</span></td>
+              </tr>
+              <tr>
+                <td>04/11/2026</td>
+                <td><strong>4.0 h</strong></td>
+                <td><span class="tag tag--accent">Validado</span></td>
+              </tr>
+              <tr>
+                <td>02/11/2026</td>
+                <td><strong>3.5 h</strong></td>
+                <td><span class="tag tag--accent">Validado</span></td>
+              </tr>
+              <tr>
+                <td>30/10/2026</td>
+                <td><strong>4.0 h</strong></td>
+                <td><span class="tag tag--accent">Validado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <!-- Columna 2: Historial de Turnos Recientes -->
-      <section class="card-clean">
-        <h2 style="margin:0 0 0.35rem; font-size:1.15rem;">Historial de Turnos Recientes</h2>
-        <p style="margin:0 0 1.25rem; font-size:0.86rem;">
-          Registro de jornadas validadas en el módulo físico.
-        </p>
-
-        <table class="table-minimal">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Horas</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>06/11/2026</td>
-              <td><strong>4.5 h</strong></td>
-              <td><span class="tag tag--accent">Validado</span></td>
-            </tr>
-            <tr>
-              <td>04/11/2026</td>
-              <td><strong>4.0 h</strong></td>
-              <td><span class="tag tag--accent">Validado</span></td>
-            </tr>
-            <tr>
-              <td>02/11/2026</td>
-              <td><strong>3.5 h</strong></td>
-              <td><span class="tag tag--accent">Validado</span></td>
-            </tr>
-            <tr>
-              <td>30/10/2026</td>
-              <td><strong>4.0 h</strong></td>
-              <td><span class="tag tag--accent">Validado</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      </div>
 
     </div>
 
@@ -323,12 +491,31 @@
         return;
       }
 
+      // Encabezado
       document.getElementById('barUserName').textContent = currentUser.name;
       document.getElementById('ventureTitle').textContent = currentUser.ventureName;
+      document.getElementById('ventureFacultySub').textContent = `${currentUser.faculty} · ${currentUser.ventureCat || 'Emprendimiento'}`;
       document.getElementById('badgeModulo').textContent = `Módulo Asignado: ${currentUser.moduleAssigned || 'E-03'} (Paseo Central)`;
+
+      // 1. Datos Personales Bloqueados (Sincronizados con la Universidad)
+      document.getElementById('lockedName').value = currentUser.name || '';
+      document.getElementById('lockedCode').value = currentUser.studentCode || 'EST-202210450';
+      document.getElementById('lockedFaculty').value = currentUser.faculty || '';
+      document.getElementById('lockedEmail').value = currentUser.email || '';
+
+      // 2. Datos de Contacto Dinámicos (Editables)
       document.getElementById('profileDesc').value = currentUser.description || '';
       document.getElementById('profilePhone').value = currentUser.phone || '';
+      document.getElementById('profileWhatsapp').value = currentUser.whatsapp || currentUser.phone || '';
       document.getElementById('profileIg').value = currentUser.ig || '';
+
+      // 3. Preferencias de Notificación
+      document.getElementById('prefEmail').checked = currentUser.notifEmail !== false;
+      document.getElementById('prefWhatsapp').checked = currentUser.notifWhatsapp !== false;
+      document.getElementById('prefMaintenance').checked = currentUser.notifMaintenance !== false;
+
+      // 4. Render Avisos y Cierres Programados
+      renderAvisosCierres();
 
       // Verificar si en el catálogo ya está abierto
       const ventures = SIGME_STATE.getVentures();
@@ -336,6 +523,64 @@
       if (myVenture && myVenture.isOpen) {
         setTurnState(true);
       }
+    }
+
+    function renderAvisosCierres() {
+      const cierres = SIGME_STATE.getCierres();
+      const notifs = SIGME_STATE.getNotifications();
+      const bannerContainer = document.getElementById('bannerCierresContainer');
+      const listContainer = document.getElementById('notifStudentList');
+      const badgeCount = document.getElementById('notifBadgeCount');
+
+      // Banner superior si hay algún cierre próximo
+      if (cierres.length > 0) {
+        const proximo = cierres[0];
+        bannerContainer.innerHTML = `
+          <div class="cierre-banner">
+            <div>
+              <div class="cierre-banner__title">Aviso de Excepción de Operatividad: ${proximo.title}</div>
+              <p class="cierre-banner__desc">
+                Fecha programada: <strong>${proximo.dateStart}</strong>. Motivo: ${proximo.reason}. 
+                Durante esta fecha el campus no tendrá atención presencial y <strong>no se registrarán penalizaciones por inactividad</strong>.
+              </p>
+            </div>
+            <span class="tag tag--accent" style="white-space:nowrap;">${proximo.typeLabel || proximo.type}</span>
+          </div>
+        `;
+      } else {
+        bannerContainer.innerHTML = '';
+      }
+
+      // Lista de notificaciones recibidas
+      badgeCount.textContent = `${notifs.length} avisos`;
+      listContainer.innerHTML = '';
+
+      if (notifs.length === 0) {
+        listContainer.innerHTML = '<div style="font-size:0.84rem; color:var(--color-ink-muted); padding:1rem; text-align:center;">No hay circulares pendientes.</div>';
+        return;
+      }
+
+      notifs.forEach(n => {
+        const item = document.createElement('div');
+        item.style.padding = '0.75rem 0.95rem';
+        item.style.background = 'var(--color-crema-surface)';
+        item.style.border = '1px solid var(--color-border)';
+        item.style.borderRadius = 'var(--radius-sm)';
+        item.style.borderLeft = '3px solid var(--color-burn-orange)';
+        const channels = (n.channels || []).join(', ');
+
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+            <strong style="font-size:0.86rem; color:var(--color-ink);">${n.title}</strong>
+            <span style="font-size:0.72rem; color:var(--color-ink-muted);">${n.date}</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--color-ink-muted); margin:0 0 0.35rem; line-height:1.45;">${n.message}</p>
+          <div style="font-size:0.72rem; color:var(--color-burn-orange); font-weight:700;">
+            Recibido por canales autorizados: ${channels || 'Correo Institucional'}
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
     }
 
     function toggleTurn() {
@@ -349,7 +594,6 @@
       const dot = document.getElementById('btnTurnDot');
       const notice = document.getElementById('turnNotice');
 
-      // Actualizar en el estado compartido de ventures
       const ventures = SIGME_STATE.getVentures();
       let myVenture = ventures.find(v => v.name.toLowerCase() === currentUser.ventureName.toLowerCase());
       if (myVenture) {
@@ -397,27 +641,31 @@
       document.getElementById('timerDisplay').textContent = '00:00:00';
     }
 
-    function saveCommercialProfile(e) {
+    // Guardar datos dinámicos de contacto
+    function handleSaveContactProfile(e) {
       e.preventDefault();
-      const desc = document.getElementById('profileDesc').value;
-      const phone = document.getElementById('profilePhone').value;
-      const ig = document.getElementById('profileIg').value;
+      const dynamicData = {
+        description: document.getElementById('profileDesc').value.trim(),
+        phone: document.getElementById('profilePhone').value.trim(),
+        whatsapp: document.getElementById('profileWhatsapp').value.trim(),
+        ig: document.getElementById('profileIg').value.trim()
+      };
 
-      currentUser.description = desc;
-      currentUser.phone = phone;
-      currentUser.ig = ig;
-      SIGME_STATE.setCurrentUser(currentUser);
+      SIGME_STATE.updateUserProfile(currentUser.email, dynamicData);
+      alert('Información de contacto comercial actualizada exitosamente. Los datos de WhatsApp, teléfono e Instagram se han sincronizado con el Catálogo Público.');
+    }
 
-      const ventures = SIGME_STATE.getVentures();
-      let v = ventures.find(x => x.name.toLowerCase() === currentUser.ventureName.toLowerCase());
-      if (v) {
-        v.desc = desc;
-        v.phone = phone;
-        v.ig = ig;
-        SIGME_STATE.saveVentures(ventures);
-      }
+    // Guardar preferencias de notificación
+    function handleSaveNotifPreferences(e) {
+      e.preventDefault();
+      const prefs = {
+        notifEmail: document.getElementById('prefEmail').checked,
+        notifWhatsapp: document.getElementById('prefWhatsapp').checked,
+        notifMaintenance: document.getElementById('prefMaintenance').checked
+      };
 
-      alert('Perfil comercial actualizado. Los datos ya son visibles en el Catálogo Público.');
+      SIGME_STATE.updateUserNotifPreferences(currentUser.email, prefs);
+      alert('Tus preferencias de notificación han sido guardadas. El CIE utilizará los canales seleccionados para enviarte avisos de festivos y circulares operativas.');
     }
 
     initStudent();
