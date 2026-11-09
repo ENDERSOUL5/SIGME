@@ -98,6 +98,57 @@ Se eliminaron por completo todos los emojis de la plataforma, tanto en el códig
 - **Control en `index.html`**:
   - Enlace al pie del bloque de accesos rápidos para reiniciar los datos de fábrica antes de comenzar una demostración en vivo.
 
+### E. Rediseño de Navegación: Catálogo como Entrada Principal, Login Normalizado y Consulta de Postulación
+- **Motivo de la implementación**: Facilitar la navegación natural y profesional del usuario: la cara pública de la plataforma debe ser la vitrina comercial de emprendimientos para el campus (`index.html`), mientras que el inicio de sesión (`login.html`) debe ser una pantalla sobria y enfocada sin elementos artificiales que desvirtúen la experiencia de una aplicación real.
+- **Catálogo Público como Entrada Principal (`index.html`)**:
+  - La raíz del sitio (`/`) ahora es el catálogo de emprendimientos universitarios.
+  - Barra superior con menú integral: **Catálogo de Negocios**, **Postular Emprendimiento** y **Consultar Estado de Postulación**.
+  - Botón prioritario **Iniciar Sesión →** para el acceso de estudiantes vinculados y administradores.
+  - Banner informativo dinámico con el estado de la convocatoria activa.
+- **Normalización de la Ventana de Login (`login.html`)**:
+  - Se eliminaron por completo los botones grandes de acceso rápido manual ("trampas de demo").
+  - Formulario limpio enfocado en correo institucional y contraseña con selector de rol (*Estudiante Vinculado* / *Administrador CIE*).
+  - Regla de negocio activa: Los estudiantes con proyecto en estado 'En Revisión' reciben una notificación explicativa con enlace directo a la consulta de su trámite.
+  - Incorporación de opciones alternas requeridas:
+    - *Postularse a la Convocatoria* (`postulacion.html`).
+    - *Consultar estado de postulación* (`consulta.html`).
+  - Nota institucional discreta con las credenciales sugeridas para prueba.
+- **Nueva Vista de Consulta y Seguimiento (`consulta.html` - HU 2.2.2 / Issues #10 y #11)**:
+  - Formulario de búsqueda por número de radicado institucional (`SIGME-2026-XXXX`) o correo del estudiante.
+  - Indicador de línea de tiempo de 3 pasos: *1. Radicación y MVP* → *2. Evaluación Rúbrica* → *3. Dictamen Final*.
+  - En caso de aprobación: Notificación de selección, puntaje y botón directo para iniciar sesión como estudiante vinculado.
+  - En caso de rechazo: Despliegue de las observaciones y retroalimentación técnica del jurado evaluador para orientar al estudiante.
+
+### F. Código Cromático Semántico para Estados Operativos (Verde / Rojo)
+- **Motivo de la implementación**: Facilitar el reconocimiento visual inmediato para los clientes y compradores del campus universitario respecto a qué módulos están atendiendo presencialmente en tiempo real.
+- **Estado ABIERTO (Verde Institucional `#1B8755`)**:
+  - Borde superior distintivo de la tarjeta de emprendimiento: `border-top: 4px solid #1B8755`.
+  - Pastilla de estado `.badge-status--open`: fondo suave `rgba(27, 135, 85, 0.12)`, borde `rgba(27, 135, 85, 0.35)`, tipografía `#136A42` y punto indicador `.status-dot--open` en verde.
+  - Botón de filtro *Abiertos Ahora* con realce verde al seleccionarse.
+- **Estado CERRADO (Rojo Institucional `#C53030`)**:
+  - Borde superior distintivo de la tarjeta de emprendimiento: `border-top: 4px solid #C53030`.
+  - Pastilla de estado `.badge-status--closed`: fondo suave `rgba(197, 48, 48, 0.10)`, borde `rgba(197, 48, 48, 0.30)`, tipografía `#A82020` y punto indicador `.status-dot--closed` en rojo.
+  - Botón de filtro *Cerrados* con realce rojo al seleccionarse.
+
+### G. Corrección en el Flujo de Autenticación y Persistencia de Sesión
+- **Diagnóstico del problema**: En el paso de refactorización hacia `login.html`, no se había expuesto el método `SIGME_STATE.login(email, pass)` en `shared-state.js`, y faltaba persistir la sesión activa mediante `SIGME_STATE.setCurrentUser(user)` antes de la redirección. Esto causaba que `estudiante.html`, al validar la existencia de sesión, detectara `null` y expulsara inmediatamente la navegación.
+- **Solución implementada**:
+  1. Se implementó formalmente `SIGME_STATE.login(email, pass)` con búsqueda insensible a mayúsculas y validación de credenciales.
+  2. En `login.html`, se asegura el guardado del usuario en `localStorage` con `SIGME_STATE.setCurrentUser(user)` antes de redirigir hacia `admin.html` o `estudiante.html`.
+  3. Se añadieron eventos de auto-completado al hacer clic sobre las credenciales de prueba en la nota institucional inferior, facilitando la prueba inmediata sin errores tipográficos.
+
+### H. Recepción y Actualización de Archivos del MVP en Estado "En Revisión" (HU 3.3)
+- **Motivo de la implementación**: Cumplir con el requerimiento de negocio: *"Recibe los archivos del MVP (PDF e imágenes), permite actualizarlos mientras esté 'En revisión' y muestra el estado, las observaciones y, ya asignado, el módulo (HU 3.3)"*.
+- **Pantalla de Seguimiento (`consulta.html`)**:
+  - Se implementó la sección **"Archivos y Soportes del MVP (PDF e Imágenes)"**, que lista todos los soportes vinculados con etiquetas institucionales `[PDF]` / `[IMG]`.
+  - **Edición condicional activa**: Mientras la postulación esté en estado **'En Revisión'** (ej. Carlos Ramírez `SIGME-2026-0187`), se habilita el selector de archivos para anexar o sustituir fichas técnicas o fotografías de validación, registrando la fecha/hora de la última actualización.
+  - **Bloqueo tras dictamen**: Si el proyecto pasa a estado **'Aprobado'** o **'Rechazado'**, la sección de archivos pasa a modo de *Solo Lectura* y se informa que la edición ha sido cerrada por decisión del comité.
+  - Muestra explícitamente el **estado oficial**, las **observaciones del comité** y, al estar aprobado, el **módulo físico asignado** (ej. `E-03`).
+- **Pantalla de Rúbrica Administrativa (`admin.html`)**:
+  - El modal de evaluación con rúbrica expone los archivos y soportes actualizados por el estudiante para que los jurados puedan revisarlos antes de dictaminar la propuesta.
+- **Formulario de Postulación Inicial (`postulacion.html`)**:
+  - Almacena el soporte adjunto en el arreglo `mvpFiles` e informa al postulante que podrá actualizarlo mientras permanezca en revisión.
+
 ---
 
 ## 5. Verificación de Cumplimiento Técnico y Estético

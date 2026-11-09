@@ -233,7 +233,7 @@
       </div>
     </div>
     <div style="display:flex; gap:0.6rem; align-items:center;">
-      <a class="btn btn--ghost-dark" href="catalogo.html" target="_blank">
+      <a class="btn btn--ghost-dark" href="index.html" target="_blank">
         Catálogo Público
       </a>
       <button class="btn btn--ghost-dark" onclick="SIGME_STATE.logout()">
@@ -487,7 +487,7 @@
     function initStudent() {
       currentUser = SIGME_STATE.getCurrentUser();
       if (!currentUser || currentUser.role !== 'student') {
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
         return;
       }
 
@@ -606,16 +606,14 @@
         text.textContent = 'Cerrar Turno';
         dot.className = 'status-dot';
         dot.style.background = '#FFFFFF';
-        notice.textContent = 'Estás en turno. Tu negocio aparece como abierto en el Catálogo Público.';
-        notice.style.color = 'var(--color-burn-orange)';
+        notice.innerHTML = '<strong style="color:#1B8755;">ABIERTO:</strong> Tu negocio se encuentra actualmente en atención en el Catálogo Público.';
         startTimer();
       } else {
         btn.className = 'btn-turn btn-turn--open';
         text.textContent = 'Abrir Turno';
-        dot.className = 'status-dot status-dot--active';
+        dot.className = 'status-dot status-dot--open';
         dot.style.background = '';
-        notice.textContent = 'Tu negocio se encuentra actualmente CERRADO.';
-        notice.style.color = 'var(--color-ink-muted)';
+        notice.innerHTML = '<strong style="color:#C53030;">CERRADO:</strong> Tu negocio se encuentra actualmente cerrado al público.';
         stopTimer();
       }
     }

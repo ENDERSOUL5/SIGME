@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--
+    TRAZABILIDAD PRODUCT BACKLOG (SIGME) - CONSULTA DE POSTULACIÓN:
+    - HU 2.2.2: Interfaz de seguimiento de postulación con indicador de línea de tiempo/pasos (Issue #10 / WBS 2.2.2.2).
+    - HU 2.2.2: Visualización de observaciones y retroalimentación institucional en caso de rechazo o ajustes (Issue #11 / WBS 2.2.2.3).
+    - HU 1.1: Vinculación hacia inicio de sesión cuando el proyecto cuenta con aprobación.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGME - Consulta de Estado de Postulación</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tracking-container {
+      width: min(840px, 100% - 2rem);
+      margin: 2.5rem auto 4rem;
+    }
+
+    .search-card {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .search-row input {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .test-chips {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--color-ink-muted);
+    }
+
+    .chip-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xs);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.78rem;
+      font-family: inherit;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip-btn:hover {
+      border-color: var(--color-burn-orange);
+      color: var(--color-burn-orange);
+    }
+
+    /* Tarjeta de Resultados */
+    .result-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      box-shadow: var(--shadow-subtle);
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .radicado-tag {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .result-title {
+      font-size: 1.35rem;
+      margin: 0 0 0.25rem;
+      color: var(--color-ink);
+    }
+
+    .result-meta {
+      font-size: 0.86rem;
+      color: var(--color-ink-muted);
+    }
+
+    .outcome-box {
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.75rem;
+      border: 1px solid var(--color-border);
+    }
+
+    .outcome-box--aprobado {
+      background: var(--color-burn-orange-subtle);
+      border-color: var(--color-burn-orange-border);
+    }
+
+    .outcome-box--revision {
+      background: var(--color-crema-surface);
+      border-color: var(--color-border);
+    }
+
+    .outcome-box--rechazado {
+      background: #FAF7F2;
+      border-left: 4px solid var(--color-ink);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand__name">SIGME</div>
+          <div class="brand__sub">Zona de Emprendimiento Universitario &middot; CIE</div>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link">Catálogo de Negocios</a>
+        <a href="postulacion.html" class="nav-link">Postular Emprendimiento</a>
+        <a href="consulta.html" class="nav-link active">Consultar Estado de Postulación</a>
+      </nav>
+    </div>
+
+    <div>
+      <a class="btn btn--accent" href="login.html">
+        Iniciar Sesión &rarr;
+      </a>
+    </div>
+  </header>
+
+  <main class="tracking-container">
+
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 1.75rem; margin-bottom: 0.35rem;">Consulta de Estado de Postulación</h1>
+      <p style="font-size: 0.95rem; color: var(--color-ink-muted); margin: 0;">
+        Conoce el dictamen del Comité de Emprendimiento y realiza el seguimiento a tu propuesta en tiempo real (HU 2.2.2).
+      </p>
+    </div>
+
+    <!-- Buscador de Radicado -->
+    <section class="search-card">
+      <form onsubmit="handleSearchPostulacion(event)">
+        <label style="display:block; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.4rem; color:var(--color-ink-muted);">
+          Número de Radicado Oficial o Correo Institucional
+        </label>
+        <div class="search-row">
+          <input class="form-control" type="text" id="queryInput" placeholder="Ej. SIGME-2026-0187 o carlos.ramirez@universidad.edu.co" required>
+          <button class="btn btn--primary" type="submit">
+            Consultar Estado &rarr;
+          </button>
+        </div>
+      </form>
+
+      <div class="test-chips">
+        <span>Prueba rápida con ejemplos:</span>
+        <button type="button" class="chip-btn" onclick="quickSearch('SIGME-2026-0187')">
+          SIGME-2026-0187 (En Revisión)
+        </button>
+        <button type="button" class="chip-btn" onclick="quickSearch('SIGME-2026-0142')">
+          SIGME-2026-0142 (Aprobado)
+        </button>
+        <button type="button" class="chip-btn" onclick="quickSearch('SIGME-2026-0091')">
+          SIGME-2026-0091 (Rechazado)
+        </button>
+      </div>
+    </section>
+
+    <!-- Contenedor de Resultado -->
+    <div id="resultContainer" style="display: none;"></div>
+
+    <!-- Mensaje No Encontrado -->
+    <div id="notFoundBox" style="display: none;" class="card-clean">
+      <div style="text-align: center; padding: 2rem 1rem;">
+        <h3 style="margin-bottom: 0.5rem;">No se encontró ninguna postulación</h3>
+        <p style="font-size: 0.88rem; max-width: 500px; margin: 0 auto 1.5rem; color: var(--color-ink-muted);">
+          Verifica que el número de radicado esté bien escrito (ej. <code>SIGME-2026-XXXX</code>) o que coincida con el correo institucional utilizado al diligenciar el formulario.
+        </p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center;">
+          <a class="btn btn--outline" href="postulacion.html">Postular un Proyecto Ahora</a>
+          <a class="btn btn--ghost" href="index.html">Volver al Catálogo</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="shared-state.js"></script>
+  <script src="traceability.js"></script>
+  <script>
+    function quickSearch(code) {
+      document.getElementById('queryInput').value = code;
+      executeSearch(code);
+    }
+
+    function handleSearchPostulacion(e) {
+      e.preventDefault();
+      const q = document.getElementById('queryInput').value.trim();
+      executeSearch(q);
+    }
+
+    function executeSearch(query) {
+      if (!query) return;
+      const cleanQ = query.toLowerCase().trim();
+      const proyectos = SIGME_STATE.getProyectos();
+
+      const p = proyectos.find(item => 
+        (item.radicado && item.radicado.toLowerCase() === cleanQ) ||
+        (item.email && item.email.toLowerCase() === cleanQ) ||
+        (item.name && item.name.toLowerCase().includes(cleanQ))
+      );
+
+      const resBox = document.getElementById('resultContainer');
+      const notFoundBox = document.getElementById('notFoundBox');
+
+      if (!p) {
+        resBox.style.display = 'none';
+        notFoundBox.style.display = 'block';
+        return;
+      }
+
+      notFoundBox.style.display = 'none';
+      renderProjectResult(p);
+      resBox.style.display = 'block';
+      resBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function renderProjectResult(p) {
+      const resBox = document.getElementById('resultContainer');
+
+      // Clases para badge
+      let badgeClass = 'tag';
+      if (p.status === 'Aprobado') badgeClass = 'tag tag--accent';
+      else if (p.status === 'Rechazado') badgeClass = 'tag';
+
+      // Estados del timeline (HU 2.2.2 / Issue #10)
+      const isDone1 = true;
+      const isDone2 = p.status !== 'En Revisión';
+      const isCurrent2 = p.status === 'En Revisión';
+      const isDone3 = p.status === 'Aprobado' || p.status === 'Rechazado';
+      const isCurrent3 = false;
+
+      // Mensaje de resultado y retroalimentación institucional (HU 2.2.2 / Issue #11)
+      let outcomeHtml = '';
+      if (p.status === 'Aprobado') {
+        outcomeHtml = `
+          <div class="outcome-box outcome-box--aprobado">
+            <h3 style="margin:0 0 0.35rem; font-size:1.15rem; color:var(--color-ink);">
+              Propuesta Aprobada por el Comité de Evaluación
+            </h3>
+            <p style="margin:0 0 1rem; font-size:0.88rem; color:var(--color-ink-muted); line-height:1.5;">
+              ¡Felicitaciones ${p.student}! Tu proyecto <strong>"${p.name}"</strong> superó satisfactoriamente los criterios de rúbrica institucional (Puntaje obtenido: <strong>${p.score || 85}/100</strong>).
+              ${p.module ? `<br>Módulo físico asignado: <strong>${p.module} (Zona Central del Campus)</strong>.` : ''}
+              Tu usuario institucional ya está vinculado en la plataforma para gestionar turnos y catálogo público.
+            </p>
+            <a class="btn btn--primary" href="login.html" style="font-size:0.86rem;">
+              Iniciar Sesión en el Portal del Estudiante &rarr;
+            </a>
+          </div>
+        `;
+      } else if (p.status === 'En Revisión') {
+        outcomeHtml = `
+          <div class="outcome-box outcome-box--revision">
+            <h3 style="margin:0 0 0.35rem; font-size:1.1rem; color:var(--color-ink);">
+              Postulación en Proceso de Evaluación Técnica
+            </h3>
+            <p style="margin:0; font-size:0.86rem; color:var(--color-ink-muted); line-height:1.5;">
+              Tu propuesta técnica y soporte de MVP se encuentran actualmente radicados. El comité evaluador del CIE está aplicando la rúbrica de viabilidad comercial y espacio físico.
+              Los resultados serán publicados en esta misma pantalla de acuerdo con el calendario oficial de la cohorte.
+            </p>
+          </div>
+        `;
+      } else {
+        outcomeHtml = `
+          <div class="outcome-box outcome-box--rechazado">
+            <h3 style="margin:0 0 0.35rem; font-size:1.1rem; color:var(--color-ink);">
+              Dictamen de Comité: No Seleccionado
+            </h3>
+            <p style="margin:0 0 0.75rem; font-size:0.86rem; color:var(--color-ink-muted); line-height:1.5;">
+              La propuesta no alcanzó el puntaje mínimo de corte en la rúbrica institucional para asignación de módulos físicos en esta cohorte.
+            </p>
+            <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-xs); padding:0.85rem 1rem; margin-bottom:1rem; font-size:0.84rem;">
+              <strong style="color:var(--color-ink); display:block; margin-bottom:0.25rem;">Observaciones Oficiales del Evaluador (Issue #11):</strong>
+              <span style="color:var(--color-ink-muted);">${p.comments || 'No se registraron observaciones adicionales por parte de la coordinación.'}</span>
+            </div>
+            <a class="btn btn--outline" href="postulacion.html" style="font-size:0.82rem;">
+              Presentar Nueva Propuesta en Próxima Convocatoria
+            </a>
+          </div>
+        `;
+      }
+
+      // Archivos y Soportes del MVP (HU 3.3)
+      const isReview = p.status === 'En Revisión';
+      const files = p.mvpFiles || ['ficha_tecnica_mvp.pdf'];
+
+      let filesListHtml = files.map((f, idx) => {
+        const isPdf = f.toLowerCase().endsWith('.pdf');
+        return `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#FFFFFF; border:1px solid var(--color-border); border-radius:var(--radius-xs); padding:0.65rem 0.9rem; font-size:0.86rem;">
+            <div style="display:flex; align-items:center; gap:0.6rem; min-width:0; overflow:hidden;">
+              <span class="tag" style="font-size:0.68rem; font-weight:800; background:${isPdf ? 'rgba(197, 48, 48, 0.1)' : 'rgba(27, 135, 85, 0.1)'}; color:${isPdf ? '#A82020' : '#156F45'}; border-color:transparent;">
+                ${isPdf ? 'PDF' : 'IMG'}
+              </span>
+              <strong style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f}</strong>
+            </div>
+            <div style="margin-left:0.5rem; flex-shrink:0;">
+              ${isReview && files.length > 1 ? `
+                <button type="button" class="btn btn--ghost" onclick="handleDeleteMvpFile('${p.radicado}', ${idx})" style="padding:0.25rem 0.55rem; font-size:0.74rem; color:#A82020;">
+                  Retirar
+                </button>
+              ` : `
+                <span style="font-size:0.75rem; color:var(--color-ink-muted);">${isReview ? 'Soporte Base' : 'Dictaminado'}</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const mvpSectionHtml = `
+        <div style="margin-top:1.75rem; border-top:1px solid var(--color-border); padding-top:1.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.85rem; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <h3 style="margin:0 0 0.25rem; font-size:1.1rem; color:var(--color-ink);">
+                Archivos y Soportes del MVP (PDF e Imágenes - HU 3.3)
+              </h3>
+              <p style="margin:0; font-size:0.84rem; color:var(--color-ink-muted);">
+                ${isReview 
+                  ? 'Como tu postulación está <strong>En Revisión</strong>, puedes actualizar o anexar nuevos soportes para evaluación del jurado.' 
+                  : 'Propuesta ya dictaminada: la edición y actualización de soportes del MVP se encuentra cerrada.'}
+              </p>
+            </div>
+            <div>
+              ${isReview 
+                ? '<span class="tag tag--accent" style="font-size:0.7rem;">Edición Habilitada</span>' 
+                : '<span class="tag" style="font-size:0.7rem;">Solo Lectura</span>'}
+            </div>
+          </div>
+
+          <!-- Lista de Archivos Actuales -->
+          <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.25rem;">
+            ${filesListHtml}
+          </div>
+
+          ${p.lastUpdatedFiles ? `
+            <div style="font-size:0.76rem; color:var(--color-ink-muted); margin-bottom:1rem;">
+              Última actualización de archivos: <strong>${p.lastUpdatedFiles}</strong>
+            </div>
+          ` : ''}
+
+          <!-- Formulario de Actualización mientras esté En Revisión -->
+          ${isReview ? `
+            <div style="background:var(--color-crema-surface); border:1px dashed var(--color-border-dark); border-radius:var(--radius-sm); padding:1.15rem;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); margin-bottom:0.4rem;">
+                Actualizar o Anexar Nuevo Archivo de MVP:
+              </label>
+              <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+                <input type="file" id="mvpNewFileInput" accept=".pdf, image/png, image/jpeg, image/jpg" style="font-size:0.84rem; flex:1; min-width:200px;">
+                <button type="button" class="btn btn--primary" onclick="handleUploadMvpFile('${p.radicado}')" style="font-size:0.82rem; padding:0.5rem 1rem;">
+                  Guardar y Actualizar Soportes
+                </button>
+              </div>
+              <div style="font-size:0.75rem; color:var(--color-ink-muted); margin-top:0.45rem;">
+                Formatos permitidos: PDF e imágenes (JPG, PNG). El comité técnico evaluará la versión más reciente.
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      resBox.innerHTML = `
+        <article class="result-card">
+          <div class="result-header">
+            <div>
+              <div class="radicado-tag">Radicado Institucional</div>
+              <h2 class="result-title">${p.radicado} &middot; ${p.name}</h2>
+              <div class="result-meta">
+                Líder: <strong>${p.student}</strong> &middot; ${p.faculty} &middot; Categoría: <strong>${p.category}</strong>
+              </div>
+            </div>
+            <div>
+              <span class="${badgeClass}" style="font-size:0.82rem; padding:0.35rem 0.85rem;">
+                ${p.status}
+              </span>
+            </div>
+          </div>
+
+          <!-- Indicador de Línea de Tiempo / Pasos (HU 2.2.2 / Issue #10) -->
+          <div style="margin-bottom:0.5rem;">
+            <div style="font-size:0.76rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink-muted); margin-bottom:0.5rem;">
+              Línea de Tiempo del Trámite Institucional
+            </div>
+            <div class="timeline-track">
+              <!-- Paso 1 -->
+              <div class="timeline-node timeline-node--done">
+                <div class="timeline-node__step">Paso 1 &middot; Completado</div>
+                <div class="timeline-node__title">Radicación y MVP</div>
+                <p class="timeline-node__desc">Propuesta y ficha técnica recibidas el ${p.date}.</p>
+              </div>
+
+              <!-- Paso 2 -->
+              <div class="timeline-node ${isCurrent2 ? 'timeline-node--current' : (isDone2 ? 'timeline-node--done' : 'timeline-node--pending')}">
+                <div class="timeline-node__step">Paso 2 &middot; ${isCurrent2 ? 'En Curso' : (isDone2 ? 'Completado' : 'Pendiente')}</div>
+                <div class="timeline-node__title">Evaluación Rúbrica</div>
+                <p class="timeline-node__desc">Valoración técnica de propuesta, MVP y módulo físico.</p>
+              </div>
+
+              <!-- Paso 3 -->
+              <div class="timeline-node ${isDone3 ? 'timeline-node--done' : 'timeline-node--pending'}">
+                <div class="timeline-node__step">Paso 3 &middot; ${isDone3 ? 'Dictamen Emitido' : 'Pendiente'}</div>
+                <div class="timeline-node__title">${p.status === 'Aprobado' ? 'Aprobado y Módulo' : (p.status === 'Rechazado' ? 'Resolución Emitida' : 'Asignación')}</div>
+                <p class="timeline-node__desc">${p.status === 'Aprobado' ? (p.module ? 'Asignado a ' + p.module : 'Pendiente de cuadrante') : (p.status === 'Rechazado' ? 'Cierre de solicitud' : 'Resolución final de comité.')}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cuadro de Dictamen Final, Observaciones y Módulo Asignado (HU 3.3) -->
+          ${outcomeHtml}
+
+          <!-- Gestión de Archivos del MVP (HU 3.3) -->
+          ${mvpSectionHtml}
+        </article>
+      `;
+    }
+
+    function handleUploadMvpFile(radicado) {
+      const input = document.getElementById('mvpNewFileInput');
+      if (!input.files || input.files.length === 0) {
+        alert('Por favor selecciona un archivo PDF o imagen antes de guardar.');
+        return;
+      }
+      const file = input.files[0];
+      const validExtensions = ['.pdf', '.png', '.jpg', '.jpeg'];
+      const ext = '.' + file.name.split('.').pop().toLowerCase();
+      if (!validExtensions.includes(ext)) {
+        alert('Formato no válido. Únicamente se admiten archivos PDF o imágenes (PNG, JPG).');
+        return;
+      }
+
+      const res = SIGME_STATE.addMvpFile(radicado, file.name);
+      if (res.success) {
+        alert(`Archivo "${file.name}" anexado correctamente al MVP para evaluación del comité.`);
+        executeSearch(radicado);
+      } else {
+        alert(res.message);
+      }
+    }
+
+    function handleDeleteMvpFile(radicado, index) {
+      if (!confirm('¿Deseas retirar este soporte del MVP?')) return;
+      const res = SIGME_STATE.deleteMvpFile(radicado, index);
+      if (res.success) {
+        executeSearch(radicado);
+      } else {
+        alert(res.message);
+      }
+    }
+
+    // Si viene con parámetro en URL ?query=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('query');
+    if (initialQuery) {
+      document.getElementById('queryInput').value = initialQuery;
+      executeSearch(initialQuery);
+    }
+  </script>
+</body>
+</html>

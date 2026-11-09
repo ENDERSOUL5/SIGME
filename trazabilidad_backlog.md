@@ -12,26 +12,56 @@ Este documento detalla cómo cada una de las pantallas del prototipo funcional i
 
 | Pantalla del Prototipo | Historias de Usuario (HU) del Backlog | Issues / WBS Asociados | Responsabilidad Funcional Demostrada |
 | :--- | :--- | :--- | :--- |
-| **`index.html`**<br>*(Portal de Acceso)* | **HU 1.1**, **HU 1.2**, **HU 1.3**, **HU 4.1** | Issue #1 / WBS 2.1.1<br>Issue #3 / WBS 3.3.1 | Autenticación institucional por roles (estudiante vs admin), verificación de proyecto aprobado para ingresar, visualización dinámica de la convocatoria activa (fechas, cupos) y acceso directo al catálogo. |
+| **`index.html`**<br>*(Catálogo - Vista Principal)* | **HU 4.1**, **HU 4.2.2**, **HU 4.3.1**, **HU 4.3.2**, **HU 1.3** | Issue #24 / WBS 4.2.1<br>Issue #13 / WBS 3.1.1.1<br>Issue #3 / WBS 3.3.1 | Catálogo comercial universitario como vista de bienvenida, ordenamiento reactivo de turnos abiertos, buscador y filtros en vivo, banner de convocatoria activa y botón a Iniciar Sesión. |
+| **`login.html`**<br>*(Ventana de Login Normal)* | **HU 1.1**, **HU 1.2**, **HU 2.2.2** | Issue #1 / WBS 2.1.1<br>Issue #10 / WBS 2.2.2.2 | Ventana de acceso institucional sin botones de prueba gigantes, autenticación por rol, validación de estado aprobado y opciones alternas para 'Postularse' y 'Consultar estado'. |
+| **`consulta.html`**<br>*(Consulta y Seguimiento)* | **HU 2.2.2**, **HU 3.3**, **HU 1.1** | Issue #10 / WBS 2.2.2.2<br>Issue #11 / WBS 2.2.2.3<br>Issue #6 / WBS 2.2.1.2 | Seguimiento a la postulación mediante radicado o correo institucional con indicador de línea de tiempo/pasos (Radicado -> Rúbrica -> Dictamen), recepción y actualización de archivos del MVP (PDF e imágenes) mientras esté 'En revisión', despliegue del módulo asignado y observaciones del comité. |
 | **`postulacion.html`**<br>*(Formulario MVP)* | **HU 2.1.1**, **HU 2.1.2**, **HU 2.1.3**, **HU 2.2.1**, **HU 1.3** | Issue #5 / WBS 2.2.1.1<br>Issue #6 / WBS 2.2.1.2<br>Issue #8 / WBS 2.2.1.4<br>Issue #10 / WBS 2.2.2.2 | Captura de datos del estudiante, formulario de ficha técnica de MVP, carga de soportes con validación, radicación oficial automática (`SIGME-2026-XXXX`) y verificación de convocatoria activa. |
 | **`admin.html`**<br>*(Panel Directivo)* | **HU 2.1**, **HU 2.2**, **HU 3.1**, **HU 3.2**, **HU 3.3**, **HU 3.3.1**, **HU 5.1**, **HU 5.3** | Issue #14, #15, #17 / WBS 3.1.1<br>Issue #20 / WBS 3.2.1<br>Issue #22 / WBS 3.1.2<br>Issue #2.2 / WBS 2.2<br>Issue #32, #35, #36 / WBS 5.3.1 | Evaluación por rúbrica ponderada con justificación obligatoria, mapa de cuadrantes de módulos, captura completa de parámetros de convocatoria con historial de cohortes, gestión de disponibilidad (festivos y cierres con notificación a interesados) y reportes en PDF. |
 | **`estudiante.html`**<br>*(Panel de Turnos y Perfil)* | **HU 2.1.4**, **HU 2.2**, **HU 2.4.2**, **HU 4.1.2**, **HU 4.2** | Issue #24 / WBS 4.2.1<br>Issue #28 / WBS 2.4.2.1<br>Issue #30, #31 / WBS 2.4.2.3 | Visualización de datos personales bloqueados (nombre y facultad sincronizados con Registro Académico), edición de contacto dinámico (teléfono, WhatsApp, Instagram), preferencias de notificación (correo, WhatsApp), recepción de avisos de festivos/cierres, interruptor de turno con cronómetro en tiempo real y registro de horas. |
-| **`catalogo.html`**<br>*(Catálogo Público)* | **HU 4.1**, **HU 4.2.2**, **HU 4.3.1**, **HU 4.3.2** | Issue #24 / WBS 4.2.1<br>Issue #13 / WBS 3.1.1.1 | Catálogo comercial para clientes del campus, priorización automática de módulos con turno abierto, filtros por estado, buscador en vivo y enlaces a WhatsApp e Instagram. |
 
 ---
 
 ## 2. Detalle de Trazabilidad por Pantalla
 
-### 2.1. Pantalla: `index.html` (Portal de Acceso y Convocatorias)
-* **HU 1.1 - Inicio de Sesión de Estudiantes:**
-  * *Criterio de Backlog:* El estudiante vinculado debe identificarse con su correo institucional. Si su postulación no ha sido aprobada, el sistema debe negarle el acceso al panel operativo e informarle el estado.
-  * *Componente en la pantalla:* Pestaña "Estudiante Vinculado", validación en `handleLogin()` y aviso condicional `reviewNotice`.
-* **HU 1.2 - Inicio de Sesión Administrativa:**
-  * *Criterio de Backlog:* La coordinación del CIE debe ingresar con credenciales autorizadas y acceder al control central.
+### 2.1. Pantalla: `index.html` (Catálogo Público Comercial - Vista Principal)
+* **HU 4.1 & HU 4.2.2 - Vitrina Comercial y Priorización en Vivo:**
+  * *Criterio de Backlog:* Pantalla de bienvenida que expone todos los emprendimientos de la comunidad universitaria. Los módulos que tengan su turno abierto presencialmente aparecen priorizados al inicio.
+  * *Componente en la pantalla:* Grid interactivo `#catalogGrid` y algoritmo de ordenamiento en tiempo real.
+* **HU 4.3.1 & HU 4.3.2 - Filtros y Contacto Inmediato:**
+  * *Criterio de Backlog:* Pestañas de filtro rápido (Todos, Abiertos, Cerrados), buscador predictivo y enlaces directos a WhatsApp e Instagram.
+  * *Componente en la pantalla:* Barra de filtros `#fOpen`/`#fClosed` y campo `#catalogSearch`.
+* **HU 1.3 - Difusión de Convocatorias y Acceso al Portal:**
+  * *Criterio de Backlog:* Banner institucional que comunica la vigencia de convocatorias con enlace directo a la postulación, y botón en barra superior hacia el inicio de sesión.
+  * *Componente en la pantalla:* Banner `#convBanner` y botón `Iniciar Sesión →`.
+
+---
+
+### 2.2. Pantalla: `login.html` (Ventana de Acceso Institucional)
+* **HU 1.1 - Autenticación de Estudiantes Vinculados:**
+  * *Criterio de Backlog:* Validación con correo institucional. Solo los estudiantes cuyo proyecto fue dictaminado como 'Aprobado' pueden ingresar al panel operativo; en caso contrario, se notifica el estado 'En Revisión' y se ofrece enlace a la consulta.
+  * *Componente en la pantalla:* Pestaña "Estudiante Vinculado", validación en `handleLogin()` y aviso condicional `#reviewNotice`.
+* **HU 1.2 - Autenticación Administrativa:**
+  * *Criterio de Backlog:* Acceso para la coordinación del CIE hacia el panel directivo con credenciales autorizadas.
   * *Componente en la pantalla:* Pestaña "Administrador CIE" y redirección a `admin.html`.
-* **HU 1.3 - Trazabilidad de Periodo de Convocatoria:**
-  * *Criterio de Backlog:* La pantalla debe reflejar si el periodo de inscripciones está abierto o cerrado, mostrando fechas límite, cupos y deshabilitando el registro cuando el administrador lo disponga.
-  * *Componente en la pantalla:* Insignia de convocatoria, datos dinámicos de cohorte y contenedor reactivo `postulacionActionBox`.
+* **HU 2.2.2 - Opciones Alternas para Visitantes:**
+  * *Criterio de Backlog:* Opciones directas para postular un proyecto nuevo o consultar el radicado de una postulación previa sin saturar el formulario con botones de prueba artificiales.
+  * *Componente en la pantalla:* Sección `.login-alternatives` con enlaces a `postulacion.html` y `consulta.html`.
+
+---
+
+### 2.3. Pantalla: `consulta.html` (Consulta y Seguimiento de Postulación)
+* **HU 2.2.2 (Issue #10 - WBS 2.2.2.2) - Línea de Tiempo y Pasos del Trámite:**
+  * *Criterio de Backlog:* Consulta por número de radicado oficial o correo con visualización del progreso en 3 pasos: Radicación -> Evaluación Rúbrica -> Dictamen de Comité.
+  * *Componente en la pantalla:* Formulario de consulta `#queryInput`, contenedor `.timeline-track` y nodos `.timeline-node`.
+* **HU 2.2.2 (Issue #11 - WBS 2.2.2.3) - Retroalimentación y Observaciones Técnicas:**
+  * *Criterio de Backlog:* En caso de rechazo o ajustes, el sistema expone las observaciones oficiales registradas por el comité evaluador en la rúbrica para orientar al estudiante.
+  * *Componente en la pantalla:* Bloque `.outcome-box--rechazado` con observaciones del jurado.
+* **HU 1.1 - Pase Directo para Proyectos Aprobados:**
+  * *Criterio de Backlog:* Si el proyecto está aprobado, muestra el módulo asignado, el puntaje obtenido y el botón para iniciar sesión inmediatamente.
+  * *Componente en la pantalla:* Bloque `.outcome-box--aprobado` y enlace a `login.html`.
+* **HU 3.3 - Recepción y Actualización de Archivos del MVP en Estado 'En Revisión':**
+  * *Criterio de Backlog:* Recibe los archivos del MVP (PDF e imágenes), permite actualizarlos mientras esté "En revisión" y muestra el estado, las observaciones y, ya asignado, el módulo físico.
+  * *Componente en la pantalla:* Sección de archivos del MVP, formulario de anexo `#mvpNewFileInput`, métodos `addMvpFile()`/`deleteMvpFile()` y visualización del módulo y observaciones.
 
 ---
 

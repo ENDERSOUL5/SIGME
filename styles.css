@@ -275,6 +275,16 @@ p {
   box-shadow: 0 0 0 2px var(--color-burn-orange-subtle);
 }
 
+.status-dot--open {
+  background: #1B8755;
+  box-shadow: 0 0 0 2px rgba(27, 135, 85, 0.25);
+}
+
+.status-dot--closed {
+  background: #C53030;
+  box-shadow: 0 0 0 2px rgba(197, 48, 48, 0.25);
+}
+
 .status-dot--ink {
   background: var(--color-ink);
 }
@@ -473,4 +483,151 @@ p {
   font-weight: 700;
   letter-spacing: 0.03em;
   margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   Menú de Navegación Global en Topbar
+   ========================================================================== */
+.topbar {
+  background: var(--color-ink);
+  color: var(--color-crema);
+  padding: 0.85rem 2rem;
+  border-bottom: 2px solid var(--color-burn-orange);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand__name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  color: var(--color-crema);
+}
+
+.brand__sub {
+  font-size: 0.75rem;
+  color: var(--color-crema-muted);
+  letter-spacing: 0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--color-crema-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.42rem 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--color-crema);
+  background: rgba(243, 238, 227, 0.08);
+}
+
+.nav-link.active {
+  color: var(--color-crema);
+  background: rgba(243, 238, 227, 0.12);
+  border-bottom: 2px solid var(--color-burn-orange);
+}
+
+@media (max-width: 820px) {
+  .topbar {
+    padding: 0.75rem 1rem;
+  }
+  .nav-links {
+    width: 100%;
+    order: 3;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(243, 238, 227, 0.1);
+  }
+}
+
+/* ==========================================================================
+   Línea de Tiempo para Seguimiento de Postulaciones (HU 2.2.2 / Issue #10)
+   ========================================================================== */
+.timeline-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.75rem 0;
+  position: relative;
+}
+
+.timeline-node {
+  background: var(--color-crema-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.timeline-node--done {
+  border-left: 4px solid var(--color-ink);
+}
+
+.timeline-node--current {
+  border-left: 4px solid var(--color-burn-orange);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-subtle);
+}
+
+.timeline-node--pending {
+  border-left: 4px solid var(--color-border);
+  opacity: 0.65;
+}
+
+.timeline-node__step {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+  margin-bottom: 0.25rem;
+}
+
+.timeline-node--current .timeline-node__step {
+  color: var(--color-burn-orange);
+}
+
+.timeline-node__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: 0.35rem;
+}
+
+.timeline-node__desc {
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+  line-height: 1.4;
+  margin: 0;
 }

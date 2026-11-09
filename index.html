@@ -2,445 +2,529 @@
 <html lang="es">
 <head>
   <!--
-    TRAZABILIDAD PRODUCT BACKLOG (SIGME):
-    - HU 1.1: Autenticación de Estudiante Emprendedor y verificación de vinculación.
-    - HU 1.2: Autenticación de Administrador CIE y acceso al panel directivo.
-    - HU 1.3: Bloqueo de postulaciones según estado de convocatoria institucional.
-    - HU 4.1: Acceso directo al catálogo comercial público.
-    - Tareas WBS / Issues: WBS 2.1.1 / Issue #1, WBS 3.3.1 / Issue #3
+    TRAZABILIDAD PRODUCT BACKLOG (SIGME) - VISTA PRINCIPAL:
+    - HU 4.1: Catálogo comercial para la comunidad universitaria con módulos físicos (Issue #24 / WBS 4.2.1).
+    - HU 4.2.2: Priorización reactiva en tiempo real: los módulos abiertos aparecen automáticamente de primeros.
+    - HU 4.3.1: Filtro rápido por estado (Abiertos / Cerrados) y buscador en vivo (Issue #13 / WBS 3.1.1.1).
+    - HU 4.3.2: Canales de contacto directo para compras mediante WhatsApp e Instagram.
+    - HU 1.3: Vinculación y difusión de convocatorias institucionales hacia postulación.
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGME - Portal de Emprendimiento Universitario</title>
+  <title>SIGME - Catálogo Público de Emprendimientos</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Topbar */
-    .topbar {
-      background: var(--color-ink);
-      color: var(--color-crema);
-      padding: 0.9rem 2rem;
-      border-bottom: 2px solid var(--color-burn-orange);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .brand__name {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1.15;
-      color: var(--color-crema);
-    }
-
-    .brand__sub {
-      font-size: 0.76rem;
-      color: var(--color-crema-muted);
-      letter-spacing: 0.02em;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 0.6rem;
-      align-items: center;
-    }
-
-    /* Grid Principal */
-    .grid-portal {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    @media (max-width: 860px) {
-      .grid-portal {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Tabs Login */
-    .tab-login {
-      display: flex;
-      border-bottom: 1px solid var(--color-border);
-      margin-bottom: 1.5rem;
-    }
-
-    .tab-login-btn {
-      flex: 1;
-      padding: 0.75rem 0.5rem;
-      border: none;
-      background: transparent;
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: var(--color-ink-muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: all 0.18s ease;
-    }
-
-    .tab-login-btn:hover {
-      color: var(--color-ink);
-    }
-
-    .tab-login-btn.active {
-      color: var(--color-ink);
-      border-bottom-color: var(--color-burn-orange);
-    }
-
-    /* Acceso de prueba manual */
-    .quick-tests {
-      background: var(--color-crema-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 1rem 1.15rem;
-      margin-top: 1.5rem;
-    }
-
-    .quick-tests h4 {
-      margin: 0 0 0.5rem;
-      font-size: 0.74rem;
-      color: var(--color-ink-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .quick-btns {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .quick-btn-item {
-      text-align: left;
-      background: #FFFFFF;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xs);
-      padding: 0.55rem 0.8rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--color-ink);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.15s ease;
-    }
-
-    .quick-btn-item:hover {
-      border-color: var(--color-burn-orange);
-      background: var(--color-burn-orange-subtle);
-    }
-
-    .quick-btn-label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Banner Catálogo */
-    .banner-catalog {
+    /* Hero Convocatoria Banner */
+    .conv-banner {
       background: var(--color-ink);
       color: var(--color-crema);
       border-radius: var(--radius-md);
-      padding: 2.25rem 2.5rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      border: 1px solid var(--color-border-dark);
+    }
+
+    .conv-banner__content {
+      max-width: 720px;
+    }
+
+    .conv-banner__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-burn-orange);
+      margin-bottom: 0.4rem;
+    }
+
+    .conv-banner__title {
+      color: #FFFFFF;
+      font-size: 1.25rem;
+      margin: 0 0 0.35rem;
+      font-weight: 700;
+    }
+
+    .conv-banner__desc {
+      color: var(--color-crema-muted);
+      font-size: 0.88rem;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Encabezado del Catálogo */
+    .catalog-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .catalog-header h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    .catalog-header p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--color-ink-muted);
+    }
+
+    /* Barra de Filtros Minimalista */
+    .filter-bar {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .tab-filters {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .filter-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-ink-muted);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .filter-btn:hover {
+      color: var(--color-ink);
+      background: rgba(17, 17, 17, 0.04);
+    }
+
+    .filter-btn.active {
+      background: var(--color-ink);
+      color: var(--color-crema);
+    }
+
+    .filter-btn--open.active {
+      background: #1B8755;
+      color: #FFFFFF;
+      border-color: #1B8755;
+    }
+
+    .filter-btn--closed.active {
+      background: #C53030;
+      color: #FFFFFF;
+      border-color: #C53030;
+    }
+
+    .search-input {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      font-size: 0.86rem;
+      font-family: inherit;
+      color: var(--color-ink);
+      width: 280px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-burn-orange);
+      box-shadow: 0 0 0 2px var(--color-burn-orange-subtle);
+    }
+
+    /* Grid de Emprendimientos */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .venture-card {
+      background: var(--color-crema-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .venture-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(17, 17, 17, 0.25);
+    }
+
+    .venture-card.is-open {
+      border-top: 4px solid #1B8755;
+    }
+
+    .venture-card.is-closed {
+      border-top: 4px solid #C53030;
+      opacity: 0.92;
+    }
+
+    .venture-card__hero {
+      height: 135px;
+      background: var(--color-crema-surface);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .badge-status {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge-status--open {
+      background: rgba(27, 135, 85, 0.12);
+      color: #136A42;
+      border: 1px solid rgba(27, 135, 85, 0.35);
+    }
+
+    .badge-status--closed {
+      background: rgba(197, 48, 48, 0.10);
+      color: #A82020;
+      border: 1px solid rgba(197, 48, 48, 0.30);
+    }
+
+    .badge-mod {
+      position: absolute;
+      bottom: 0.85rem;
+      left: 0.85rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--color-ink-muted);
+      background: #FFFFFF;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--color-border);
+      letter-spacing: 0.03em;
+    }
+
+    .monogram-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-sm);
+      background: var(--color-ink);
+      color: var(--color-crema);
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      border: 2px solid rgba(243, 238, 227, 0.2);
+    }
+
+    .venture-card__body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .venture-cat {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--color-burn-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+    }
+
+    .venture-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--color-ink);
+    }
+
+    .venture-desc {
+      font-size: 0.86rem;
+      color: var(--color-ink-muted);
+      margin: 0 0 1.25rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .venture-footer {
+      border-top: 1px solid var(--color-border);
+      padding-top: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.5rem;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      border-left: 4px solid var(--color-burn-orange);
     }
 
-    .banner-catalog h3 {
-      color: var(--color-crema);
-      margin: 0 0 0.35rem;
-      font-size: 1.35rem;
+    .student-lbl {
+      font-size: 0.76rem;
+      color: var(--color-ink-muted);
     }
 
-    .banner-catalog p {
-      color: var(--color-crema-muted);
-      margin: 0;
-      font-size: 0.92rem;
-      max-width: 58ch;
+    .contact-btns {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.32rem 0.65rem;
+      border-radius: var(--radius-xs);
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--color-border);
+      background: var(--color-crema-surface);
+      color: var(--color-ink);
+      transition: all 0.15s ease;
+    }
+
+    .btn-contact:hover {
+      border-color: var(--color-burn-orange);
+      color: var(--color-burn-orange);
+      background: var(--color-burn-orange-subtle);
     }
   </style>
 </head>
 <body>
 
-  <!-- Topbar Institucional -->
+  <!-- Topbar con Menú de Navegación -->
   <header class="topbar">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">S</div>
-      <div>
-        <div class="brand__name">SIGME</div>
-        <div class="brand__sub">Centro de Innovación y Emprendimiento</div>
-      </div>
-    </a>
-    <div class="nav-actions">
-      <a class="btn btn--ghost-dark" href="catalogo.html">
-        Ver Catálogo de Negocios
+    <div class="topbar__left">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand__name">SIGME</div>
+          <div class="brand__sub">Zona de Emprendimiento Universitario &middot; CIE</div>
+        </div>
       </a>
-      <a class="btn btn--accent" href="postulacion.html" id="topBtnPostular">
-        Postular Proyecto
+
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link active">Catálogo de Negocios</a>
+        <a href="postulacion.html" class="nav-link">Postular Emprendimiento</a>
+        <a href="consulta.html" class="nav-link">Consultar Estado de Postulación</a>
+      </nav>
+    </div>
+
+    <div>
+      <a class="btn btn--accent" href="login.html">
+        Iniciar Sesión &rarr;
       </a>
     </div>
   </header>
 
   <main class="app-container">
 
-    <div class="grid-portal">
-
-      <!-- Columna 1: Inicio de Sesión -->
-      <section class="card-clean" aria-labelledby="loginTitle">
-        <h2 id="loginTitle" style="font-size: 1.35rem; margin-bottom: 0.35rem;">Acceso a la Plataforma</h2>
-        <p style="font-size: 0.88rem; margin-bottom: 1.25rem;">
-          Ingresa tus credenciales institucionales para gestionar tu módulo o panel directivo.
-        </p>
-
-        <div class="tab-login">
-          <button class="tab-login-btn active" id="tabStudent" onclick="switchLoginRole('student')">
-            Estudiante Vinculado
-          </button>
-          <button class="tab-login-btn" id="tabAdmin" onclick="switchLoginRole('admin')">
-            Administrador CIE
-          </button>
-        </div>
-
-        <div class="notice" id="loginAlert" style="display:none; border-color: rgba(17, 17, 17, 0.4);"></div>
-        <div class="notice notice--accent" id="reviewNotice" style="display:none;"></div>
-
-        <form id="loginForm" onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label for="emailInput">Correo Electrónico Institucional</label>
-            <input class="form-control" type="email" id="emailInput" placeholder="usuario@universidad.edu.co" required>
-          </div>
-
-          <div class="form-group">
-            <label for="passInput">Contraseña</label>
-            <input class="form-control" type="password" id="passInput" value="123" required>
-          </div>
-
-          <button class="btn btn--primary" type="submit" style="width: 100%; margin-top: 0.5rem;" id="btnLoginSubmit">
-            Ingresar a la Plataforma &rarr;
-          </button>
-        </form>
-
-        <!-- Accesos Rápidos para Prueba Manual -->
-        <div class="quick-tests">
-          <h4>Accesos directos de prueba manual:</h4>
-          <div class="quick-btns">
-            <button class="quick-btn-item" onclick="quickFill('admin@universidad.edu.co', 'admin', 'admin')">
-              <span class="quick-btn-label">
-                <span class="status-dot status-dot--ink"></span>
-                <strong>Administrador CIE</strong> &middot; Panel General
-              </span>
-              <span class="tag">Admin</span>
-            </button>
-            <button class="quick-btn-item" onclick="quickFill('maria.lopez@universidad.edu.co', '123', 'student')">
-              <span class="quick-btn-label">
-                <span class="status-dot status-dot--active"></span>
-                <strong>Estudiante Aprobado:</strong> María López
-              </span>
-              <span class="tag tag--accent">Módulo E-03</span>
-            </button>
-            <button class="quick-btn-item" onclick="quickFill('carlos.ramirez@universidad.edu.co', '123', 'student')">
-              <span class="quick-btn-label">
-                <span class="status-dot"></span>
-                <strong>Estudiante en Revisión:</strong> Carlos Ramírez
-              </span>
-              <span class="tag">Pendiente</span>
-            </button>
-          </div>
-          <div style="margin-top: 0.85rem; text-align: center; border-top: 1px dashed var(--color-border); padding-top: 0.65rem;">
-            <button type="button" onclick="if(confirm('¿Deseas reiniciar todos los registros locales a su estado inicial de prueba?')){ SIGME_STATE.resetAll(false); window.location.reload(); }" style="background: none; border: none; font-size: 0.76rem; color: var(--color-ink-muted); text-decoration: underline; cursor: pointer;">
-              Restablecer registros demo a valores iniciales
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Columna 2: Registro de Postulaciones según Convocatoria -->
-      <section class="card-clean" aria-labelledby="postulaTitle">
-        <div id="convocatoriaBadgeContainer" style="margin-bottom: 0.85rem;"></div>
-        <h2 id="postulaTitle" style="font-size: 1.35rem; margin-bottom: 0.35rem;">Postulación de Emprendimientos</h2>
-        <p id="convocatoriaDesc" style="font-size: 0.88rem; margin-bottom: 1.25rem;"></p>
-
-        <div style="background: var(--color-crema-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.15rem; margin-bottom: 1.5rem;">
-          <h4 style="margin: 0 0 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink);">
-            Condiciones de Participación:
-          </h4>
-          <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.84rem; color: var(--color-ink-muted); line-height: 1.6;">
-            <li>Estudiantes activos de pregrado o posgrado en cualquier facultad.</li>
-            <li>Disponer de un Producto Mínimo Viable (MVP) testeado con clientes.</li>
-            <li>Compromiso de cumplimiento de turnos presenciales en módulos asignados.</li>
-          </ul>
-        </div>
-
-        <div id="postulacionActionBox">
-          <!-- Render dinámico según estado de convocatoria -->
-        </div>
-      </section>
-
-    </div>
-
-    <!-- Banner directo al Catálogo Público -->
-    <section class="banner-catalog">
-      <div>
-        <h3>Catálogo Comercial de la Zona de Emprendimiento</h3>
-        <p>
-          Explora los emprendimientos estudiantiles activos en tiempo real en los módulos físicos de la universidad, revisa sus canales de contacto y catálogos de producto.
+    <!-- Banner Informativo de Convocatoria Activa -->
+    <section class="conv-banner" id="convBanner">
+      <div class="conv-banner__content">
+        <span class="conv-banner__badge" id="convBadge">
+          <span class="status-dot status-dot--active"></span> Convocatoria Abierta
+        </span>
+        <h2 class="conv-banner__title" id="convTitle">Convocatoria General Zona de Emprendimiento</h2>
+        <p class="conv-banner__desc" id="convDesc">
+          ¿Eres estudiante con un proyecto validado? Postula tu Producto Mínimo Viable (MVP) para acceder a un módulo físico comercial en el campus universitario.
         </p>
       </div>
-      <a class="btn btn--accent" style="padding: 0.75rem 1.5rem;" href="catalogo.html">
-        Explorar Catálogo Público &rarr;
-      </a>
+      <div>
+        <a class="btn btn--primary" href="postulacion.html" id="convActionBtn" style="background:#FFFFFF; color:var(--color-ink); border-color:#FFFFFF;">
+          Postular mi Proyecto &rarr;
+        </a>
+      </div>
     </section>
+
+    <!-- Encabezado de la Vitrina Comercial -->
+    <div class="catalog-header">
+      <h1>Emprendimientos Activos en Campus</h1>
+      <p>Visualización en tiempo real del estado de atención de los módulos comerciales universitarios.</p>
+    </div>
+
+    <!-- Barra de Filtros Minimalista -->
+    <div class="filter-bar">
+      <div class="tab-filters">
+        <button class="filter-btn active" id="fAll" onclick="setCatalogFilter('all')">
+          Todos (<span id="countAll">4</span>)
+        </button>
+        <button class="filter-btn filter-btn--open" id="fOpen" onclick="setCatalogFilter('open')">
+          <span class="status-dot status-dot--open"></span> Abiertos Ahora (<span id="countOpen">2</span>)
+        </button>
+        <button class="filter-btn filter-btn--closed" id="fClosed" onclick="setCatalogFilter('closed')">
+          <span class="status-dot status-dot--closed"></span> Cerrados (<span id="countClosed">2</span>)
+        </button>
+      </div>
+
+      <input class="search-input" type="search" id="catalogSearch" placeholder="Buscar por producto, marca o módulo..." oninput="handleSearch(this.value)">
+    </div>
+
+    <!-- Grid de Emprendimientos -->
+    <div class="catalog-grid" id="catalogGrid">
+      <!-- Render dinámico desde shared-state.js -->
+    </div>
 
   </main>
 
   <script src="shared-state.js"></script>
   <script src="traceability.js"></script>
   <script>
-    let currentRole = 'student';
+    let activeFilter = 'all';
+    let searchQuery = '';
 
-    function switchLoginRole(role) {
-      currentRole = role;
-      document.getElementById('tabStudent').classList.toggle('active', role === 'student');
-      document.getElementById('tabAdmin').classList.toggle('active', role === 'admin');
-      document.getElementById('loginAlert').style.display = 'none';
-      document.getElementById('reviewNotice').style.display = 'none';
-
-      if (role === 'admin') {
-        document.getElementById('emailInput').value = 'admin@universidad.edu.co';
-        document.getElementById('passInput').value = 'admin';
-      } else {
-        document.getElementById('emailInput').value = 'maria.lopez@universidad.edu.co';
-        document.getElementById('passInput').value = '123';
-      }
-    }
-
-    function quickFill(email, pass, role) {
-      switchLoginRole(role);
-      document.getElementById('emailInput').value = email;
-      document.getElementById('passInput').value = pass;
-      document.getElementById('loginForm').dispatchEvent(new Event('submit'));
-    }
-
-    function handleLogin(event) {
-      if (event) event.preventDefault();
-      const email = document.getElementById('emailInput').value.trim();
-      const pass = document.getElementById('passInput').value.trim();
-      const alertBox = document.getElementById('loginAlert');
-      const reviewBox = document.getElementById('reviewNotice');
-
-      alertBox.style.display = 'none';
-      reviewBox.style.display = 'none';
-
-      const users = SIGME_STATE.getUsers();
-      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-
-      if (!user) {
-        alertBox.textContent = 'El correo institucional no figura en el registro del sistema. Si la convocatoria se encuentra abierta, puedes presentar la postulación de tu proyecto.';
-        alertBox.style.display = 'block';
-        return;
-      }
-
-      if (user.password !== pass) {
-        alertBox.textContent = 'Contraseña incorrecta. Por favor verifica tus credenciales de acceso.';
-        alertBox.style.display = 'block';
-        return;
-      }
-
-      // Si es Administrador
-      if (user.role === 'admin') {
-        SIGME_STATE.setCurrentUser(user);
-        window.location.href = 'admin.html';
-        return;
-      }
-
-      // Si es Estudiante: Regla de negocio estricta
-      // Solo el estudiante cuyo proyecto ya fue aprobado (vinculado) puede acceder a su panel de gestión.
-      if (user.status === 'Aprobado') {
-        SIGME_STATE.setCurrentUser(user);
-        window.location.href = 'estudiante.html';
-      } else {
-        // Estudiante en revisión o rechazado
-        reviewBox.innerHTML = `
-          <strong>Estado de Postulación:</strong> Tu proyecto <em>"${user.ventureName}"</em> se encuentra registrado como <strong>${user.status}</strong>.<br>
-          El panel de gestión y control de turnos únicamente se habilita tras la aprobación formal y asignación de módulo físico por parte del CIE.
-        `;
-        reviewBox.style.display = 'block';
-      }
-    }
-
-    function renderConvocatoriaSection() {
+    function checkConvocatoriaBanner() {
       const convData = SIGME_STATE.getConvocatoriaData();
-      const isOpen = convData.isOpen;
-      const badgeBox = document.getElementById('convocatoriaBadgeContainer');
-      const postulaTitle = document.getElementById('postulaTitle');
-      const desc = document.getElementById('convocatoriaDesc');
-      const actionBox = document.getElementById('postulacionActionBox');
-      const topBtn = document.getElementById('topBtnPostular');
+      const banner = document.getElementById('convBanner');
+      const badge = document.getElementById('convBadge');
+      const title = document.getElementById('convTitle');
+      const desc = document.getElementById('convDesc');
+      const btn = document.getElementById('convActionBtn');
 
-      if (postulaTitle && convData.title) {
-        postulaTitle.textContent = convData.title;
-      }
-
-      if (isOpen) {
-        badgeBox.innerHTML = `
-          <span class="tag tag--accent">
-            <span class="status-dot status-dot--active"></span> Convocatoria Abierta &middot; ${convData.code || '2026-2'}
-          </span>
-          <span class="tag" style="margin-left: 0.4rem;">${convData.availableSlots || 6} Cupos Disponibles</span>
-        `;
-        desc.innerHTML = `
-          ${convData.description || 'El periodo de recepción de propuestas se encuentra activo.'}<br>
-          <span style="font-size:0.8rem; color:var(--color-burn-orange); font-weight:600; margin-top:0.35rem; display:inline-block;">
-            Cierre de inscripciones: ${convData.endDate || '30/11/2026'} &middot; Resultados de comité: ${convData.evalDate || '05/12/2026'}
-          </span>
-        `;
-        actionBox.innerHTML = `
-          <a class="btn btn--primary" style="width: 100%;" href="postulacion.html">
-            Postular Proyecto (MVP) &rarr;
-          </a>
-        `;
-        topBtn.style.display = 'inline-flex';
+      if (!convData.isOpen) {
+        badge.innerHTML = '<span class="status-dot"></span> Convocatorias Cerradas';
+        badge.style.color = 'var(--color-crema-muted)';
+        title.textContent = 'Proceso de Selección en Evaluación';
+        desc.textContent = 'La recepción de nuevos proyectos se encuentra temporalmente inactiva según el calendario del CIE.';
+        btn.textContent = 'Consultar Estado de mi Postulación';
+        btn.href = 'consulta.html';
       } else {
-        badgeBox.innerHTML = `
-          <span class="tag">
-            <span class="status-dot"></span> Convocatoria Cerrada &middot; ${convData.code || '2026-2'}
-          </span>
-        `;
-        desc.textContent = 'El periodo de recepción de proyectos nuevos se encuentra cerrado según el calendario académico institucional.';
-        actionBox.innerHTML = `
-          <button class="btn btn--ghost" style="width: 100%; cursor: not-allowed; opacity: 0.65;" disabled>
-            Recepción Deshabilitada Temporalmente
-          </button>
-          <p style="font-size:0.78rem; color:var(--color-ink-muted); margin-top:0.5rem; text-align:center;">
-            El Centro de Innovación y Emprendimiento mantiene cerradas las inscripciones para la cohorte actual.
-          </p>
-        `;
-        topBtn.style.display = 'none';
+        badge.innerHTML = `<span class="status-dot status-dot--active"></span> Cohorte ${convData.code || '2026-2'} · ${convData.availableSlots || 6} Cupos Disponibles`;
+        title.textContent = convData.title || 'Convocatoria General Zona de Emprendimiento';
+        desc.textContent = `${convData.description || 'Recepción de propuestas y MVP.'} Fecha límite de postulación: ${convData.endDate || '30/11/2026'}.`;
+        btn.textContent = 'Postular mi Proyecto →';
+        btn.href = 'postulacion.html';
       }
     }
 
-    // Inicializar
-    switchLoginRole('student');
-    renderConvocatoriaSection();
+    function setCatalogFilter(filter) {
+      activeFilter = filter;
+      document.getElementById('fAll').classList.toggle('active', filter === 'all');
+      document.getElementById('fOpen').classList.toggle('active', filter === 'open');
+      document.getElementById('fClosed').classList.toggle('active', filter === 'closed');
+      renderCatalog();
+    }
+
+    function handleSearch(q) {
+      searchQuery = q.toLowerCase().trim();
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = '';
+
+      const ventures = SIGME_STATE.getVentures();
+
+      // ORDENAR: ABIERTOS PRIMERO (HU 4.2.2)
+      let sorted = [...ventures].sort((a, b) => {
+        if (a.isOpen === b.isOpen) return 0;
+        return a.isOpen ? -1 : 1;
+      });
+
+      // Filtrar
+      let filtered = sorted.filter(v => {
+        if (activeFilter === 'open' && !v.isOpen) return false;
+        if (activeFilter === 'closed' && v.isOpen) return false;
+        if (searchQuery) {
+          return v.name.toLowerCase().includes(searchQuery) ||
+                 v.category.toLowerCase().includes(searchQuery) ||
+                 v.desc.toLowerCase().includes(searchQuery) ||
+                 v.module.toLowerCase().includes(searchQuery);
+        }
+        return true;
+      });
+
+      // Contadores
+      const openCount = ventures.filter(v => v.isOpen).length;
+      document.getElementById('countAll').textContent = ventures.length;
+      document.getElementById('countOpen').textContent = openCount;
+      document.getElementById('countClosed').textContent = ventures.length - openCount;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align:center; padding: 3.5rem 1rem; color: var(--color-ink-muted);">
+            No se encontraron emprendimientos que coincidan con los criterios de búsqueda.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(v => {
+        const card = document.createElement('article');
+        card.className = `venture-card ${v.isOpen ? 'is-open' : 'is-closed'}`;
+
+        const monogram = v.monogram || (v.name.split(' ').map(w => w[0]).join('').slice(0, 2)).toUpperCase();
+
+        card.innerHTML = `
+          <div class="venture-card__hero">
+            <div class="monogram-badge">${monogram}</div>
+            <span class="badge-status ${v.isOpen ? 'badge-status--open' : 'badge-status--closed'}">
+              <span class="status-dot ${v.isOpen ? 'status-dot--open' : 'status-dot--closed'}"></span>
+              ${v.isOpen ? 'Abierto' : 'Cerrado'}
+            </span>
+            <span class="badge-mod">${v.module}</span>
+          </div>
+          <div class="venture-card__body">
+            <div class="venture-cat">${v.category}</div>
+            <h3 class="venture-title">${v.name}</h3>
+            <p class="venture-desc">${v.desc}</p>
+            <div class="venture-footer">
+              <span class="student-lbl">Líder: ${v.student}</span>
+              <div class="contact-btns">
+                <a class="btn-contact" href="https://wa.me/${v.phone}" target="_blank" title="Contactar por WhatsApp">
+                  WhatsApp
+                </a>
+                <a class="btn-contact" href="https://instagram.com/${v.ig}" target="_blank" title="Instagram">
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    checkConvocatoriaBanner();
+    renderCatalog();
+
+    // Sincronización reactiva entre pestañas
+    window.addEventListener('storage', () => {
+      checkConvocatoriaBanner();
+      renderCatalog();
+    });
   </script>
 </body>
 </html>

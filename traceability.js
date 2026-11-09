@@ -2,35 +2,101 @@
 (function () {
   const TRACE_DATA = {
     'index.html': {
-      pageName: 'Portal de Acceso y Login',
+      pageName: 'Catálogo Público Comercial (Vista Principal)',
+      stories: [
+        {
+          id: 'HU 4.1',
+          wbs: 'WBS 4.2.1 (Issue #24)',
+          title: 'Vitrina de Emprendimientos del Campus',
+          desc: 'Exhibición pública de las marcas y módulos universitarios para la comunidad compradora.',
+          component: 'Cuadrícula dinámica #catalogGrid con monogramas de marca.'
+        },
+        {
+          id: 'HU 4.2.2',
+          wbs: 'WBS 4.2.2',
+          title: 'Priorización en Vivo de Módulos Abiertos',
+          desc: 'Los emprendimientos que se encuentren atendiendo en su turno presencial aparecen de primeros en la lista.',
+          component: 'Algoritmo de ordenamiento automático e indicador de estado abierto.'
+        },
+        {
+          id: 'HU 4.3.1',
+          wbs: 'WBS 3.1.1.1 (Issue #13)',
+          title: 'Búsqueda en Tiempo Real y Filtros de Estado',
+          desc: 'Filtrado predictivo por nombre, producto o módulo, y pestañas de selección rápida.',
+          component: 'Barra de filtros #fOpen/#fClosed y campo #catalogSearch.'
+        },
+        {
+          id: 'HU 4.3.2',
+          wbs: 'WBS 4.3.2',
+          title: 'Enlaces Directos de Pedidos (WhatsApp / IG)',
+          desc: 'Canales de comunicación inmediata entre el cliente y el estudiante emprendedor.',
+          component: 'Botones .btn-contact con enlaces dinámicos personalizados.'
+        },
+        {
+          id: 'HU 1.3',
+          wbs: 'WBS 3.3.1 (Issue #3)',
+          title: 'Vinculación de Convocatoria Activa',
+          desc: 'Banner dinámico que informa sobre la apertura de nuevas convocatorias y redirige hacia la postulación.',
+          component: 'Sección #convBanner y botón reactivo #convActionBtn.'
+        }
+      ]
+    },
+    'login.html': {
+      pageName: 'Ventana de Login Institucional',
       stories: [
         {
           id: 'HU 1.1',
           wbs: 'WBS 2.1.1 (Issue #1)',
           title: 'Inicio de Sesión de Estudiantes Vinculados',
-          desc: 'Permite la autenticación institucional con correo universitario. Valida que solo proyectos formalmente aprobados ingresen al panel de gestión; de lo contrario informa el estado pendiente.',
-          component: 'Pestaña "Estudiante Vinculado", validación en handleLogin() y alerta condicional.'
+          desc: 'Permite la autenticación con correo universitario. Valida que solo proyectos formalmente aprobados ingresen al panel de gestión; de lo contrario informa el estado pendiente.',
+          component: 'Pestaña "Estudiante Vinculado", validación en handleLogin() y alerta condicional #reviewNotice.'
         },
         {
           id: 'HU 1.2',
           wbs: 'WBS 2.1.1 (Issue #1)',
           title: 'Inicio de Sesión de Administradores CIE',
-          desc: 'Acceso seguro para el equipo de coordinación hacia el panel de administración central.',
+          desc: 'Acceso seguro para el equipo de coordinación hacia el panel de administración directiva.',
           component: 'Pestaña "Administrador CIE" y redirección al panel directivo.'
         },
         {
-          id: 'HU 1.3',
-          wbs: 'WBS 3.3.1 (Issue #3)',
-          title: 'Control de Convocatorias en Tiempo Real',
-          desc: 'Refleja el estado de recepción de nuevos proyectos (abierta o cerrada), deshabilitando el registro cuando el administrador lo disponga.',
-          component: 'Insignia de convocatoria y botón dinámico postulacionActionBox.'
+          id: 'HU 2.2.2',
+          wbs: 'WBS 2.2.2.2 (Issue #10)',
+          title: 'Opciones Alternas: Postularse y Consultar Estado',
+          desc: 'Permite a los visitantes sin usuario activo postular su propuesta o consultar el radicado de su postulación.',
+          component: 'Enlaces en contenedor .login-alternatives.'
+        }
+      ]
+    },
+    'consulta.html': {
+      pageName: 'Consulta y Seguimiento de Postulaciones',
+      stories: [
+        {
+          id: 'HU 2.2.2',
+          wbs: 'WBS 2.2.2.2 (Issue #10)',
+          title: 'Seguimiento de Postulación con Indicador de Línea de Tiempo / Pasos',
+          desc: 'Consulta en vivo del estado del trámite ingresando radicado o correo: Radicado -> Evaluación Rúbrica -> Dictamen Final.',
+          component: 'Contenedor .timeline-track y nodos de paso .timeline-node.'
         },
         {
-          id: 'HU 4.1',
-          wbs: 'WBS 4.1.1 (Issue #24)',
-          title: 'Acceso Directo al Catálogo Público',
-          desc: 'Enlace principal para que clientes del campus exploren los módulos comerciales activos.',
-          component: 'Botón en topbar y banner inferior de exploración de catálogo.'
+          id: 'HU 2.2.2',
+          wbs: 'WBS 2.2.2.3 (Issue #11)',
+          title: 'Visualización de Observaciones y Retroalimentación Institucional',
+          desc: 'Presentación formal de las observaciones dictaminadas por el comité en caso de rechazo o ajustes requeridos.',
+          component: 'Contenedor .outcome-box con observaciones oficiales del jurado.'
+        },
+        {
+          id: 'HU 1.1',
+          wbs: 'WBS 2.1.1',
+          title: 'Habilitación hacia Inicio de Sesión',
+          desc: 'Al consultar un proyecto con estado Aprobado, provee el acceso directo al portal de estudiantes.',
+          component: 'Botón directo Iniciar Sesión en la tarjeta de dictamen aprobado.'
+        },
+        {
+          id: 'HU 3.3',
+          wbs: 'WBS 2.2.1.2 / Issue #6',
+          title: 'Gestión y Actualización de Archivos del MVP en "En Revisión"',
+          desc: 'Recibe archivos del MVP (PDF e imágenes), permite actualizarlos mientras esté "En Revisión", y despliega el estado, las observaciones y el módulo asignado.',
+          component: 'Sección Archivos del MVP, input #mvpNewFileInput y lista de soportes actualizables.'
         }
       ]
     },

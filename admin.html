@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <!--
     TRAZABILIDAD PRODUCT BACKLOG (SIGME):
@@ -166,12 +167,12 @@
       border-radius: 50%;
     }
 
-    input:checked + .slider {
+    input:checked+.slider {
       background-color: var(--color-burn-orange-subtle);
       border-color: var(--color-burn-orange);
     }
 
-    input:checked + .slider:before {
+    input:checked+.slider:before {
       transform: translateX(26px);
       background-color: var(--color-burn-orange);
     }
@@ -233,7 +234,9 @@
     }
 
     @media (max-width: 768px) {
-      .grid-2col, .grid-3col {
+
+      .grid-2col,
+      .grid-3col {
         grid-template-columns: 1fr;
       }
     }
@@ -266,6 +269,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Topbar Administrativa -->
@@ -281,7 +285,7 @@
       <button class="btn btn--ghost-dark" onclick="openResetModal()" title="Reiniciar datos de demostración">
         Restablecer Datos Demo
       </button>
-      <a class="btn btn--ghost-dark" href="catalogo.html" target="_blank">
+      <a class="btn btn--ghost-dark" href="index.html" target="_blank">
         Catálogo Público
       </a>
       <button class="btn btn--ghost-dark" onclick="SIGME_STATE.logout()">
@@ -317,7 +321,8 @@
         <div class="section-header">
           <div>
             <h2 class="section-title">Registro de Proyectos Postulados</h2>
-            <p class="section-sub">Revisa las propuestas estudiantiles y dictamina su viabilidad con la rúbrica institucional.</p>
+            <p class="section-sub">Revisa las propuestas estudiantiles y dictamina su viabilidad con la rúbrica
+              institucional.</p>
           </div>
           <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
             <select class="form-control" id="filterStatus" onchange="filterProjects()" style="width: auto;">
@@ -326,7 +331,9 @@
               <option value="Aprobado">Aprobados</option>
               <option value="Rechazado">Rechazados</option>
             </select>
-            <button class="btn btn--outline" onclick="openResetModal()" style="font-size:0.82rem; padding:0.45rem 0.85rem;" title="Restablecer proyectos a su estado de prueba inicial">
+            <button class="btn btn--outline" onclick="openResetModal()"
+              style="font-size:0.82rem; padding:0.45rem 0.85rem;"
+              title="Restablecer proyectos a su estado de prueba inicial">
               Restablecer Registros
             </button>
           </div>
@@ -358,11 +365,15 @@
         <div class="section-header">
           <div>
             <h2 class="section-title">Distribución de Módulos Físicos</h2>
-            <p class="section-sub">Asigna espacios comerciales a los proyectos que cuenten con aprobación del comité.</p>
+            <p class="section-sub">Asigna espacios comerciales a los proyectos que cuenten con aprobación del comité.
+            </p>
           </div>
-          <div style="display:flex; gap:1.25rem; font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
-            <span style="color:var(--color-ink);"><span class="status-dot"></span> Libres: <span id="statLibres">4</span></span>
-            <span style="color:var(--color-burn-orange);"><span class="status-dot status-dot--active"></span> Ocupados: <span id="statOcupados">5</span></span>
+          <div
+            style="display:flex; gap:1.25rem; font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+            <span style="color:var(--color-ink);"><span class="status-dot"></span> Libres: <span
+                id="statLibres">4</span></span>
+            <span style="color:var(--color-burn-orange);"><span class="status-dot status-dot--active"></span> Ocupados:
+              <span id="statOcupados">5</span></span>
             <span style="color:var(--color-ink-muted);">Ocupación: <span id="statTasa">50%</span></span>
           </div>
         </div>
@@ -374,9 +385,11 @@
             </div>
           </div>
 
-          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.25rem;">
+          <div
+            style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.25rem;">
             <h3 style="margin:0 0 0.5rem; font-size:1rem;" id="moduloDetailTitle">Selecciona un Módulo</h3>
-            <div id="moduloDetailContent" style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1rem; line-height:1.5;">
+            <div id="moduloDetailContent"
+              style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1rem; line-height:1.5;">
               Haz clic en cualquier cuadrante para inspeccionar su ocupación o vincular un emprendimiento aprobado.
             </div>
             <div id="moduloDetailActions"></div>
@@ -391,7 +404,8 @@
         <div class="section-header">
           <div>
             <h2 class="section-title">Parámetros de Apertura de la Convocatoria Actual</h2>
-            <p class="section-sub">Configura las fechas límite, cupos disponibles y requisitos para la cohorte institucional.</p>
+            <p class="section-sub">Configura las fechas límite, cupos disponibles y requisitos para la cohorte
+              institucional.</p>
           </div>
           <span class="tag tag--accent" id="badgeConvocatoriaState">Activa en el Campus</span>
         </div>
@@ -456,11 +470,15 @@
             <textarea id="convDesc" rows="3" class="form-control" required></textarea>
           </div>
 
-          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.15rem; margin-bottom:1.25rem;">
-            <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
+          <div
+            style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.15rem; margin-bottom:1.25rem;">
+            <label
+              style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
               Criterios Institucionales Exigidos para la Cohorte
             </label>
-            <ul style="margin:0; padding-left:1.25rem; font-size:0.84rem; color:var(--color-ink-muted); line-height:1.6;" id="convReqList">
+            <ul
+              style="margin:0; padding-left:1.25rem; font-size:0.84rem; color:var(--color-ink-muted); line-height:1.6;"
+              id="convReqList">
               <!-- Render dinámico -->
             </ul>
           </div>
@@ -507,7 +525,9 @@
           <div>
             <h2 class="section-title">Programación de Excepciones de Disponibilidad (HU 2.2)</h2>
             <p class="section-sub">
-              Configura días festivos oficiales, cierres del campus o mantenimientos técnicos. El sistema suspende el control de operatividad y notifica automáticamente a los emprendimientos activos para no registrar sanciones.
+              Configura días festivos oficiales, cierres del campus o mantenimientos técnicos. El sistema suspende el
+              control de operatividad y notifica automáticamente a los emprendimientos activos para no registrar
+              sanciones.
             </p>
           </div>
           <span class="tag tag--accent">Sincronización de Notificaciones Activa</span>
@@ -517,7 +537,8 @@
           <div class="grid-2col">
             <div class="form-group">
               <label>Título o Motivo del Cierre</label>
-              <input type="text" id="cierreTitle" class="form-control" placeholder="Ej. Festivo Nacional: Día de Todos los Santos" required>
+              <input type="text" id="cierreTitle" class="form-control"
+                placeholder="Ej. Festivo Nacional: Día de Todos los Santos" required>
             </div>
             <div class="form-group">
               <label>Tipo de Excepción</label>
@@ -552,11 +573,14 @@
 
           <div class="form-group">
             <label>Justificación Institucional / Instrucciones para Emprendedores</label>
-            <textarea id="cierreReason" rows="2" class="form-control" placeholder="Explica la causa del cierre y las directrices para la no operación..." required></textarea>
+            <textarea id="cierreReason" rows="2" class="form-control"
+              placeholder="Explica la causa del cierre y las directrices para la no operación..." required></textarea>
           </div>
 
-          <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1rem 1.25rem; margin-bottom:1.5rem;">
-            <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
+          <div
+            style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1rem 1.25rem; margin-bottom:1.5rem;">
+            <label
+              style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink); display:block; margin-bottom:0.5rem;">
               Canales de Despacho de Notificación a Emprendedores Asignados:
             </label>
             <div style="display:flex; gap:1.5rem; flex-wrap:wrap; font-size:0.86rem;">
@@ -588,7 +612,8 @@
               Días en los cuales la Zona de Emprendimiento no operará presencialmente.
             </p>
           </div>
-          <span style="font-size:0.8rem; color:var(--color-ink-muted);">Total Excepciones: <strong id="countCierres">2</strong></span>
+          <span style="font-size:0.8rem; color:var(--color-ink-muted);">Total Excepciones: <strong
+              id="countCierres">2</strong></span>
         </div>
 
         <div style="overflow-x: auto;">
@@ -624,22 +649,33 @@
           </button>
         </div>
 
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin-bottom:2rem;">
-          <div style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
-            <div style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Proyectos Activos</div>
+        <div
+          style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin-bottom:2rem;">
+          <div
+            style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
+            <div
+              style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+              Proyectos Activos</div>
             <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">4</div>
           </div>
-          <div style="padding:1.25rem; background:var(--color-burn-orange-subtle); border:1px solid var(--color-burn-orange-border); border-radius:var(--radius-sm);">
-            <div style="font-size:0.74rem; color:var(--color-burn-orange); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Horas Acumuladas en Campus</div>
+          <div
+            style="padding:1.25rem; background:var(--color-burn-orange-subtle); border:1px solid var(--color-burn-orange-border); border-radius:var(--radius-sm);">
+            <div
+              style="font-size:0.74rem; color:var(--color-burn-orange); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+              Horas Acumuladas en Campus</div>
             <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">186 h</div>
           </div>
-          <div style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
-            <div style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Tasa de Ocupación</div>
+          <div
+            style="padding:1.25rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm);">
+            <div
+              style="font-size:0.74rem; color:var(--color-ink-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+              Tasa de Ocupación</div>
             <div style="font-size:1.75rem; font-weight:800; color:var(--color-ink); margin-top:0.25rem;">50%</div>
           </div>
         </div>
 
-        <h3 style="font-size:1rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.85rem; color:var(--color-ink);">
+        <h3
+          style="font-size:1rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.85rem; color:var(--color-ink);">
           Horas Operadas por Emprendimiento
         </h3>
         <div style="overflow-x: auto;">
@@ -693,13 +729,25 @@
   <!-- Modal de Rúbrica de Evaluación -->
   <div class="modal-overlay" id="evalModal">
     <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
         <h3 style="margin:0; font-size:1.2rem;">Rúbrica Institucional de Evaluación</h3>
-        <button onclick="closeEvalModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
+        <button onclick="closeEvalModal()"
+          style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
       </div>
 
-      <div style="padding:0.75rem 1rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); margin-bottom:1.25rem; font-size:0.88rem;">
-        <strong id="evalProjName">Proyecto</strong> &middot; <span id="evalStudentName" style="color:var(--color-ink-muted);">Estudiante</span>
+      <div
+        style="padding:0.75rem 1rem; background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); margin-bottom:1rem; font-size:0.88rem;">
+        <strong id="evalProjName">Proyecto</strong> &middot; <span id="evalStudentName"
+          style="color:var(--color-ink-muted);">Estudiante</span>
+      </div>
+
+      <!-- Soportes y Archivos de MVP Registrados (HU 3.3) -->
+      <div style="margin-bottom:1.25rem;">
+        <label style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-ink-muted); display:block; margin-bottom:0.4rem;">
+          Soportes y Archivos de MVP Adjuntos (HU 3.3):
+        </label>
+        <div id="evalFilesList" style="display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center;"></div>
       </div>
 
       <div class="form-group">
@@ -731,7 +779,8 @@
 
       <div class="form-group">
         <label>Justificación del Dictamen (* Obligatorio)</label>
-        <textarea id="evalComments" rows="3" class="form-control" placeholder="Escribe la justificación institucional para la decisión..."></textarea>
+        <textarea id="evalComments" rows="3" class="form-control"
+          placeholder="Escribe la justificación institucional para la decisión..."></textarea>
       </div>
 
       <div style="display:flex; gap:0.75rem; margin-top:1.5rem;">
@@ -748,9 +797,11 @@
   <!-- Modal de Confirmación de Despacho de Notificación (HU 2.2) -->
   <div class="modal-overlay" id="notifModal">
     <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
         <h3 style="margin:0; font-size:1.15rem;" id="notifModalTitle">Notificación de Cierre Emitida</h3>
-        <button onclick="closeNotifModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer;">&times;</button>
+        <button onclick="closeNotifModal()"
+          style="border:none; background:transparent; font-size:1.25rem; cursor:pointer;">&times;</button>
       </div>
 
       <div class="notice notice--accent" style="margin-bottom:1.25rem;">
@@ -758,7 +809,8 @@
         <div id="notifModalDetail" style="font-size:0.84rem; margin-top:0.35rem; color:var(--color-ink-muted);"></div>
       </div>
 
-      <h4 style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin:0 0 0.5rem; color:var(--color-ink);">
+      <h4
+        style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin:0 0 0.5rem; color:var(--color-ink);">
         Destinatarios Vinculados Notificados:
       </h4>
       <div id="notifRecipientList" style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.5rem;">
@@ -776,30 +828,39 @@
   <!-- Modal de Restablecimiento de Registros Demo -->
   <div class="modal-overlay" id="resetModal">
     <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--color-border); padding-bottom:0.75rem;">
         <h3 style="margin:0; font-size:1.15rem;">Restablecer Datos de Demostración</h3>
-        <button onclick="closeResetModal()" style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
+        <button onclick="closeResetModal()"
+          style="border:none; background:transparent; font-size:1.25rem; cursor:pointer; color:var(--color-ink);">&times;</button>
       </div>
 
       <p style="font-size:0.86rem; color:var(--color-ink-muted); margin-bottom:1.25rem; line-height:1.5;">
-        El prototipo almacena los registros localmente en el navegador (<strong>localStorage</strong>). Si deseas volver a realizar pruebas de evaluación o reiniciar el estado de los módulos y convocatorias, selecciona una opción:
+        El prototipo almacena los registros localmente en el navegador (<strong>localStorage</strong>). Si deseas volver
+        a realizar pruebas de evaluación o reiniciar el estado de los módulos y convocatorias, selecciona una opción:
       </p>
 
       <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
-        <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
-          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-ink);">1. Reiniciar Solo Postulaciones de Proyectos</strong>
+        <div
+          style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
+          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-ink);">1. Reiniciar
+            Solo Postulaciones de Proyectos</strong>
           <p style="font-size:0.8rem; color:var(--color-ink-muted); margin:0 0 0.85rem; line-height:1.4;">
-            Restaura las propuestas estudiantiles para evaluar (deja a Carlos Ramírez y Felipe Herrera en estado 'En Revisión') y limpia las rúbricas evaluadas, sin alterar convocatorias ni cierres.
+            Restaura las propuestas estudiantiles para evaluar (deja a Carlos Ramírez y Felipe Herrera en estado 'En
+            Revisión') y limpia las rúbricas evaluadas, sin alterar convocatorias ni cierres.
           </p>
           <button class="btn btn--outline" onclick="executeReset('proyectos')" style="width:100%; font-size:0.82rem;">
             Reiniciar Solo Postulaciones
           </button>
         </div>
 
-        <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
-          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-burn-orange);">2. Restablecer TODO el Sistema (Fábrica)</strong>
+        <div
+          style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.1rem;">
+          <strong style="font-size:0.92rem; display:block; margin-bottom:0.35rem; color:var(--color-burn-orange);">2.
+            Restablecer TODO el Sistema (Fábrica)</strong>
           <p style="font-size:0.8rem; color:var(--color-ink-muted); margin:0 0 0.85rem; line-height:1.4;">
-            Restaura todo el almacenamiento: postulaciones iniciales, asignación de módulos E-01 a E-10, calendario de festivos/cierres, convocatoria activa y catálogos originales.
+            Restaura todo el almacenamiento: postulaciones iniciales, asignación de módulos E-01 a E-10, calendario de
+            festivos/cierres, convocatoria activa y catálogos originales.
           </p>
           <button class="btn btn--accent" onclick="executeReset('all')" style="width:100%; font-size:0.82rem;">
             Restablecer Todo el Sistema
@@ -845,7 +906,7 @@
       filtered.forEach(p => {
         const tr = document.createElement('tr');
         let tagClass = p.status === 'Aprobado' ? 'tag--accent' : (p.status === 'En Revisión' ? '' : 'tag--ink');
-        
+
         tr.innerHTML = `
           <td><strong>${p.radicado}</strong></td>
           <td><strong>${p.name}</strong><br><small style="color:var(--color-ink-muted);">${p.category}</small></td>
@@ -853,13 +914,13 @@
           <td>${p.date}</td>
           <td><span class="tag ${tagClass}">${p.status}</span></td>
           <td>
-            ${p.status === 'En Revisión' 
-              ? `<button class="btn btn--primary" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="openEvalModal('${p.radicado}')">Evaluar Rúbrica</button>`
-              : (p.status === 'Aprobado' && !p.module 
-                  ? `<button class="btn btn--accent" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="goToAssign('${p.radicado}')">Asignar Módulo</button>`
-                  : `<span style="font-size:0.8rem; color:var(--color-ink-muted);">${p.module ? 'Asignado: ' + p.module : 'Evaluado'}</span>`
-                )
-            }
+            ${p.status === 'En Revisión'
+            ? `<button class="btn btn--primary" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="openEvalModal('${p.radicado}')">Evaluar Rúbrica</button>`
+            : (p.status === 'Aprobado' && !p.module
+              ? `<button class="btn btn--accent" style="padding:0.4rem 0.8rem; font-size:0.78rem;" onclick="goToAssign('${p.radicado}')">Asignar Módulo</button>`
+              : `<span style="font-size:0.8rem; color:var(--color-ink-muted);">${p.module ? 'Asignado: ' + p.module : 'Evaluado'}</span>`
+            )
+          }
           </td>
         `;
         tbody.appendChild(tr);
@@ -872,8 +933,29 @@
       activeRadicado = radicado;
       const p = SIGME_STATE.getProyectos().find(x => x.radicado === radicado);
       document.getElementById('evalProjName').textContent = p.name;
-      document.getElementById('evalStudentName').textContent = p.student;
+      document.getElementById('evalStudentName').textContent = `${p.student} (${p.faculty})`;
       document.getElementById('evalComments').value = 'Cumple satisfactoriamente con la validación de MVP y viabilidad en módulo.';
+
+      // Render de archivos adjuntos del MVP (HU 3.3)
+      const filesContainer = document.getElementById('evalFilesList');
+      filesContainer.innerHTML = '';
+      const files = p.mvpFiles || ['ficha_tecnica_mvp.pdf'];
+      files.forEach(f => {
+        const isPdf = f.toLowerCase().endsWith('.pdf');
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.style.fontSize = '0.74rem';
+        tag.innerHTML = `<strong>${isPdf ? 'PDF' : 'IMG'}</strong> ${f}`;
+        filesContainer.appendChild(tag);
+      });
+      if (p.lastUpdatedFiles) {
+        const meta = document.createElement('span');
+        meta.style.fontSize = '0.72rem';
+        meta.style.color = 'var(--color-ink-muted)';
+        meta.textContent = `(Actualizado: ${p.lastUpdatedFiles})`;
+        filesContainer.appendChild(meta);
+      }
+
       document.getElementById('evalModal').style.display = 'grid';
     }
 
@@ -1034,7 +1116,7 @@
       if (!confirm(`¿Confirmas la liberación del módulo ${moduloId}?`)) return;
       const modulos = SIGME_STATE.getModulos();
       const m = modulos.find(x => x.id === moduloId);
-      
+
       const proyectos = SIGME_STATE.getProyectos();
       const p = proyectos.find(x => x.name === m.project);
       if (p) p.module = null;
@@ -1260,4 +1342,5 @@
     renderCierresTable();
   </script>
 </body>
+
 </html>

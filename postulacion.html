@@ -142,17 +142,28 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!-- Topbar con Menú Global -->
   <header class="topbar">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">S</div>
-      <div>
-        <div class="brand__name">SIGME</div>
-        <div class="brand__sub">Registro y Postulación de Proyectos</div>
-      </div>
-    </a>
+    <div class="topbar__left">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand__name">SIGME</div>
+          <div class="brand__sub">Zona de Emprendimiento Universitario &middot; CIE</div>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link">Catálogo de Negocios</a>
+        <a href="postulacion.html" class="nav-link active">Postular Emprendimiento</a>
+        <a href="consulta.html" class="nav-link">Consultar Estado de Postulación</a>
+      </nav>
+    </div>
+
     <div>
-      <a class="btn btn--ghost-dark" href="index.html">&larr; Volver al Portal</a>
+      <a class="btn btn--accent" href="login.html">
+        Iniciar Sesión &rarr;
+      </a>
     </div>
   </header>
 
@@ -255,7 +266,7 @@
         La propuesta ha quedado almacenada institucionalmente en estado <strong>En Revisión</strong> para el comité evaluador.
       </p>
 
-      <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.5rem; max-width:440px; margin:0 auto 2.5rem; text-align:left; font-size:0.88rem;">
+      <div style="background:var(--color-crema-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:1.5rem; max-width:440px; margin:0 auto 1.5rem; text-align:left; font-size:0.88rem;">
         <div style="display:flex; justify-content:space-between; margin-bottom:0.65rem; border-bottom:1px solid var(--color-border); padding-bottom:0.5rem;">
           <span style="color:var(--color-ink-muted);">Número de Radicado:</span>
           <strong id="resRadicado" style="color:var(--color-ink);">SIGME-2026-0255</strong>
@@ -270,9 +281,13 @@
         </div>
       </div>
 
-      <div style="display:flex; gap:0.75rem; justify-content:center;">
-        <a class="btn btn--primary" href="index.html">Volver al Inicio</a>
-        <a class="btn btn--outline" href="catalogo.html">Ver Catálogo Público</a>
+      <p style="font-size:0.82rem; color:var(--color-ink-muted); margin:0 auto 1.75rem; max-width:50ch; line-height:1.45;">
+        Recuerda que mientras tu proyecto continúe <strong>"En Revisión"</strong> puedes actualizar o anexar nuevos soportes de MVP ingresando con tu radicado.
+      </p>
+
+      <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+        <a class="btn btn--primary" id="btnCheckStatusAfterPostula" href="consulta.html">Consultar Estado de Postulación</a>
+        <a class="btn btn--outline" href="index.html">Ver Catálogo de Negocios</a>
       </div>
     </section>
 
@@ -315,6 +330,12 @@
 
       const radicadoNum = 'SIGME-2026-0' + Math.floor(250 + Math.random() * 50);
 
+      // Soportes del MVP adjuntos (HU 3.3)
+      const fileInput = document.getElementById('fileMock');
+      const uploadedFileName = (fileInput && fileInput.files && fileInput.files.length > 0)
+        ? fileInput.files[0].name
+        : 'ficha_tecnica_mvp_v1.pdf';
+
       // Crear nuevo proyecto
       const proyectos = SIGME_STATE.getProyectos();
       const nuevo = {
@@ -328,7 +349,9 @@
         status: 'En Revisión',
         score: null,
         comments: null,
-        module: null
+        module: null,
+        mvpFiles: [uploadedFileName],
+        lastUpdatedFiles: new Date().toLocaleDateString('es-CO') + ' · ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
       };
 
       proyectos.unshift(nuevo);
@@ -358,6 +381,7 @@
       document.getElementById('boxSuccess').style.display = 'block';
       document.getElementById('resRadicado').textContent = radicadoNum;
       document.getElementById('resName').textContent = projName;
+      document.getElementById('btnCheckStatusAfterPostula').href = 'consulta.html?query=' + encodeURIComponent(radicadoNum);
     }
 
     checkConvocatoria();

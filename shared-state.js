@@ -172,7 +172,9 @@
       status: 'Aprobado',
       score: 85,
       comments: 'Excelente propuesta con validación de MVP en el campus.',
-      module: 'E-03'
+      module: 'E-03',
+      mvpFiles: ['ficha_tecnica_ecosnacks.pdf', 'registro_ventas_mvp.png'],
+      lastUpdatedFiles: '22/09/2026 · 11:30'
     },
     {
       radicado: 'SIGME-2026-0187',
@@ -185,7 +187,9 @@
       status: 'En Revisión',
       score: null,
       comments: null,
-      module: null
+      module: null,
+      mvpFiles: ['ficha_tecnica_cafe_origen.pdf', 'evidencia_catacion_mvp.jpg'],
+      lastUpdatedFiles: '26/09/2026 · 16:45'
     },
     {
       radicado: 'SIGME-2026-0203',
@@ -198,7 +202,9 @@
       status: 'En Revisión',
       score: null,
       comments: null,
-      module: null
+      module: null,
+      mvpFiles: ['mockup_app_tutorias.png', 'arquitectura_mvp.pdf'],
+      lastUpdatedFiles: '28/09/2026 · 09:20'
     },
     {
       radicado: 'SIGME-2026-0091',
@@ -211,7 +217,9 @@
       status: 'Rechazado',
       score: 52,
       comments: 'No cuenta con concepto sanitario básico para venta presencial en campus.',
-      module: null
+      module: null,
+      mvpFiles: ['concepto_hidroponico.pdf'],
+      lastUpdatedFiles: '16/09/2026 · 10:00'
     }
   ];
 
@@ -304,6 +312,15 @@
     setCurrentUser: function (user) {
       localStorage.setItem('sigme_current_user', JSON.stringify(user));
     },
+    login: function (email, pass) {
+      const users = this.getUsers();
+      const cleanEmail = (email || '').trim().toLowerCase();
+      const user = users.find(u => u.email.toLowerCase() === cleanEmail);
+      if (user && user.password === pass) {
+        return user;
+      }
+      return null;
+    },
     updateUserProfile: function (email, dynamicData) {
       const users = this.getUsers();
       const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -383,6 +400,52 @@
     },
     saveProyectos: function (p) {
       localStorage.setItem('sigme_proyectos', JSON.stringify(p));
+    },
+    updateMvpFiles: function (radicado, files) {
+      const proyectos = this.getProyectos();
+      const p = proyectos.find(x => x.radicado.toLowerCase() === radicado.toLowerCase());
+      if (p) {
+        if (p.status !== 'En Revisión') {
+          return { success: false, message: 'Solo se pueden actualizar archivos mientras la postulación esté "En Revisión".' };
+        }
+        p.mvpFiles = files;
+        const now = new Date();
+        p.lastUpdatedFiles = now.toLocaleDateString('es-CO') + ' · ' + now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+        this.saveProyectos(proyectos);
+        return { success: true, project: p };
+      }
+      return { success: false, message: 'Postulación no encontrada.' };
+    },
+    addMvpFile: function (radicado, fileName) {
+      const proyectos = this.getProyectos();
+      const p = proyectos.find(x => x.radicado.toLowerCase() === radicado.toLowerCase());
+      if (p) {
+        if (p.status !== 'En Revisión') {
+          return { success: false, message: 'Solo se pueden actualizar archivos mientras la postulación esté "En Revisión".' };
+        }
+        if (!p.mvpFiles) p.mvpFiles = [];
+        p.mvpFiles.push(fileName);
+        const now = new Date();
+        p.lastUpdatedFiles = now.toLocaleDateString('es-CO') + ' · ' + now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+        this.saveProyectos(proyectos);
+        return { success: true, project: p };
+      }
+      return { success: false, message: 'Postulación no encontrada.' };
+    },
+    deleteMvpFile: function (radicado, fileIndex) {
+      const proyectos = this.getProyectos();
+      const p = proyectos.find(x => x.radicado.toLowerCase() === radicado.toLowerCase());
+      if (p && p.mvpFiles) {
+        if (p.status !== 'En Revisión') {
+          return { success: false, message: 'Solo se pueden eliminar archivos mientras la postulación esté "En Revisión".' };
+        }
+        p.mvpFiles.splice(fileIndex, 1);
+        const now = new Date();
+        p.lastUpdatedFiles = now.toLocaleDateString('es-CO') + ' · ' + now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+        this.saveProyectos(proyectos);
+        return { success: true, project: p };
+      }
+      return { success: false, message: 'Archivo no encontrado.' };
     },
 
     // --- DISPONIBILIDAD: FESTIVOS Y CIERRES (HU 2.2) ---
@@ -509,6 +572,32 @@
       // Proyectos
       if (!localStorage.getItem('sigme_proyectos')) {
         localStorage.setItem('sigme_proyectos', JSON.stringify(INITIAL_PROYECTOS));
+      } else {
+        try {
+          const stored = JSON.parse(localStorage.getItem('sigme_proyectos'));
+          let changed = false;
+          stored.forEach(p => {
+            if (!p.mvpFiles) {
+              if (p.radicado === 'SIGME-2026-0187') {
+                p.mvpFiles = ['ficha_tecnica_cafe_origen.pdf', 'evidencia_catacion_mvp.jpg'];
+                p.lastUpdatedFiles = '26/09/2026 · 16:45';
+              } else if (p.radicado === 'SIGME-2026-0142') {
+                p.mvpFiles = ['ficha_tecnica_ecosnacks.pdf', 'registro_ventas_mvp.png'];
+                p.lastUpdatedFiles = '22/09/2026 · 11:30';
+              } else if (p.radicado === 'SIGME-2026-0203') {
+                p.mvpFiles = ['mockup_app_tutorias.png', 'arquitectura_mvp.pdf'];
+                p.lastUpdatedFiles = '28/09/2026 · 09:20';
+              } else {
+                p.mvpFiles = ['ficha_tecnica_mvp.pdf'];
+                p.lastUpdatedFiles = '16/09/2026 · 10:00';
+              }
+              changed = true;
+            }
+          });
+          if (changed) {
+            localStorage.setItem('sigme_proyectos', JSON.stringify(stored));
+          }
+        } catch (e) {}
       }
 
       // Cierres y Excepciones
