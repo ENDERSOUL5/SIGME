@@ -10,26 +10,34 @@ Este manual explica, paso a paso y en lenguaje sencillo, cómo usar SIGME: desde
 ## 📑 Tabla de Contenidos
 
 1. [Antes de empezar](#1-antes-de-empezar)
+
 2. [¿Qué es SIGME y qué puedo hacer?](#2-qué-es-sigme-y-qué-puedo-hacer)
+
 3. [Pantalla de inicio: el Catálogo Público](#3-pantalla-de-inicio-el-catálogo-público)
+
 4. [Iniciar sesión](#4-iniciar-sesión)
+
 5. [Postular mi emprendimiento](#5-postular-mi-emprendimiento)
+
 6. [Consultar el estado de mi postulación](#6-consultar-el-estado-de-mi-postulación)
+
 7. [Panel del Comité de Emprendimiento (CIE)](#7-panel-del-comité-de-emprendimiento-cie)
+
 8. [Mi panel como emprendedor vinculado](#8-mi-panel-como-emprendedor-vinculado)
+
 9. [Credenciales de prueba](#9-credenciales-de-prueba)
-10. [Recorridos recomendados](#10-recorridos-recomendados)
-11. [Preguntas frecuentes y solución de problemas](#11-preguntas-frecuentes-y-solución-de-problemas)
+
+10. [Preguntas frecuentes y solución de problemas](#10-preguntas-frecuentes-y-solucin-de-problemas)
 
 ---
 
 ## 1. Antes de empezar
 
-| Requisito | Detalle |
-| :--- | :--- |
-| Navegador | Chrome, Edge, Firefox o Safari (versión reciente) |
-| Instalación | Ninguna: basta abrir la página de inicio |
-| Conexión | No se requiere internet |
+| Requisito   | Detalle                                            |
+|:----------- |:-------------------------------------------------- |
+| Navegador   | Chrome, Edge, Firefox o Safari (versión reciente)  |
+| Instalación | Ninguna: basta abrir la página de inicio           |
+| Conexión    | No se requiere internet                            |
 | Dispositivo | Computador, tablet o celular (el diseño se adapta) |
 
 **Para entrar:** abre la página principal de SIGME (el catálogo público). Todo lo demás se navega con los botones y enlaces de cada pantalla.
@@ -42,13 +50,13 @@ Este manual explica, paso a paso y en lenguaje sencillo, cómo usar SIGME: desde
 
 SIGME gestiona la Zona de Emprendimiento de la universidad. Según tu rol, puedes:
 
-| Si eres... | Puedes... |
-| :--- | :--- |
-| **Visitante / comprador** | Ver el catálogo de emprendimientos, filtrar los que están atendiendo ahora y contactarlos por WhatsApp o Instagram |
-| **Estudiante con una idea** | Postular tu emprendimiento y tu prototipo (MVP) a la convocatoria |
-| **Postulante** | Consultar el estado de tu trámite con tu número de radicado |
-| **Emprendedor aprobado** | Gestionar tu perfil, abrir y cerrar turnos en tu módulo y llevar tus horas |
-| **Comité de Emprendimiento (CIE)** | Evaluar postulaciones con rúbrica, asignar módulos, abrir convocatorias, programar festivos y generar reportes |
+| Si eres...                         | Puedes...                                                                                                          |
+|:---------------------------------- |:------------------------------------------------------------------------------------------------------------------ |
+| **Visitante / comprador**          | Ver el catálogo de emprendimientos, filtrar los que están atendiendo ahora y contactarlos por WhatsApp o Instagram |
+| **Estudiante con una idea**        | Postular tu emprendimiento y tu prototipo (MVP) a la convocatoria                                                  |
+| **Postulante**                     | Consultar el estado de tu trámite con tu número de radicado                                                        |
+| **Emprendedor aprobado**           | Gestionar tu perfil, abrir y cerrar turnos en tu módulo y llevar tus horas                                         |
+| **Comité de Emprendimiento (CIE)** | Evaluar postulaciones con rúbrica, asignar módulos, abrir convocatorias, programar festivos y generar reportes     |
 
 ---
 
@@ -99,11 +107,11 @@ La pantalla de acceso tiene dos pestañas según tu rol:
 
 El formulario para inscribir tu proyecto en la convocatoria tiene tres partes:
 
-| Sección | Qué se pide |
-| :--- | :--- |
-| **1. Tus datos** | Nombres, correo institucional, facultad y código estudiantil |
+| Sección                  | Qué se pide                                                                                      |
+|:------------------------ |:------------------------------------------------------------------------------------------------ |
+| **1. Tus datos**         | Nombres, correo institucional, facultad y código estudiantil                                     |
 | **2. Tu emprendimiento** | Nombre comercial, categoría, descripción y cómo validaste tu prototipo (MVP) con clientes reales |
-| **3. Soportes** | Ficha técnica del prototipo o fotos del producto, en PDF o imagen (hasta 5 MB por archivo) |
+| **3. Soportes**          | Ficha técnica del prototipo o fotos del producto, en PDF o imagen (hasta 5 MB por archivo)       |
 
 ### Pasos
 
@@ -128,11 +136,11 @@ Aquí puedes hacer seguimiento a tu trámite **sin necesidad de cuenta**.
 
 ### Los tres resultados posibles
 
-| Estado | Qué significa y qué puedes hacer |
-| :--- | :--- |
-| 🟡 **En Revisión** | El comité todavía está evaluando tu proyecto. Mientras tanto, puedes **añadir o actualizar archivos** de tu prototipo. |
-| 🟢 **Aprobado** ¡Felicitaciones! | Te muestra tu **módulo físico asignado**, tu puntaje y un botón para **iniciar sesión** y entrar a tu panel. |
-| 🔴 **Rechazado** | Se muestran las **observaciones del comité evaluador** para que sepas qué ajustar antes de volver a postular. |
+| Estado                           | Qué significa y qué puedes hacer                                                                                       |
+|:-------------------------------- |:---------------------------------------------------------------------------------------------------------------------- |
+| 🟡 **En Revisión**               | El comité todavía está evaluando tu proyecto. Mientras tanto, puedes **añadir o actualizar archivos** de tu prototipo. |
+| 🟢 **Aprobado** ¡Felicitaciones! | Te muestra tu **módulo físico asignado**, tu puntaje y un botón para **iniciar sesión** y entrar a tu panel.           |
+| 🔴 **Rechazado**                 | Se muestran las **observaciones del comité evaluador** para que sepas qué ajustar antes de volver a postular.          |
 
 ---
 
@@ -145,10 +153,10 @@ Panel exclusivo para la coordinación. Se accede con el usuario Administrador y 
 - Lista de todos los postulados con su radicado, categoría y estado.
 - Botón **"Evaluar"**: abre la **rúbrica de evaluación** con tres criterios ponderados:
 
-| Criterio | Peso |
-| :--- | :--- |
-| Propuesta de Valor | 30 % |
-| Validación del MVP | 40 % |
+| Criterio                    | Peso |
+|:--------------------------- |:---- |
+| Propuesta de Valor          | 30 % |
+| Validación del MVP          | 40 % |
 | Viabilidad en Módulo Físico | 30 % |
 
 - El evaluador debe **escribir una justificación obligatoria** de su decisión.
@@ -207,74 +215,37 @@ Esta es la parte que tus clientes ven en tiempo real:
 
 Para probar la demostración, usa estos usuarios (en la pantalla de acceso puedes hacer **clic sobre cada uno** para rellenarlo automáticamente):
 
-| Rol | Correo | Clave | Qué pasa al entrar |
-| :--- | :--- | :--- | :--- |
-| **Administrador CIE** | `admin@universidad.edu.co` | `admin` | Entra al panel del Comité |
-| **Estudiante aprobado** | `maria.lopez@universidad.edu.co` | `123` | Entra a su panel (módulo E-03) |
-| **Estudiante en revisión** | `carlos.ramirez@universidad.edu.co` | `123` | Aviso de "En Revisión" + enlace a la consulta |
+| Rol                        | Correo                              | Clave   | Qué pasa al entrar                            |
+|:-------------------------- |:----------------------------------- |:------- |:--------------------------------------------- |
+| **Administrador CIE**      | `admin@universidad.edu.co`          | `admin` | Entra al panel del Comité                     |
+| **Estudiante aprobado**    | `maria.lopez@universidad.edu.co`    | `123`   | Entra a su panel (módulo E-03)                |
+| **Estudiante en revisión** | `carlos.ramirez@universidad.edu.co` | `123`   | Aviso de "En Revisión" + enlace a la consulta |
 
 **Números de radicado para probar la consulta:**
 
-| Radicado | Estado |
-| :--- | :--- |
-| `SIGME-2026-0187` | 🟡 En Revisión |
-| `SIGME-2026-0142` | 🟢 Aprobado |
+| Radicado          | Estado                           |
+|:----------------- |:-------------------------------- |
+| `SIGME-2026-0187` | 🟡 En Revisión                   |
+| `SIGME-2026-0142` | 🟢 Aprobado                      |
 | `SIGME-2026-0091` | 🔴 Rechazado (con observaciones) |
 
 ---
 
-## 10. Recorridos recomendados
 
-Si vas a demostrar el sistema, estos recorridos muestran todo su funcionamiento:
 
-### Recorrido A — "Quiero postular mi proyecto"
+## 10. Preguntas frecuentes y solución de problemas
 
-```text
-Catálogo → Iniciar Sesión → "Postular mi proyecto"
-→ Diligenciar formulario y cargar archivos → Recibir radicado
-→ Consultar el radicado → Ver estado "En Revisión" → Añadir un archivo
-```
-
-### Recorrido B — "Soy del Comité y evalúo"
-
-```text
-Iniciar sesión como Administrador
-→ Postulaciones → Evaluar con la rúbrica → Escribir justificación → Aprobar
-→ Infraestructura → Asignar módulo al aprobado
-→ Disponibilidad → Programar un festivo y notificar
-```
-
-### Recorrido C — "Ya tengo mi módulo"
-
-```text
-Iniciar sesión como estudiante aprobado
-→ Actualizar mis datos de contacto y preferencias
-→ Abrir turno → Ver el cronómetro correr
-→ Volver al catálogo → Ver mi marca de primeras como "Abierta"
-→ Cerrar turno
-```
-
-### Recorrido D — "Solo quiero comprar"
-
-```text
-Catálogo → Filtrar "Abiertos" → Buscar una marca → Tocar WhatsApp
-```
-
----
-
-## 11. Preguntas frecuentes y solución de problemas
-
-| Problema o duda | Respuesta |
-| :--- | :--- |
-| No puedo iniciar sesión como estudiante | Tu proyecto debe estar **aprobado** por el Comité. Verifica tu estado en la consulta con tu radicado. Si sigue "En Revisión", aún no puedes entrar al panel. |
-| El formulario de postulación está bloqueado | La convocatoria está **cerrada** en este momento. Debes esperar a que el Comité abra la próxima cohorte. |
-| Mi radicado no aparece en la consulta | Revisa que esté bien escrito (formato `SIGME-2026-XXXX`) o prueba con el **correo institucional** que usaste al postularte. |
-| ¿Puedo cambiar mi nombre o facultad en mi perfil? | No. Esos datos vienen del Registro Académico de la universidad y están bloqueados. Solo puedes editar tus **datos de contacto comercial** (teléfono, WhatsApp, Instagram y descripción). |
-| Mi módulo no aparece como "Abierto" en el catálogo | Debes **abrir tu turno** desde tu panel. En cuanto lo hagas, tu emprendimiento sube a los primeros puestos del catálogo automáticamente. |
-| ¿Por qué no me sancionaron un día festivo? | Porque el Comité lo programó como **cierre**: en festivos y cierres de universidad no se cuentan faltas por inactividad. Verás el aviso en el banner de tu panel. |
-| Se perdieron los cambios que hice | Es una demostración: los datos se guardan solo en tu navegador. Para volver a los datos de ejemplo, borra los datos del sitio en tu navegador o abre una ventana de incógnito. |
-| No se descarga el reporte en PDF | El botón usa la impresión del navegador: en el diálogo que aparece, elige **"Guardar como PDF"** como destino. |
-| ¿Necesito internet para usarlo? | No, es un prototipo con datos de ejemplo que funciona sin conexión. |
+| Problema o duda                                    | Respuesta                                                                                                                                                                                |
+|:-------------------------------------------------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No puedo iniciar sesión como estudiante            | Tu proyecto debe estar **aprobado** por el Comité. Verifica tu estado en la consulta con tu radicado. Si sigue "En Revisión", aún no puedes entrar al panel.                             |
+| El formulario de postulación está bloqueado        | La convocatoria está **cerrada** en este momento. Debes esperar a que el Comité abra la próxima cohorte.                                                                                 |
+| Mi radicado no aparece en la consulta              | Revisa que esté bien escrito (formato `SIGME-2026-XXXX`) o prueba con el **correo institucional** que usaste al postularte.                                                              |
+| ¿Puedo cambiar mi nombre o facultad en mi perfil?  | No. Esos datos vienen del Registro Académico de la universidad y están bloqueados. Solo puedes editar tus **datos de contacto comercial** (teléfono, WhatsApp, Instagram y descripción). |
+| Mi módulo no aparece como "Abierto" en el catálogo | Debes **abrir tu turno** desde tu panel. En cuanto lo hagas, tu emprendimiento sube a los primeros puestos del catálogo automáticamente.                                                 |
+| ¿Por qué no me sancionaron un día festivo?         | Porque el Comité lo programó como **cierre**: en festivos y cierres de universidad no se cuentan faltas por inactividad. Verás el aviso en el banner de tu panel.                        |
+| Se perdieron los cambios que hice                  | Es una demostración: los datos se guardan solo en tu navegador. Para volver a los datos de ejemplo, borra los datos del sitio en tu navegador o abre una ventana de incógnito.           |
+| No se descarga el reporte en PDF                   | El botón usa la impresión del navegador: en el diálogo que aparece, elige **"Guardar como PDF"** como destino.                                                                           |
+| ¿Necesito internet para usarlo?                    | No, es un prototipo con datos de ejemplo que funciona sin conexión.                                                                                                                      |
 
 ---
 
