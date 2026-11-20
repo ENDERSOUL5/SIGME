@@ -1,0 +1,70 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Calibri, Carlito, Arial, sans-serif
+    fontSize: 18px
+    lineColor: "#44546A"
+  flowchart:
+    htmlLabels: true
+    wrappingWidth: 270
+    nodeSpacing: 12
+    rankSpacing: 50
+    padding: 12
+    curve: basis
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+---
+%% Figura 2 de documentacion_arquitectura.md (Figura 12.2 del documento principal). Arquitectura funcional de SIGME: actores (izquierda), módulos y servicios transversales (centro) e integraciones (derecha)
+flowchart LR
+  classDef actor fill:#E6EEF7,stroke:#9DB7D5,stroke-width:1px,color:#1B2A41
+  classDef m1 fill:#FFFFFF,stroke:#1F6AA5,stroke-width:2.5px,color:#1B1B1B
+  classDef m2 fill:#FFFFFF,stroke:#8E1B2F,stroke-width:2.5px,color:#1B1B1B
+  classDef m3 fill:#FFFFFF,stroke:#D08A00,stroke-width:2.5px,color:#1B1B1B
+  classDef m4 fill:#FFFFFF,stroke:#1F3864,stroke-width:2.5px,color:#1B1B1B
+  classDef sv fill:#F3EDF9,stroke:#6B3FA0,stroke-width:2px,color:#1B1B1B
+  classDef ext fill:#FFF4D6,stroke:#D9B96A,stroke-width:1px,color:#3B2F0B
+  classDef infra fill:#F2F2F2,stroke:#7F7F7F,stroke-width:1.5px,stroke-dasharray:5 4,color:#1B1B1B
+
+  subgraph ACT["<b>Actores</b>"]
+    A1["<div style='width:262px;white-space:normal'><b>A-01 Estudiante emprendedor</b><br/><i>usa M-01 y M-03</i></div>"]:::actor
+    A2["<div style='width:262px;white-space:normal'><b>A-02 Administrador de la Zona (CIE)</b><br/><i>usa M-02 y M-04</i></div>"]:::actor
+    A3["<div style='width:262px;white-space:normal'><b>A-03 Directivo institucional</b><br/><i>usa M-04</i></div>"]:::actor
+    A4["<div style='width:262px;white-space:normal'><b>A-04 Cliente de la comunidad</b><br/><i>sin inicio de sesión · usa M-03</i></div>"]:::actor
+  end
+
+  subgraph SIGME["<b>SIGME · Arquitectura funcional</b>"]
+    direction LR
+    M1["<b style='color:#1F6AA5'>M-01 Servicios para el Estudiante Emprendedor</b><br/>EDT 2.0<br/>CF-01 Registro y acceso<br/>CF-02 Postulaciones y MVP<br/>CF-03 Perfil y estadísticas"]:::m1
+    M3["<b style='color:#B87400'>M-03 Catálogo y Visibilidad Comercial</b><br/>EDT 4.0<br/>CF-07 Perfil comercial<br/>CF-08 Estado Abierto/Cerrado<br/>CF-09 Catálogo público"]:::m3
+    SV01["<b style='color:#6B3FA0'>SV-01 Notificaciones por correo</b><br/>Servicio transversal · EDT 3.2.3<br/>Avisos de decisión, asignación y festivos"]:::sv
+    M2["<b style='color:#8E1B2F'>M-02 Administración de la Zona y Espacios Físicos</b><br/>EDT 3.0<br/>CF-04 Evaluación y aprobación<br/>CF-05 Asignación de módulos<br/>CF-06 Convocatorias y festivos"]:::m2
+    M4["<b style='color:#1F3864'>M-04 Dashboard y Estadísticas Institucionales</b><br/>EDT 5.0<br/>CF-10 Horas de apertura<br/>CF-11 Tasa de ocupación<br/>CF-12 Reportes PDF y Excel"]:::m4
+    SV02["<b style='color:#6B3FA0'>SV-02 Seguridad, roles y plataforma</b><br/>Servicio transversal · EDT 6.1 y 6.3<br/>JWT, permisos por rol y HTTPS"]:::sv
+    M1 ~~~ M2
+    M3 ~~~ M4
+    SV01 ~~~ SV02
+  end
+
+  subgraph INT["<b>Integraciones</b>"]
+    I1["<div style='width:250px;white-space:normal'><b>INT-01 BD / Directorio institucional</b><br/>Valida el correo, solo lectura<br/><i>usa CF-01</i></div>"]:::ext
+    I2["<div style='width:250px;white-space:normal'><b>INT-02 Correo (SES / SendGrid)</b><br/>Envía las notificaciones<br/><i>usa SV-01</i></div>"]:::ext
+    I3["<div style='width:250px;white-space:normal'><b>INT-03 Archivos (S3 / Cloudinary)</b><br/>Guarda MVP e imágenes<br/><i>usa CF-02 y CF-07</i></div>"]:::ext
+    I4["<div style='width:250px;white-space:normal'><b>INT-04 WhatsApp e Instagram</b><br/>Solo enlaces de contacto<br/><i>usa CF-09</i></div>"]:::ext
+    I5["<div style='width:250px;white-space:normal'><b>INT-05 Oficina de TI</b><br/>Subdominio y SSL<br/><i>usa SV-02</i></div>"]:::infra
+  end
+
+  A1 --> SIGME
+  A2 --> SIGME
+  A3 --> SIGME
+  A4 --> SIGME
+  SIGME --> I1
+  SIGME --> I2
+  SIGME --> I3
+  SIGME -.-> I4
+  SIGME -.-> I5
+
+  style ACT fill:none,stroke:none
+  style INT fill:none,stroke:none
+  style SIGME fill:#F7F9FD,stroke:#1F3864,stroke-width:2.5px
