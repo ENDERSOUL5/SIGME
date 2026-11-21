@@ -1,0 +1,45 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Calibri, Carlito, Arial, sans-serif
+    fontSize: 16px
+    edgeLabelBackground: "#ffffff"
+    lineColor: "#44546A"
+  flowchart:
+    htmlLabels: true
+    nodeSpacing: 18
+    rankSpacing: 80
+    padding: 12
+    curve: basis
+---
+%% Figura 1 de documentacion_arquitectura.md (Figura 12.1 del documento principal). Diagrama de contexto de SIGME: actores (izquierda), sistema (centro) e integraciones (derecha)
+flowchart LR
+  classDef actor fill:#FFF4D6,stroke:#B7791F,stroke-width:1.5px,color:#1B1B1B
+  classDef sys fill:#DCE9F9,stroke:#1F3864,stroke-width:3px,color:#0B2545
+  classDef ext fill:#E6F2E6,stroke:#3C7A3C,stroke-width:1.5px,color:#1B1B1B
+  classDef infra fill:#F2F2F2,stroke:#7F7F7F,stroke-width:1.5px,stroke-dasharray:5 4,color:#1B1B1B
+
+  A1["<b>A-01</b> Estudiante<br/>emprendedor"]:::actor
+  A2["<b>A-02</b> Administrador<br/>de la Zona (CIE)"]:::actor
+  A3["<b>A-03</b> Directivo<br/>institucional"]:::actor
+  A4["<b>A-04</b> Cliente de la<br/>comunidad (sin login)"]:::actor
+
+  SIGME["<b>SIGME</b><br/>Sistema Integral de Gestión y<br/>Monitoreo de Emprendimientos<br/>Aplicación web adaptable (PWA)"]:::sys
+
+  I1["<b>INT-01</b><br/>BD / Directorio<br/>institucional"]:::ext
+  I2["<b>INT-02</b><br/>Correo transaccional<br/>(SES / SendGrid)"]:::ext
+  I3["<b>INT-03</b><br/>Almacenamiento<br/>(S3 / Cloudinary)"]:::ext
+  I4["<b>INT-04</b><br/>WhatsApp e<br/>Instagram"]:::ext
+  I5["<b>INT-05</b><br/>Oficina de TI<br/>(dominio y SSL)"]:::infra
+
+  A1 -->|"registro, postulación,<br/>perfil y turno"| SIGME
+  A2 -->|"rúbrica, asignación,<br/>convocatorias"| SIGME
+  A3 -->|"tablero<br/>e informes"| SIGME
+  A4 -->|"catálogo<br/>público"| SIGME
+
+  SIGME -->|"valida el correo y<br/>sincroniza datos<br/>(solo lectura)"| I1
+  SIGME -->|"notificaciones<br/>asíncronas"| I2
+  SIGME -->|"guarda MVP<br/>e imágenes"| I3
+  SIGME -.->|"enlaces de<br/>contacto (sin API)"| I4
+  SIGME -.->|"provee dominio<br/>y certificado"| I5

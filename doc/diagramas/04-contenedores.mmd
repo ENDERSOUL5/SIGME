@@ -1,0 +1,51 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Calibri, Carlito, Arial, sans-serif
+    fontSize: 16px
+    edgeLabelBackground: "#ffffff"
+    lineColor: "#44546A"
+  flowchart:
+    htmlLabels: true
+    nodeSpacing: 24
+    rankSpacing: 36
+    padding: 12
+    curve: basis
+---
+%% Figura 4 de documentacion_arquitectura.md (Figura 12.4 del documento principal). Vista de contenedores de SIGME: aplicación web (PWA), API, trabajador en segundo plano, datos y sistemas externos
+flowchart TB
+  classDef actor fill:#FFF4D6,stroke:#B7791F,stroke-width:1.5px,color:#1B1B1B
+  classDef app fill:#DCE9F9,stroke:#1F3864,stroke-width:2px,color:#0B2545
+  classDef data fill:#EFE6F7,stroke:#6B3FA0,stroke-width:1.5px,color:#1B1B1B
+  classDef ext fill:#E6F2E6,stroke:#3C7A3C,stroke-width:1.5px,color:#1B1B1B
+  classDef infra fill:#F2F2F2,stroke:#7F7F7F,stroke-width:1.5px,stroke-dasharray:5 4,color:#1B1B1B
+  classDef pend fill:#FFFFFF,stroke:#B7791F,stroke-width:1.5px,stroke-dasharray:5 4,color:#1B1B1B
+
+  U["<b>Actores A-01 a A-04</b><br/>celular, tableta o computador"]:::actor
+
+  PWA["<b>Aplicación web adaptable (PWA)</b><br/>React / Next.js · vistas de los 4 módulos<br/>Gráficas con Chart.js / D3"]:::app
+  SW["<b>Service Worker + almacenamiento local</b><br/>caché y reintentos del switch (CH-01, pendiente)"]:::pend
+
+  API["<b>Servidor de aplicaciones</b><br/>API REST + canal WebSocket<br/>JWT, roles, validación y generación de PDF/Excel"]:::app
+  WRK["<b>Worker en segundo plano</b><br/>envío de correos con reintentos"]:::app
+
+  DB[("<b>PostgreSQL</b><br/>datos de SIGME")]:::data
+  RD[("<b>Redis</b><br/>cola de trabajos")]:::data
+
+  I1["<b>INT-01</b> BD / Directorio<br/>institucional (solo lectura)"]:::ext
+  I2["<b>INT-02</b> Correo transaccional<br/>(SES / SendGrid)"]:::ext
+  I3["<b>INT-03</b> Almacenamiento<br/>(S3 / Cloudinary)"]:::ext
+  I4["<b>INT-04</b> WhatsApp e<br/>Instagram (enlaces)"]:::ext
+
+  U -->|"HTTPS"| PWA
+  PWA --- SW
+  PWA -->|"HTTPS · REST con JWT"| API
+  API -.->|"WebSocket: estado Abierto/Cerrado"| PWA
+  API -->|"SQL"| DB
+  API -->|"encola envíos"| RD
+  RD -->|"entrega trabajos"| WRK
+  WRK -->|"envía"| I2
+  API -->|"consulta por correo"| I1
+  API -->|"guarda y lee archivos"| I3
+  PWA -.->|"abre el contacto"| I4
